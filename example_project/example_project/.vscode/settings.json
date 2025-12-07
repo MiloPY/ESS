@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "xmc_gpio.h": "c",
+        "xmc_scu.h": "c",
+        "xmc_ccu4.h": "c"
+    }
+}

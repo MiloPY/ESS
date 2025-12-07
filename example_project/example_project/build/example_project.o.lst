@@ -1,0 +1,728 @@
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"example_project.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "example_project.c"
+  19              		.section	.text.XMC_GPIO_ToggleOutput,"ax",%progbits
+  20              		.align	1
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  25              	XMC_GPIO_ToggleOutput:
+  26              	.LFB132:
+  27              		.file 2 "/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h"
+   1:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** /**
+   2:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @file xmc_gpio.h
+   3:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @date 2015-06-20
+   4:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+   5:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @cond
+   6:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  **************************************************************************************************
+   7:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * XMClib v2.1.16 - XMC Peripheral Driver Library 
+   8:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+   9:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Copyright (c) 2015-2017, Infineon Technologies AG
+  10:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * All rights reserved.                        
+  11:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *                                             
+  12:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Redistribution and use in source and binary forms, with or without modification,are permitted pr
+  13:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * following conditions are met:   
+  14:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *                                                                              
+  15:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Redistributions of source code must retain the above copyright notice, this list of conditions a
+  16:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * disclaimer.                        
+  17:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * 
+  18:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Redistributions in binary form must reproduce the above copyright notice, this list of condition
+  19:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * disclaimer in the documentation and/or other materials provided with the distribution.          
+  20:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * 
+  21:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Neither the name of the copyright holders nor the names of its contributors may be used to endor
+  22:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * products derived from this software without specific prior written permission.                  
+  23:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *                                                                              
+  24:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR I
+  25:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTI
+  26:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE  FOR ANY DIRECT, IN
+  27:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBS
+  28:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THE
+  29:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * WHETHER IN CONTRACT, STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+  30:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                            
+  31:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *                                                                              
+  32:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * To improve the quality of the software, users are encouraged to share modifications, enhancement
+  33:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Infineon Technologies AG dave@infineon.com).                                                    
+  34:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  **************************************************************************************************
+  35:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+  36:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Change History
+  37:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * --------------
+  38:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+  39:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * 2015-02-20:
+  40:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *     - Initial draft<br>
+  41:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *     - Documentation improved <br>
+  42:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *      
+  43:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * 2015-06-20:
+  44:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *     - Removed version macros and declaration of GetDriverVersion API
+  45:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+  46:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @endcond
+  47:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+  48:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  */
+  49:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+  50:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** #ifndef XMC_GPIO_H
+  51:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** #define XMC_GPIO_H
+  52:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+  53:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** /**************************************************************************************************
+  54:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * HEADER FILES
+  55:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  **************************************************************************************************
+  56:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+  57:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** #include "xmc_common.h"
+  58:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+  59:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** /**
+  60:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @addtogroup XMClib XMC Peripheral Library
+  61:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @{
+  62:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  */
+  63:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+  64:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** /**
+  65:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @addtogroup GPIO
+  66:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @brief General Purpose Input Output (GPIO) driver for the XMC microcontroller family.
+  67:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+  68:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * GPIO driver provide a generic and very flexible software interface for all standard digital I/O 
+  69:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Each port slice has individual interfaces for the operation as General Purpose I/O and it furthe
+  70:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * connectivity to the on-chip periphery and the control for the pad characteristics. 
+  71:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+  72:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * The driver is divided into Input and Output mode.
+  73:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+  74:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Input mode features:
+  75:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * -# Configuration structure XMC_GPIO_CONFIG_t and initialization function XMC_GPIO_Init()
+  76:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * -# Allows the selection of weak pull-up or pull-down device. Configuration structure XMC_GPIO_MO
+  77:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \if XMC1
+  78:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * -# Allows the selection of input hysteresis. XMC_GPIO_SetInputHysteresis()
+  79:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \endif
+  80:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+  81:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * 
+  82:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Output mode features:
+  83:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * -# Allows the selection of push pull/open drain and Alternate output. Configuration structure XM
+  84:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \if XMC4
+  85:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * -# Allows the selection of pad driver strength. Configuration structure XMC_GPIO_OUTPUT_STRENGTH
+  86:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \endif
+  87:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+  88:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * -# Allows the selection of initial output level. Configuration structure XMC_GPIO_OUTPUT_LEVEL_t
+  89:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+  90:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *@{
+  91:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  */
+  92:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  
+  93:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** /**************************************************************************************************
+  94:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * MACROS
+  95:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  **************************************************************************************************
+  96:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+  97:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** #define PORT_IOCR_PC_Pos PORT0_IOCR0_PC0_Pos
+  98:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** #define PORT_IOCR_PC_Msk PORT0_IOCR0_PC0_Msk
+  99:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 100:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** #define PORT_IOCR_PC_Size 				(8U)
+ 101:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 											
+ 102:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 103:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** #define XMC_GPIO_CHECK_OUTPUT_LEVEL(level) ((level == XMC_GPIO_OUTPUT_LEVEL_LOW) || \
+ 104:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****                                             (level == XMC_GPIO_OUTPUT_LEVEL_HIGH))
+ 105:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****                                             
+ 106:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** #define XMC_GPIO_CHECK_HWCTRL(hwctrl) ((hwctrl == XMC_GPIO_HWCTRL_DISABLED) || \
+ 107:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****                                        (hwctrl == XMC_GPIO_HWCTRL_PERIPHERAL1) || \
+ 108:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****                                        (hwctrl == XMC_GPIO_HWCTRL_PERIPHERAL2))                    
+ 109:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****                                             
+ 110:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** /**************************************************************************************************
+ 111:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * ENUMS
+ 112:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  **************************************************************************************************
+ 113:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 114:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 115:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** /**
+ 116:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Defines output level of a pin. Use type \a XMC_GPIO_OUTPUT_LEVEL_t for this enum.
+ 117:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  */
+ 118:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** typedef enum XMC_GPIO_OUTPUT_LEVEL
+ 119:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** {
+ 120:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****   XMC_GPIO_OUTPUT_LEVEL_LOW  = 0x10000U, /**<  Reset bit */
+ 121:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****   XMC_GPIO_OUTPUT_LEVEL_HIGH = 0x1U, 	/**< Set bit  */
+ 122:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** } XMC_GPIO_OUTPUT_LEVEL_t;
+ 123:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 124:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** /**
+ 125:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Defines direct hardware control characteristics of the pin . Use type \a XMC_GPIO_HWCTRL_t for t
+ 126:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  */
+ 127:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** typedef enum XMC_GPIO_HWCTRL
+ 128:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** {
+ 129:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****   XMC_GPIO_HWCTRL_DISABLED     = 0x0U, /**<  Software control only */
+ 130:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****   XMC_GPIO_HWCTRL_PERIPHERAL1  = 0x1U, /**<  HWI0/HWO0 control path can override the software confi
+ 131:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****   XMC_GPIO_HWCTRL_PERIPHERAL2  = 0x2U  /**<  HWI1/HWO1 control path can override the software confi
+ 132:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** } XMC_GPIO_HWCTRL_t;
+ 133:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 134:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** /**************************************************************************************************
+ 135:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * DEVICE FAMILY EXTENSIONS
+ 136:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  **************************************************************************************************
+ 137:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 138:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  #if UC_FAMILY == XMC1
+ 139:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** #include "xmc1_gpio.h"
+ 140:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** #elif UC_FAMILY == XMC4
+ 141:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** #include "xmc4_gpio.h"
+ 142:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** #else
+ 143:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** #error "xmc_gpio.h: family device not supported"
+ 144:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** #endif
+ 145:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 146:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** /**************************************************************************************************
+ 147:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * API PROTOTYPES
+ 148:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  **************************************************************************************************
+ 149:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 150:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** #ifdef __cplusplus
+ 151:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** extern "C" {
+ 152:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** #endif
+ 153:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 154:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 155:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** /**
+ 156:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @param  port	  Constant pointer pointing to GPIO port, to access port registers like Pn_OUT,Pn_O
+ 157:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @param  pin	  Port pin number.
+ 158:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @param  config GPIO configuration data structure. Refer data structure @ref XMC_GPIO_CONFIG_t fo
+ 159:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 160:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @return None
+ 161:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 162:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \par<b>Description:</b><br>
+ 163:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \if XMC1
+ 164:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Initializes input / output mode settings like, pull up / pull down devices,hysteresis, push pull
+ 165:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Also configures alternate function outputs and clears hardware port control for a selected \a po
+ 166:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \a config provides selected I/O settings. It configures hardware registers Pn_IOCR,Pn_OUT, Pn_OM
+ 167:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \endif
+ 168:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \if XMC4
+ 169:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Initializes input / output mode settings like, pull up / pull down devices,push pull /open drain
+ 170:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Also configures alternate function outputs and clears hardware port control for selected \a port
+ 171:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * It configures hardware registers Pn_IOCR,Pn_OUT,Pn_OMR,Pn_PDISC and Pn_PDR.\n
+ 172:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \endif
+ 173:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 174:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \par<b>Related APIs:</b><BR>
+ 175:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *  None
+ 176:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 177:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \par<b>Note:</b><br>
+ 178:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * This API is called in definition of DAVE_init by code generation and therefore should not be exp
+ 179:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * for the normal operation. Use other APIs only after DAVE_init is called successfully (returns DA
+ 180:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 181:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 182:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  */
+ 183:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 184:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  
+ 185:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** void XMC_GPIO_Init(XMC_GPIO_PORT_t *const port, const uint8_t pin, const XMC_GPIO_CONFIG_t *const c
+ 186:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  
+ 187:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** /**
+ 188:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 189:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @param  port	Constant pointer pointing to GPIO port, to access hardware register Pn_IOCR.
+ 190:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @param  pin	Port pin number.
+ 191:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @param  mode input / output functionality selection. Refer @ref XMC_GPIO_MODE_t for valid values
+ 192:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 193:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @return None
+ 194:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 195:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \par<b>Description:</b><br>
+ 196:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Sets digital input and output driver functionality and characteristics of a GPIO port pin. It co
+ 197:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * registers Pn_IOCR. \a mode is initially configured during initialization in XMC_GPIO_Init(). Cal
+ 198:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * the port direction functionality as needed later in the program.
+ 199:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 200:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \par<b>Related APIs:</b><BR>
+ 201:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *  None
+ 202:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 203:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  */
+ 204:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 205:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** void XMC_GPIO_SetMode(XMC_GPIO_PORT_t *const port, const uint8_t pin, const XMC_GPIO_MODE_t mode);
+ 206:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 207:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 208:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** /**
+ 209:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 210:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @param  port	 Constant pointer pointing to GPIO port, to access hardware register Pn_OMR.
+ 211:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @param  pin	 Port pin number.
+ 212:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @param  level output level selection. Refer @ref XMC_GPIO_OUTPUT_LEVEL_t for valid values.
+ 213:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 214:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @return None
+ 215:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 216:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \par<b>Description:</b><br>
+ 217:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Set port pin output level to high or low.It configures hardware registers Pn_OMR.\a level is ini
+ 218:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * configured during initialization in XMC_GPIO_Init(). Call this API to alter output level as need
+ 219:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 220:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \par<b>Related APIs:</b><BR>
+ 221:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *  XMC_GPIO_SetOutputHigh(), XMC_GPIO_SetOutputLow().
+ 222:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 223:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \par<b>Note:</b><br>
+ 224:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Prior to this api, user has to configure port pin to output mode using XMC_GPIO_SetMode().
+ 225:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 226:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  */
+ 227:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 228:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 229:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** __STATIC_INLINE void XMC_GPIO_SetOutputLevel(XMC_GPIO_PORT_t *const port, const uint8_t pin, const 
+ 230:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** {
+ 231:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****   XMC_ASSERT("XMC_GPIO_SetOutputLevel: Invalid port", XMC_GPIO_CHECK_OUTPUT_PORT(port));
+ 232:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****   XMC_ASSERT("XMC_GPIO_SetOutputLevel: Invalid output level", XMC_GPIO_CHECK_OUTPUT_LEVEL(level));
+ 233:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****   
+ 234:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****   port->OMR = (uint32_t)level << pin;
+ 235:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** }
+ 236:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 237:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 238:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** /**
+ 239:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @param  port constant pointer pointing to GPIO port, to access hardware register Pn_OMR.
+ 240:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @param  pin	Port pin number.
+ 241:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 242:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @return None
+ 243:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 244:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \par<b>Description:</b><br>
+ 245:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *  Sets port pin output to high. It configures hardware registers Pn_OMR.
+ 246:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 247:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *  \par<b>Related APIs:</b><BR>
+ 248:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *  XMC_GPIO_SetOutputLow()
+ 249:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 250:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \par<b>Note:</b><br>
+ 251:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Prior to this api, user has to configure port pin to output mode using XMC_GPIO_SetMode().\n
+ 252:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Register Pn_OMR is virtual and does not contain any flip-flop. A read action delivers the value 
+ 253:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 254:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  */
+ 255:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 256:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** __STATIC_INLINE void XMC_GPIO_SetOutputHigh(XMC_GPIO_PORT_t *const port, const uint8_t pin)
+ 257:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** {
+ 258:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****   XMC_ASSERT("XMC_GPIO_SetOutputHigh: Invalid port", XMC_GPIO_CHECK_OUTPUT_PORT(port));
+ 259:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 260:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****   port->OMR = (uint32_t)0x1U << pin;
+ 261:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** }
+ 262:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 263:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** /**
+ 264:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 265:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @param  port	constant pointer pointing to GPIO port, to access hardware register Pn_OMR.
+ 266:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @param  pin	port pin number.
+ 267:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 268:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @return  None
+ 269:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 270:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *\par<b>Description:</b><br>
+ 271:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Sets port pin output to low. It configures hardware registers Pn_OMR.\n
+ 272:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 273:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \par<b>Related APIs:</b><BR>>
+ 274:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * XMC_GPIO_SetOutputHigh()
+ 275:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 276:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *\par<b>Note:</b><br>
+ 277:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Prior to this api, user has to configure port pin to output mode using XMC_GPIO_SetMode().
+ 278:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Register Pn_OMR is virtual and does not contain any flip-flop. A read action delivers the value 
+ 279:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 280:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  */
+ 281:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 282:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** __STATIC_INLINE void XMC_GPIO_SetOutputLow(XMC_GPIO_PORT_t *const port, const uint8_t pin)
+ 283:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** {
+ 284:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****   XMC_ASSERT("XMC_GPIO_SetOutputLow: Invalid port", XMC_GPIO_CHECK_OUTPUT_PORT(port));
+ 285:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 286:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****   port->OMR = 0x10000U << pin;
+ 287:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** }
+ 288:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 289:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** /**
+ 290:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 291:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @param port constant pointer pointing to GPIO port, to access hardware register Pn_OMR.
+ 292:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @param pin  port pin number.
+ 293:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 294:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @return None
+ 295:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 296:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \par<b>Description:</b><br>
+ 297:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Configures port pin output to Toggle. It configures hardware registers Pn_OMR.
+ 298:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 299:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \par<b>Related APIs:</b><BR>
+ 300:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * XMC_GPIO_SetOutputHigh(), XMC_GPIO_SetOutputLow().
+ 301:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 302:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \par<b>Note:</b><br>
+ 303:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Prior to this api, user has to configure port pin to output mode using XMC_GPIO_SetMode(). Regis
+ 304:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * and does not contain any flip-flop. A read action delivers the value of 0.
+ 305:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 306:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  */
+ 307:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 308:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** __STATIC_INLINE void XMC_GPIO_ToggleOutput(XMC_GPIO_PORT_t *const port, const uint8_t pin)
+ 309:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** {
+  28              		.loc 2 309 1
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 8
+  31              		@ frame_needed = 1, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  33 0000 80B4     		push	{r7}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 4
+  36              		.cfi_offset 7, -4
+  37 0002 83B0     		sub	sp, sp, #12
+  38              	.LCFI1:
+  39              		.cfi_def_cfa_offset 16
+  40 0004 00AF     		add	r7, sp, #0
+  41              	.LCFI2:
+  42              		.cfi_def_cfa_register 7
+  43 0006 7860     		str	r0, [r7, #4]
+  44 0008 0B46     		mov	r3, r1
+  45 000a FB70     		strb	r3, [r7, #3]
+ 310:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****   XMC_ASSERT("XMC_GPIO_ToggleOutput: Invalid port", XMC_GPIO_CHECK_OUTPUT_PORT(port));
+ 311:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 312:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****   port->OMR = 0x10001U << pin;
+  46              		.loc 2 312 24
+  47 000c FB78     		ldrb	r3, [r7, #3]	@ zero_extendqisi2
+  48 000e 4FF00112 		mov	r2, #65537
+  49 0012 9A40     		lsls	r2, r2, r3
+  50              		.loc 2 312 13
+  51 0014 7B68     		ldr	r3, [r7, #4]
+  52 0016 5A60     		str	r2, [r3, #4]
+ 313:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** }
+  53              		.loc 2 313 1
+  54 0018 00BF     		nop
+  55 001a 0C37     		adds	r7, r7, #12
+  56              	.LCFI3:
+  57              		.cfi_def_cfa_offset 4
+  58 001c BD46     		mov	sp, r7
+  59              	.LCFI4:
+  60              		.cfi_def_cfa_register 13
+  61              		@ sp needed
+  62 001e 5DF8047B 		ldr	r7, [sp], #4
+  63              	.LCFI5:
+  64              		.cfi_restore 7
+  65              		.cfi_def_cfa_offset 0
+  66 0022 7047     		bx	lr
+  67              		.cfi_endproc
+  68              	.LFE132:
+  70              		.global	buf
+  71              		.data
+  72              		.align	2
+  75              	buf:
+  76 0000 49204341 		.ascii	"I CAN MORSE"
+  76      4E204D4F 
+  76      525345
+  77              		.global	A
+  78              		.section	.rodata
+  79              		.align	2
+  82              	A:
+  83 0000 0001     		.ascii	"\000\001"
+  84              		.global	B
+  85 0002 0000     		.align	2
+  88              	B:
+  89 0004 01000000 		.ascii	"\001\000\000\000"
+  90              		.global	C
+  91              		.align	2
+  94              	C:
+  95 0008 01000100 		.ascii	"\001\000\001\000"
+  96              		.global	D
+  97              		.align	2
+ 100              	D:
+ 101 000c 010000   		.ascii	"\001\000\000"
+ 102              		.global	E
+ 103 000f 00       		.align	2
+ 106              	E:
+ 107 0010 00       		.space	1
+ 108              		.global	F
+ 109 0011 000000   		.align	2
+ 112              	F:
+ 113 0014 00000100 		.ascii	"\000\000\001\000"
+ 114              		.global	G
+ 115              		.align	2
+ 118              	G:
+ 119 0018 010100   		.ascii	"\001\001\000"
+ 120              		.global	H
+ 121 001b 00       		.align	2
+ 124              	H:
+ 125 001c 00000000 		.space	4
+ 126              		.global	I
+ 127              		.align	2
+ 130              	I:
+ 131 0020 0000     		.space	2
+ 132              		.global	J
+ 133 0022 0000     		.align	2
+ 136              	J:
+ 137 0024 00010101 		.ascii	"\000\001\001\001"
+ 138              		.global	K
+ 139              		.align	2
+ 142              	K:
+ 143 0028 010001   		.ascii	"\001\000\001"
+ 144              		.global	L
+ 145 002b 00       		.align	2
+ 148              	L:
+ 149 002c 00010000 		.ascii	"\000\001\000\000"
+ 150              		.global	M
+ 151              		.align	2
+ 154              	M:
+ 155 0030 0101     		.ascii	"\001\001"
+ 156              		.global	N
+ 157 0032 0000     		.align	2
+ 160              	N:
+ 161 0034 0100     		.ascii	"\001\000"
+ 162              		.global	O
+ 163 0036 0000     		.align	2
+ 166              	O:
+ 167 0038 010101   		.ascii	"\001\001\001"
+ 168              		.global	P
+ 169 003b 00       		.align	2
+ 172              	P:
+ 173 003c 00010100 		.ascii	"\000\001\001\000"
+ 174              		.global	Q
+ 175              		.align	2
+ 178              	Q:
+ 179 0040 01010001 		.ascii	"\001\001\000\001"
+ 180              		.global	R
+ 181              		.align	2
+ 184              	R:
+ 185 0044 000100   		.ascii	"\000\001\000"
+ 186              		.global	S
+ 187 0047 00       		.align	2
+ 190              	S:
+ 191 0048 000000   		.space	3
+ 192              		.global	T
+ 193 004b 00       		.align	2
+ 196              	T:
+ 197 004c 01       		.ascii	"\001"
+ 198              		.global	U
+ 199 004d 000000   		.align	2
+ 202              	U:
+ 203 0050 000001   		.ascii	"\000\000\001"
+ 204              		.global	V
+ 205 0053 00       		.align	2
+ 208              	V:
+ 209 0054 00000001 		.ascii	"\000\000\000\001"
+ 210              		.global	W
+ 211              		.align	2
+ 214              	W:
+ 215 0058 000101   		.ascii	"\000\001\001"
+ 216              		.global	X
+ 217 005b 00       		.align	2
+ 220              	X:
+ 221 005c 01000001 		.ascii	"\001\000\000\001"
+ 222              		.global	Y
+ 223              		.align	2
+ 226              	Y:
+ 227 0060 01000101 		.ascii	"\001\000\001\001"
+ 228              		.global	Z
+ 229              		.align	2
+ 232              	Z:
+ 233 0064 01010000 		.ascii	"\001\001\000\000"
+ 234              		.align	2
+ 235              	.LC0:
+ 236 0068 80       		.byte	-128
+ 237 0069 000000   		.space	3
+ 238 006c 00000100 		.word	65536
+ 239 0070 00       		.byte	0
+ 240 0071 000000   		.space	3
+ 241              		.section	.text.main,"ax",%progbits
+ 242              		.align	1
+ 243              		.global	main
+ 244              		.syntax unified
+ 245              		.thumb
+ 246              		.thumb_func
+ 248              	main:
+ 249              	.LFB215:
+   1:example_project.c **** #include <xmc_gpio.h>
+   2:example_project.c **** #include <xmc_rtc.h>
+   3:example_project.c **** #include <xmc_scu.h>
+   4:example_project.c **** #include <xmc_ccu4.h>
+   5:example_project.c **** 
+   6:example_project.c **** 
+   7:example_project.c **** // 2 Spacing and length of the signals
+   8:example_project.c **** // 2.1 A dash is equal to three dots.
+   9:example_project.c **** // 2.2 The space between the signals forming the same letter is equal to one dot.
+  10:example_project.c **** // 2.3 The space between two letters is equal to three dots.
+  11:example_project.c **** // 2.4 The space between two words is equal to seven dots. 
+  12:example_project.c **** 
+  13:example_project.c **** 
+  14:example_project.c **** char buf[11] = "I CAN MORSE";
+  15:example_project.c **** 
+  16:example_project.c **** //0 = dot
+  17:example_project.c **** //1 = dash
+  18:example_project.c **** 
+  19:example_project.c **** 
+  20:example_project.c **** #define DOT 0
+  21:example_project.c **** #define DASH 1
+  22:example_project.c **** 
+  23:example_project.c **** const uint8_t A[] = {DOT, DASH};
+  24:example_project.c **** const uint8_t B[] = {DASH, DOT, DOT, DOT};
+  25:example_project.c **** const uint8_t C[] = {DASH, DOT, DASH, DOT};
+  26:example_project.c **** const uint8_t D[] = {DASH, DOT, DOT};
+  27:example_project.c **** const uint8_t E[] = {DOT};
+  28:example_project.c **** const uint8_t F[] = {DOT, DOT, DASH, DOT};
+  29:example_project.c **** const uint8_t G[] = {DASH, DASH, DOT};
+  30:example_project.c **** const uint8_t H[] = {DOT, DOT, DOT, DOT};
+  31:example_project.c **** const uint8_t I[] = {DOT, DOT};
+  32:example_project.c **** const uint8_t J[] = {DOT, DASH, DASH, DASH};
+  33:example_project.c **** const uint8_t K[] = {DASH, DOT, DASH};
+  34:example_project.c **** const uint8_t L[] = {DOT, DASH, DOT, DOT};
+  35:example_project.c **** const uint8_t M[] = {DASH, DASH};
+  36:example_project.c **** const uint8_t N[] = {DASH, DOT};
+  37:example_project.c **** const uint8_t O[] = {DASH, DASH, DASH};
+  38:example_project.c **** const uint8_t P[] = {DOT, DASH, DASH, DOT};
+  39:example_project.c **** const uint8_t Q[] = {DASH, DASH, DOT, DASH};
+  40:example_project.c **** const uint8_t R[] = {DOT, DASH, DOT};
+  41:example_project.c **** const uint8_t S[] = {DOT, DOT, DOT};
+  42:example_project.c **** const uint8_t T[] = {DASH};
+  43:example_project.c **** const uint8_t U[] = {DOT, DOT, DASH};
+  44:example_project.c **** const uint8_t V[] = {DOT, DOT, DOT, DASH};
+  45:example_project.c **** const uint8_t W[] = {DOT, DASH, DASH};
+  46:example_project.c **** const uint8_t X[] = {DASH, DOT, DOT, DASH};
+  47:example_project.c **** const uint8_t Y[] = {DASH, DOT, DASH, DASH};
+  48:example_project.c **** const uint8_t Z[] = {DASH, DASH, DOT, DOT};
+  49:example_project.c **** 
+  50:example_project.c **** 
+  51:example_project.c **** 
+  52:example_project.c **** 
+  53:example_project.c **** 
+  54:example_project.c **** 
+  55:example_project.c **** 
+  56:example_project.c **** 
+  57:example_project.c **** 
+  58:example_project.c **** 
+  59:example_project.c **** 
+  60:example_project.c **** int main(void) {
+ 250              		.loc 1 60 16
+ 251              		.cfi_startproc
+ 252              		@ args = 0, pretend = 0, frame = 16
+ 253              		@ frame_needed = 1, uses_anonymous_args = 0
+ 254 0000 80B5     		push	{r7, lr}
+ 255              	.LCFI6:
+ 256              		.cfi_def_cfa_offset 8
+ 257              		.cfi_offset 7, -8
+ 258              		.cfi_offset 14, -4
+ 259 0002 84B0     		sub	sp, sp, #16
+ 260              	.LCFI7:
+ 261              		.cfi_def_cfa_offset 24
+ 262 0004 00AF     		add	r7, sp, #0
+ 263              	.LCFI8:
+ 264              		.cfi_def_cfa_register 7
+  61:example_project.c ****   const XMC_GPIO_CONFIG_t LED_config = \
+ 265              		.loc 1 61 27
+ 266 0006 0D4A     		ldr	r2, .L6
+ 267 0008 3B46     		mov	r3, r7
+ 268 000a 07CA     		ldm	r2, {r0, r1, r2}
+ 269 000c 83E80700 		stm	r3, {r0, r1, r2}
+  62:example_project.c ****         {.mode=XMC_GPIO_MODE_OUTPUT_PUSH_PULL,\
+  63:example_project.c ****          .output_level=XMC_GPIO_OUTPUT_LEVEL_LOW,\
+  64:example_project.c ****          .output_strength=XMC_GPIO_OUTPUT_STRENGTH_STRONG_SHARP_EDGE};
+  65:example_project.c **** 
+  66:example_project.c ****   XMC_GPIO_Init(XMC_GPIO_PORT1, 0, &LED_config);
+ 270              		.loc 1 66 3
+ 271 0010 3B46     		mov	r3, r7
+ 272 0012 1A46     		mov	r2, r3
+ 273 0014 0021     		movs	r1, #0
+ 274 0016 0A48     		ldr	r0, .L6+4
+ 275 0018 FFF7FEFF 		bl	XMC_GPIO_Init
+ 276              	.L5:
+ 277              	.LBB2:
+  67:example_project.c **** 
+  68:example_project.c ****   while(1) {
+  69:example_project.c ****     for(int32_t waiter=(1<<20); waiter >= 0; waiter--);
+ 278              		.loc 1 69 17
+ 279 001c 4FF48013 		mov	r3, #1048576
+ 280 0020 FB60     		str	r3, [r7, #12]
+ 281              		.loc 1 69 5
+ 282 0022 02E0     		b	.L3
+ 283              	.L4:
+ 284              		.loc 1 69 52 discriminator 3
+ 285 0024 FB68     		ldr	r3, [r7, #12]
+ 286 0026 013B     		subs	r3, r3, #1
+ 287 0028 FB60     		str	r3, [r7, #12]
+ 288              	.L3:
+ 289              		.loc 1 69 40 discriminator 1
+ 290 002a FB68     		ldr	r3, [r7, #12]
+ 291 002c 002B     		cmp	r3, #0
+ 292 002e F9DA     		bge	.L4
+ 293              	.LBE2:
+  70:example_project.c ****     XMC_GPIO_ToggleOutput(XMC_GPIO_PORT1, 0);
+ 294              		.loc 1 70 5
+ 295 0030 0021     		movs	r1, #0
+ 296 0032 0348     		ldr	r0, .L6+4
+ 297 0034 FFF7FEFF 		bl	XMC_GPIO_ToggleOutput
+  69:example_project.c ****     XMC_GPIO_ToggleOutput(XMC_GPIO_PORT1, 0);
+ 298              		.loc 1 69 5
+ 299 0038 F0E7     		b	.L5
+ 300              	.L7:
+ 301 003a 00BF     		.align	2
+ 302              	.L6:
+ 303 003c 68000000 		.word	.LC0
+ 304 0040 00810248 		.word	1208123648
+ 305              		.cfi_endproc
+ 306              	.LFE215:
+ 308              		.text
+ 309              	.Letext0:
+ 310              		.file 3 "/usr/arm-none-eabi/include/machine/_default_types.h"
+ 311              		.file 4 "/usr/arm-none-eabi/include/sys/_stdint.h"
+ 312              		.file 5 "/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc4_gpio.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 example_project.c
+     /tmp/ccc9yYlE.s:20     .text.XMC_GPIO_ToggleOutput:00000000 $t
+     /tmp/ccc9yYlE.s:25     .text.XMC_GPIO_ToggleOutput:00000000 XMC_GPIO_ToggleOutput
+     /tmp/ccc9yYlE.s:75     .data:00000000 buf
+     /tmp/ccc9yYlE.s:72     .data:00000000 $d
+     /tmp/ccc9yYlE.s:82     .rodata:00000000 A
+     /tmp/ccc9yYlE.s:79     .rodata:00000000 $d
+     /tmp/ccc9yYlE.s:88     .rodata:00000004 B
+     /tmp/ccc9yYlE.s:94     .rodata:00000008 C
+     /tmp/ccc9yYlE.s:100    .rodata:0000000c D
+     /tmp/ccc9yYlE.s:106    .rodata:00000010 E
+     /tmp/ccc9yYlE.s:112    .rodata:00000014 F
+     /tmp/ccc9yYlE.s:118    .rodata:00000018 G
+     /tmp/ccc9yYlE.s:124    .rodata:0000001c H
+     /tmp/ccc9yYlE.s:130    .rodata:00000020 I
+     /tmp/ccc9yYlE.s:136    .rodata:00000024 J
+     /tmp/ccc9yYlE.s:142    .rodata:00000028 K
+     /tmp/ccc9yYlE.s:148    .rodata:0000002c L
+     /tmp/ccc9yYlE.s:154    .rodata:00000030 M
+     /tmp/ccc9yYlE.s:160    .rodata:00000034 N
+     /tmp/ccc9yYlE.s:166    .rodata:00000038 O
+     /tmp/ccc9yYlE.s:172    .rodata:0000003c P
+     /tmp/ccc9yYlE.s:178    .rodata:00000040 Q
+     /tmp/ccc9yYlE.s:184    .rodata:00000044 R
+     /tmp/ccc9yYlE.s:190    .rodata:00000048 S
+     /tmp/ccc9yYlE.s:196    .rodata:0000004c T
+     /tmp/ccc9yYlE.s:202    .rodata:00000050 U
+     /tmp/ccc9yYlE.s:208    .rodata:00000054 V
+     /tmp/ccc9yYlE.s:214    .rodata:00000058 W
+     /tmp/ccc9yYlE.s:220    .rodata:0000005c X
+     /tmp/ccc9yYlE.s:226    .rodata:00000060 Y
+     /tmp/ccc9yYlE.s:232    .rodata:00000064 Z
+     /tmp/ccc9yYlE.s:242    .text.main:00000000 $t
+     /tmp/ccc9yYlE.s:248    .text.main:00000000 main
+     /tmp/ccc9yYlE.s:303    .text.main:0000003c $d
+                           .group:00000000 wm4.0.0b443aec79b24ca2f8126d9d27aaed10
+                           .group:00000000 wm4.stddef.h.39.38eb7ec030421799c657b13be5aa21c7
+                           .group:00000000 wm4._newlib_version.h.4.0eb654b64686e2bd29646258853f6c22
+                           .group:00000000 wm4.features.h.33.00009458517f941082eec7afb4810922
+                           .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
+                           .group:00000000 wm4._intsup.h.10.48bafbb683905c4daa4565a85aeeb264
+                           .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:00000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
+                           .group:00000000 wm4.stdbool.h.29.c08aa3eec75cf5b9b5003883f43253f0
+                           .group:00000000 wm4.newlib.h.7.a37ffbe9e5aff74303f4e60b1cc1c01b
+                           .group:00000000 wm4.ieeefp.h.77.61a77db5804869b1dadd307a77cf78c9
+                           .group:00000000 wm4.config.h.224.10ee1ad185d877c6e334e6581faab44d
+                           .group:00000000 wm4._ansi.h.31.de524f58584151836e90d8620a16f8e8
+                           .group:00000000 wm4.cdefs.h.49.bafb023044e47a1dcdd854e4d6521f7d
+                           .group:00000000 wm4._types.h.20.dd0d04dca3800a0d2a6129b87f3adbb2
+                           .group:00000000 wm4.stddef.h.158.6f8e08a347b1cff664332fa350bfceb3
+                           .group:00000000 wm4._types.h.127.3bdfe3ff8ea2d0985b03d9cbe93480e3
+                           .group:00000000 wm4.reent.h.18.25503cdc8b7e55dd0d6ea7b3e5af7a03
+                           .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
+                           .group:00000000 wm4.reent.h.78.6b87466b04591b1f1cb88c14fdf2ba9e
+                           .group:00000000 wm4.string.h.15.dab3980bf35408a4c507182805e2de3a
+                           .group:00000000 wm4.stddef.h.158.eec8bf00b5213f43d095cb984c5f22e3
+                           .group:00000000 wm4.xmc_device.h.61.ba2d082e12f51240746cffdd60d42b81
+                           .group:00000000 wm4.XMC4500.h.55.9aa45b9b5790506b2dcb963e4e7adeaf
+                           .group:00000000 wm4.core_cm4.h.32.6c6eb1c8daeca23ce7ba79c8e8120d52
+                           .group:00000000 wm4.cmsis_gcc.h.26.91b63349961c35637933e4fba51b867b
+                           .group:00000000 wm4.core_cm4.h.172.fdd5a388a160bb6ff767b7d7ee212268
+                           .group:00000000 wm4.system_XMC4500.h.42.99124977c10ca8844a71949adbeabd70
+                           .group:00000000 wm4.XMC4500.h.208.b340195df97f067735c4c769ba59985a
+                           .group:00000000 wm4.xmc_device.h.1460.8860499b404961ffcfbb8d1fefcb2146
+                           .group:00000000 wm4.xmc_common.h.92.3f4336a80569affab05a81145b87c2fc
+                           .group:00000000 wm4.xmc_gpio.h.97.fa6a2e1be6030a75d960293cc3bbbd6b
+                           .group:00000000 wm4.xmc4_gpio_map.h.74.66e9110cf801b78826ef5354da51c32f
+                           .group:00000000 wm4.xmc4_gpio.h.79.ce6c49508b5a7769c66e7e3c21dcdfe4
+                           .group:00000000 wm4.time.h.8.db4619001f026d0b4874c029fef0e91f
+                           .group:00000000 wm4.time.h.2.4581ce0ffb6627cfc02162c94bf846c9
+                           .group:00000000 wm4.time.h.25.0e6a0fdbc9955f5707ed54246ed2e089
+                           .group:00000000 wm4.types.h.40.8b6acba56cefbb11746718204edc8f5e
+                           .group:00000000 wm4._endian.h.31.65a10590763c3dde1ac4a7f66d7d4891
+                           .group:00000000 wm4.endian.h.9.49f3a4695c1b61e8a0808de3c4a106cb
+                           .group:00000000 wm4._timeval.h.32.bec3221fa7a9bb0bdde696c9c57e47d2
+                           .group:00000000 wm4.timespec.h.41.d855182eb0e690443ab8651bcedca6e1
+                           .group:00000000 wm4.select.h.19.8c04bee5682eafa577cf6325dd7ee64c
+                           .group:00000000 wm4.types.h.51.e2a6e4379b4797ffcc4841f8498fd61b
+                           .group:00000000 wm4.sched.h.22.c60982713a5c428609783c78f9c78d95
+                           .group:00000000 wm4._pthreadtypes.h.36.fcee9961c35163dde6267ef772ad1972
+                           .group:00000000 wm4.time.h.142.ba943c1a29afc7430d41c0a92fd48e0b
+                           .group:00000000 wm4.xmc4_scu.h.83.0449f5880ac071460ec1a8072311ea51
+                           .group:00000000 wm4.xmc4_ccu4_map.h.49.1497e92389e2afa9494fb5724785fee9
+
+UNDEFINED SYMBOLS
+XMC_GPIO_Init

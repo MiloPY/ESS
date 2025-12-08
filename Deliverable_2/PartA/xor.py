@@ -45,7 +45,7 @@ def hex_xor_transform(hex_string: str) -> str:
 # --- Example Usage ---
 
 # The input provided by the user
-input_hex = "09 4b 1b 69 08 4a 43 f4 00 43 43 f0 80 03 13 61 05 4b 1b 68 04 4a 43 f0 03 03 13 60 df f8 04 f0 00 00 00 00 25 03 00 08 00 81 02 48 "
+input_hex = "09 4b 1b 69 08 4a 43 f4 00 43 43 f0 80 03 13 61 05 4b 1b 68 04 4a 43 f0 03 03 13 60 df f8 04 f0 00 00 00 00 25 03 00 08 00 81 02 48"
 
 print(f"Input Hex:  {input_hex}")
 
@@ -55,11 +55,8 @@ output_hex = hex_xor_transform(input_hex)
 print(f"XOR Key:    0x42")
 print(f"Output Hex: {output_hex}")
 
-# --- Verification ---
-# 00 ^ 42 = 42
-# FF ^ 42 = BD
-# 74 ^ 42 = 36
-# A2 ^ 42 = E0
+
+
 
 
 

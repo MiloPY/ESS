@@ -1,0 +1,132 @@
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"ledcontrol.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "ledcontrol.c"
+  19              		.section	.text.main,"ax",%progbits
+  20              		.align	1
+  21              		.global	main
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	main:
+  27              	.LFB128:
+   1:ledcontrol.c  **** #include <xmc_common.h>
+   2:ledcontrol.c  **** 
+   3:ledcontrol.c  **** 
+   4:ledcontrol.c  **** 
+   5:ledcontrol.c  **** 
+   6:ledcontrol.c  **** 
+   7:ledcontrol.c  **** 
+   8:ledcontrol.c  **** int main(void) {
+  28              		.loc 1 8 16
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 1, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  33 0000 80B4     		push	{r7}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 4
+  36              		.cfi_offset 7, -4
+  37 0002 00AF     		add	r7, sp, #0
+  38              	.LCFI1:
+  39              		.cfi_def_cfa_register 7
+   9:ledcontrol.c  **** 
+  10:ledcontrol.c  ****   PORT1->IOCR0 |= 0x8080; // set P1.0 and P1.1 as output
+  40              		.loc 1 10 8
+  41 0004 094B     		ldr	r3, .L3
+  42 0006 1B69     		ldr	r3, [r3, #16]
+  43 0008 084A     		ldr	r2, .L3
+  44              		.loc 1 10 16
+  45 000a 43F40043 		orr	r3, r3, #32768
+  46 000e 43F08003 		orr	r3, r3, #128
+  47 0012 1361     		str	r3, [r2, #16]
+  11:ledcontrol.c  **** 
+  12:ledcontrol.c  ****   PORT1->OUT |= 0x3; // set P1.0 and P1.1 high
+  48              		.loc 1 12 8
+  49 0014 054B     		ldr	r3, .L3
+  50 0016 1B68     		ldr	r3, [r3]
+  51 0018 044A     		ldr	r2, .L3
+  52              		.loc 1 12 14
+  53 001a 43F00303 		orr	r3, r3, #3
+  54 001e 1360     		str	r3, [r2]
+  13:ledcontrol.c  ****   while(1){
+  14:ledcontrol.c  ****     return 0;
+  55              		.loc 1 14 12
+  56 0020 0023     		movs	r3, #0
+  15:ledcontrol.c  ****   }
+  16:ledcontrol.c  ****   
+  17:ledcontrol.c  **** }
+  57              		.loc 1 17 1
+  58 0022 1846     		mov	r0, r3
+  59 0024 BD46     		mov	sp, r7
+  60              	.LCFI2:
+  61              		.cfi_def_cfa_register 13
+  62              		@ sp needed
+  63 0026 5DF8047B 		ldr	r7, [sp], #4
+  64              	.LCFI3:
+  65              		.cfi_restore 7
+  66              		.cfi_def_cfa_offset 0
+  67 002a 7047     		bx	lr
+  68              	.L4:
+  69              		.align	2
+  70              	.L3:
+  71 002c 00810248 		.word	1208123648
+  72              		.cfi_endproc
+  73              	.LFE128:
+  75              		.text
+  76              	.Letext0:
+  77              		.file 2 "/usr/arm-none-eabi/include/machine/_default_types.h"
+  78              		.file 3 "/usr/arm-none-eabi/include/sys/_stdint.h"
+  79              		.file 4 "/opt/XMClib/XMC_Peripheral_Library_v2.1.16/CMSIS/Infineon/XMC4500_series/Include/XMC4500.
+DEFINED SYMBOLS
+                            *ABS*:00000000 ledcontrol.c
+     /tmp/ccixcKwL.s:20     .text.main:00000000 $t
+     /tmp/ccixcKwL.s:26     .text.main:00000000 main
+     /tmp/ccixcKwL.s:71     .text.main:0000002c $d
+                           .group:00000000 wm4.0.0b443aec79b24ca2f8126d9d27aaed10
+                           .group:00000000 wm4.stddef.h.39.38eb7ec030421799c657b13be5aa21c7
+                           .group:00000000 wm4._newlib_version.h.4.0eb654b64686e2bd29646258853f6c22
+                           .group:00000000 wm4.features.h.33.00009458517f941082eec7afb4810922
+                           .group:00000000 wm4._default_types.h.15.247e5cd201eca3442cbf5404108c4935
+                           .group:00000000 wm4._intsup.h.10.48bafbb683905c4daa4565a85aeeb264
+                           .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:00000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
+                           .group:00000000 wm4.stdbool.h.29.c08aa3eec75cf5b9b5003883f43253f0
+                           .group:00000000 wm4.newlib.h.7.a37ffbe9e5aff74303f4e60b1cc1c01b
+                           .group:00000000 wm4.ieeefp.h.77.61a77db5804869b1dadd307a77cf78c9
+                           .group:00000000 wm4.config.h.224.10ee1ad185d877c6e334e6581faab44d
+                           .group:00000000 wm4._ansi.h.31.de524f58584151836e90d8620a16f8e8
+                           .group:00000000 wm4.cdefs.h.49.bafb023044e47a1dcdd854e4d6521f7d
+                           .group:00000000 wm4._types.h.20.dd0d04dca3800a0d2a6129b87f3adbb2
+                           .group:00000000 wm4.stddef.h.158.6f8e08a347b1cff664332fa350bfceb3
+                           .group:00000000 wm4._types.h.127.3bdfe3ff8ea2d0985b03d9cbe93480e3
+                           .group:00000000 wm4.reent.h.18.25503cdc8b7e55dd0d6ea7b3e5af7a03
+                           .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
+                           .group:00000000 wm4.reent.h.78.6b87466b04591b1f1cb88c14fdf2ba9e
+                           .group:00000000 wm4.string.h.15.dab3980bf35408a4c507182805e2de3a
+                           .group:00000000 wm4.stddef.h.158.eec8bf00b5213f43d095cb984c5f22e3
+                           .group:00000000 wm4.xmc_device.h.61.ba2d082e12f51240746cffdd60d42b81
+                           .group:00000000 wm4.XMC4500.h.55.9aa45b9b5790506b2dcb963e4e7adeaf
+                           .group:00000000 wm4.core_cm4.h.32.6c6eb1c8daeca23ce7ba79c8e8120d52
+                           .group:00000000 wm4.cmsis_gcc.h.26.91b63349961c35637933e4fba51b867b
+                           .group:00000000 wm4.core_cm4.h.172.fdd5a388a160bb6ff767b7d7ee212268
+                           .group:00000000 wm4.system_XMC4500.h.42.99124977c10ca8844a71949adbeabd70
+                           .group:00000000 wm4.XMC4500.h.208.b340195df97f067735c4c769ba59985a
+                           .group:00000000 wm4.xmc_device.h.1460.8860499b404961ffcfbb8d1fefcb2146
+                           .group:00000000 wm4.xmc_common.h.92.3f4336a80569affab05a81145b87c2fc
+
+NO UNDEFINED SYMBOLS

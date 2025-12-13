@@ -8,7 +8,7 @@ LD_NAME = example_project
 # Own sources, e.g. main.c
 SRCS = main.c VirtualSerial.c Descriptors.c
 # Header files for configuration. Adding the header file will  make make compile on changes.
-HDRS = VirtualSerial.h Descriptors.h
+HDRS = VirtualSerial.h Descriptors.h usb.h
 # Library sources, e.g. xmc_gpio.c
 LIBSRCS = USBController_XMC4000.c xmc_usbd.c CDCClassDevice.c USBTask.c Endpoint_XMC4000.c xmc4_scu.c EndpointStream_XMC4000.c memcpy.c
 # Precompiled libraries, e.g. -lm for math functions

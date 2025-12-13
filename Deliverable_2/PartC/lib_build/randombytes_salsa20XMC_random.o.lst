@@ -1,0 +1,1025 @@
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 1
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"randombytes_salsa20XMC_random.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "randombytes_salsa20XMC_random.c"
+  19              		.section	.text.randombytes_salsa20XMC_random_rekey,"ax",%progbits
+  20              		.align	1
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  25              	randombytes_salsa20XMC_random_rekey:
+  26              	.LVL0:
+  27              	.LFB1:
+   1:randombytes_salsa20XMC_random.c **** /*
+   2:randombytes_salsa20XMC_random.c ****  * ISC License
+   3:randombytes_salsa20XMC_random.c ****  *
+   4:randombytes_salsa20XMC_random.c ****  * Copyright (c) 2018 TUM
+   5:randombytes_salsa20XMC_random.c ****  * Author: Florian Wilde <florian.wilde@tum.de>
+   6:randombytes_salsa20XMC_random.c ****  * Based on previous work published with libsodium.
+   7:randombytes_salsa20XMC_random.c ****  *
+   8:randombytes_salsa20XMC_random.c ****  * Permission to use, copy, modify, and/or distribute this software for any
+   9:randombytes_salsa20XMC_random.c ****  * purpose with or without fee is hereby granted, provided that the above
+  10:randombytes_salsa20XMC_random.c ****  * copyright notice and this permission notice appear in all copies.
+  11:randombytes_salsa20XMC_random.c ****  *
+  12:randombytes_salsa20XMC_random.c ****  * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+  13:randombytes_salsa20XMC_random.c ****  * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+  14:randombytes_salsa20XMC_random.c ****  * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+  15:randombytes_salsa20XMC_random.c ****  * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+  16:randombytes_salsa20XMC_random.c ****  * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+  17:randombytes_salsa20XMC_random.c ****  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+  18:randombytes_salsa20XMC_random.c ****  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  19:randombytes_salsa20XMC_random.c ****  */
+  20:randombytes_salsa20XMC_random.c **** 
+  21:randombytes_salsa20XMC_random.c **** #include <stdlib.h>
+  22:randombytes_salsa20XMC_random.c **** #include <sys/types.h>
+  23:randombytes_salsa20XMC_random.c **** 
+  24:randombytes_salsa20XMC_random.c **** #include <assert.h>
+  25:randombytes_salsa20XMC_random.c **** #include <errno.h>
+  26:randombytes_salsa20XMC_random.c **** #include <fcntl.h>
+  27:randombytes_salsa20XMC_random.c **** #include <limits.h>
+  28:randombytes_salsa20XMC_random.c **** #include <stdint.h>
+  29:randombytes_salsa20XMC_random.c **** #include <stdlib.h>
+  30:randombytes_salsa20XMC_random.c **** #include <string.h>
+  31:randombytes_salsa20XMC_random.c **** #ifndef _MSC_VER
+  32:randombytes_salsa20XMC_random.c **** # include <unistd.h>
+  33:randombytes_salsa20XMC_random.c **** #endif
+  34:randombytes_salsa20XMC_random.c **** 
+  35:randombytes_salsa20XMC_random.c **** #include <sodium/crypto_core_salsa20.h> // "sodium/include/sodium/crypto_core_salsa20.h"
+  36:randombytes_salsa20XMC_random.c **** #include <sodium/crypto_generichash.h> //"sodium/include/sodium/crypto_generichash.h"
+  37:randombytes_salsa20XMC_random.c **** #include <sodium/crypto_stream_salsa20.h> //"sodium/include/sodium/crypto_stream_salsa20.h"
+  38:randombytes_salsa20XMC_random.c **** #include <sodium/randombytes.h> //"sodium/include/sodium/randombytes.h"
+  39:randombytes_salsa20XMC_random.c **** #include "randombytes_salsa20XMC_random.h"
+  40:randombytes_salsa20XMC_random.c **** #include <sodium/utils.h> //"sodium/include/sodium/utils.h"
+  41:randombytes_salsa20XMC_random.c **** 
+  42:randombytes_salsa20XMC_random.c **** #define SALSA20_RANDOM_BLOCK_SIZE crypto_core_salsa20_OUTPUTBYTES
+  43:randombytes_salsa20XMC_random.c **** #define HASH_BLOCK_SIZE 128U
+  44:randombytes_salsa20XMC_random.c **** #define COMPILER_ASSERT(X) (void) sizeof(char[(X) ? 1 : -1])
+  45:randombytes_salsa20XMC_random.c **** 
+  46:randombytes_salsa20XMC_random.c **** #ifndef SSIZE_MAX
+  47:randombytes_salsa20XMC_random.c **** # define SSIZE_MAX (SIZE_MAX / 2 - 1)
+  48:randombytes_salsa20XMC_random.c **** #endif
+  49:randombytes_salsa20XMC_random.c **** 
+  50:randombytes_salsa20XMC_random.c **** typedef struct Salsa20Random_ {
+  51:randombytes_salsa20XMC_random.c ****     size_t        rnd32_outleft;
+  52:randombytes_salsa20XMC_random.c ****     int           random_data_source_fd;
+  53:randombytes_salsa20XMC_random.c ****     int           initialized;
+  54:randombytes_salsa20XMC_random.c ****     int           getrandom_available;
+  55:randombytes_salsa20XMC_random.c ****     unsigned char key[crypto_stream_salsa20_KEYBYTES];
+  56:randombytes_salsa20XMC_random.c ****     unsigned char rnd32[16U * SALSA20_RANDOM_BLOCK_SIZE];
+  57:randombytes_salsa20XMC_random.c ****     uint64_t      nonce;
+  58:randombytes_salsa20XMC_random.c **** #ifdef HAVE_GETPID
+  59:randombytes_salsa20XMC_random.c ****     pid_t         pid;
+  60:randombytes_salsa20XMC_random.c **** #endif
+  61:randombytes_salsa20XMC_random.c **** } Salsa20Random;
+  62:randombytes_salsa20XMC_random.c **** 
+  63:randombytes_salsa20XMC_random.c **** static Salsa20Random stream = {
+  64:randombytes_salsa20XMC_random.c ****     SODIUM_C99(.rnd32_outleft =) (size_t) 0U,
+  65:randombytes_salsa20XMC_random.c ****     SODIUM_C99(.random_data_source_fd =) -1,
+  66:randombytes_salsa20XMC_random.c ****     SODIUM_C99(.initialized =) 0,
+  67:randombytes_salsa20XMC_random.c ****     SODIUM_C99(.getrandom_available =) 0
+  68:randombytes_salsa20XMC_random.c **** };
+  69:randombytes_salsa20XMC_random.c **** 
+  70:randombytes_salsa20XMC_random.c **** static void
+  71:randombytes_salsa20XMC_random.c **** randombytes_salsa20XMC_random_init(void)
+  72:randombytes_salsa20XMC_random.c **** {
+  73:randombytes_salsa20XMC_random.c ****     /* In lack of real time clock or /dev/urandom,
+  74:randombytes_salsa20XMC_random.c ****      * use a hash of DSRAM1 as entropy source */
+  75:randombytes_salsa20XMC_random.c ****     unsigned char hash[crypto_generichash_BYTES];
+  76:randombytes_salsa20XMC_random.c ****     crypto_generichash(hash, sizeof hash, RANDOMBYTES_SALSA20XMC_PSRAM_START,\
+  77:randombytes_salsa20XMC_random.c ****                        RANDOMBYTES_SALSA20XMC_PSRAM_SIZE, NULL, 0);
+  78:randombytes_salsa20XMC_random.c ****     memcpy(&stream.nonce, &hash, sizeof(stream.nonce) < sizeof(hash) ? \
+  79:randombytes_salsa20XMC_random.c ****                                  sizeof(stream.nonce) : sizeof(hash));
+  80:randombytes_salsa20XMC_random.c **** 
+  81:randombytes_salsa20XMC_random.c ****     assert(stream.nonce != (uint64_t) 0U);
+  82:randombytes_salsa20XMC_random.c **** }
+  83:randombytes_salsa20XMC_random.c **** 
+  84:randombytes_salsa20XMC_random.c **** static void
+  85:randombytes_salsa20XMC_random.c **** randombytes_salsa20XMC_random_rekey(const unsigned char * const mix)
+  86:randombytes_salsa20XMC_random.c **** {
+  28              		.loc 1 86 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  87:randombytes_salsa20XMC_random.c ****     unsigned char *key = stream.key;
+  33              		.loc 1 87 5 view .LVU1
+  88:randombytes_salsa20XMC_random.c ****     size_t         i;
+  34              		.loc 1 88 5 view .LVU2
+  89:randombytes_salsa20XMC_random.c **** 
+  90:randombytes_salsa20XMC_random.c ****     for (i = (size_t) 0U; i < sizeof stream.key; i++) {
+  35              		.loc 1 90 5 view .LVU3
+  36              		.loc 1 90 29 discriminator 1 view .LVU4
+  37 0000 074A     		ldr	r2, .L4
+  38 0002 02F10F03 		add	r3, r2, #15
+  39 0006 0138     		subs	r0, r0, #1
+  40              	.LVL1:
+  41              		.loc 1 90 29 is_stmt 0 discriminator 1 view .LVU5
+  42 0008 02F12F0C 		add	ip, r2, #47
+  43              	.LVL2:
+  44              	.L2:
+  91:randombytes_salsa20XMC_random.c ****         key[i] ^= mix[i];
+  45              		.loc 1 91 9 is_stmt 1 view .LVU6
+  46              		.loc 1 91 16 is_stmt 0 view .LVU7
+  47 000c 13F8012F 		ldrb	r2, [r3, #1]!	@ zero_extendqisi2
+  48              	.LVL3:
+  49              		.loc 1 91 16 view .LVU8
+  50 0010 10F8011F 		ldrb	r1, [r0, #1]!	@ zero_extendqisi2
+  51 0014 4A40     		eors	r2, r2, r1
+  52 0016 1A70     		strb	r2, [r3]
+  90:randombytes_salsa20XMC_random.c ****         key[i] ^= mix[i];
+  53              		.loc 1 90 51 is_stmt 1 discriminator 3 view .LVU9
+  54              	.LVL4:
+  90:randombytes_salsa20XMC_random.c ****         key[i] ^= mix[i];
+  55              		.loc 1 90 29 discriminator 1 view .LVU10
+  56 0018 6345     		cmp	r3, ip
+  57 001a F7D1     		bne	.L2
+  92:randombytes_salsa20XMC_random.c ****     }
+  93:randombytes_salsa20XMC_random.c **** }
+  58              		.loc 1 93 1 is_stmt 0 view .LVU11
+  59 001c 7047     		bx	lr
+  60              	.L5:
+  61 001e 00BF     		.align	2
+  62              	.L4:
+  63 0020 00000000 		.word	.LANCHOR0
+  64              		.cfi_endproc
+  65              	.LFE1:
+  67              		.section	.rodata.str1.4,"aMS",%progbits,1
+  68              		.align	2
+  69              	.LC0:
+  70 0000 73616C73 		.ascii	"salsa20XMC\000"
+  70      61323058 
+  70      4D4300
+  71              		.section	.text.randombytes_salsa20XMC_implementation_name,"ax",%progbits
+  72              		.align	1
+  73              		.syntax unified
+  74              		.thumb
+  75              		.thumb_func
+  77              	randombytes_salsa20XMC_implementation_name:
+  78              	.LFB7:
+  94:randombytes_salsa20XMC_random.c **** 
+  95:randombytes_salsa20XMC_random.c **** static void
+  96:randombytes_salsa20XMC_random.c **** randombytes_salsa20XMC_random_stir(void)
+  97:randombytes_salsa20XMC_random.c **** {
+  98:randombytes_salsa20XMC_random.c ****     /* constant to personalize the hash function */
+  99:randombytes_salsa20XMC_random.c ****     const unsigned char hsigma[crypto_generichash_KEYBYTES] = {
+ 100:randombytes_salsa20XMC_random.c ****         0x54, 0x68, 0x69, 0x73, 0x49, 0x73, 0x4a, 0x75,
+ 101:randombytes_salsa20XMC_random.c ****         0x73, 0x74, 0x41, 0x54, 0x68, 0x69, 0x72, 0x74,
+ 102:randombytes_salsa20XMC_random.c ****         0x79, 0x54, 0x77, 0x6f, 0x42, 0x79, 0x74, 0x65,
+ 103:randombytes_salsa20XMC_random.c ****         0x73, 0x53, 0x65, 0x65, 0x64, 0x2e, 0x2e, 0x2e
+ 104:randombytes_salsa20XMC_random.c ****     };
+ 105:randombytes_salsa20XMC_random.c ****     unsigned char  m0[crypto_stream_salsa20_KEYBYTES + HASH_BLOCK_SIZE];
+ 106:randombytes_salsa20XMC_random.c ****     unsigned char *k0 = m0 + crypto_stream_salsa20_KEYBYTES;
+ 107:randombytes_salsa20XMC_random.c ****     size_t         sizeof_k0 = sizeof m0 - crypto_stream_salsa20_KEYBYTES;
+ 108:randombytes_salsa20XMC_random.c **** 
+ 109:randombytes_salsa20XMC_random.c ****     memset(stream.rnd32, 0, sizeof stream.rnd32);
+ 110:randombytes_salsa20XMC_random.c ****     stream.rnd32_outleft = (size_t) 0U;
+ 111:randombytes_salsa20XMC_random.c ****     if (stream.initialized == 0) {
+ 112:randombytes_salsa20XMC_random.c ****         randombytes_salsa20XMC_random_init();
+ 113:randombytes_salsa20XMC_random.c ****         stream.initialized = 1;
+ 114:randombytes_salsa20XMC_random.c ****     }
+ 115:randombytes_salsa20XMC_random.c ****     if (crypto_generichash(stream.key, sizeof stream.key, k0, sizeof_k0,
+ 116:randombytes_salsa20XMC_random.c ****                            hsigma, sizeof hsigma) != 0) {
+ 117:randombytes_salsa20XMC_random.c ****         abort(); /* LCOV_EXCL_LINE */
+ 118:randombytes_salsa20XMC_random.c ****     }
+ 119:randombytes_salsa20XMC_random.c ****     COMPILER_ASSERT(sizeof stream.key <= sizeof m0);
+ 120:randombytes_salsa20XMC_random.c ****     randombytes_salsa20XMC_random_rekey(m0);
+ 121:randombytes_salsa20XMC_random.c ****     sodium_memzero(m0, sizeof m0);
+ 122:randombytes_salsa20XMC_random.c **** #ifdef HAVE_GETPID
+ 123:randombytes_salsa20XMC_random.c ****     stream.pid = getpid();
+ 124:randombytes_salsa20XMC_random.c **** #endif
+ 125:randombytes_salsa20XMC_random.c **** }
+ 126:randombytes_salsa20XMC_random.c **** 
+ 127:randombytes_salsa20XMC_random.c **** static void
+ 128:randombytes_salsa20XMC_random.c **** randombytes_salsa20XMC_random_stir_if_needed(void)
+ 129:randombytes_salsa20XMC_random.c **** {
+ 130:randombytes_salsa20XMC_random.c **** #ifdef HAVE_GETPID
+ 131:randombytes_salsa20XMC_random.c ****     if (stream.initialized == 0) {
+ 132:randombytes_salsa20XMC_random.c ****         randombytes_salsa20XMC_random_stir();
+ 133:randombytes_salsa20XMC_random.c ****     } else if (stream.pid != getpid()) {
+ 134:randombytes_salsa20XMC_random.c ****         abort();
+ 135:randombytes_salsa20XMC_random.c ****     }
+ 136:randombytes_salsa20XMC_random.c **** #else
+ 137:randombytes_salsa20XMC_random.c ****     if (stream.initialized == 0) {
+ 138:randombytes_salsa20XMC_random.c ****         randombytes_salsa20XMC_random_stir();
+ 139:randombytes_salsa20XMC_random.c ****     }
+ 140:randombytes_salsa20XMC_random.c **** #endif
+ 141:randombytes_salsa20XMC_random.c **** }
+ 142:randombytes_salsa20XMC_random.c **** 
+ 143:randombytes_salsa20XMC_random.c **** static void
+ 144:randombytes_salsa20XMC_random.c **** randombytes_salsa20XMC_random_buf(void * const buf, const size_t size)
+ 145:randombytes_salsa20XMC_random.c **** {
+ 146:randombytes_salsa20XMC_random.c ****     size_t i;
+ 147:randombytes_salsa20XMC_random.c ****     int    ret;
+ 148:randombytes_salsa20XMC_random.c **** 
+ 149:randombytes_salsa20XMC_random.c ****     randombytes_salsa20XMC_random_stir_if_needed();
+ 150:randombytes_salsa20XMC_random.c ****     COMPILER_ASSERT(sizeof stream.nonce == crypto_stream_salsa20_NONCEBYTES);
+ 151:randombytes_salsa20XMC_random.c **** #ifdef ULONG_LONG_MAX
+ 152:randombytes_salsa20XMC_random.c ****     /* coverity[result_independent_of_operands] */
+ 153:randombytes_salsa20XMC_random.c ****     assert(size <= ULONG_LONG_MAX);
+ 154:randombytes_salsa20XMC_random.c **** #endif
+ 155:randombytes_salsa20XMC_random.c ****     ret = crypto_stream_salsa20((unsigned char *) buf, (unsigned long long) size,
+ 156:randombytes_salsa20XMC_random.c ****                                 (unsigned char *) &stream.nonce, stream.key);
+ 157:randombytes_salsa20XMC_random.c ****     assert(ret == 0);
+ 158:randombytes_salsa20XMC_random.c ****     for (i = 0U; i < sizeof size; i++) {
+ 159:randombytes_salsa20XMC_random.c ****         stream.key[i] ^= ((const unsigned char *) (const void *) &size)[i];
+ 160:randombytes_salsa20XMC_random.c ****     }
+ 161:randombytes_salsa20XMC_random.c ****     stream.nonce++;
+ 162:randombytes_salsa20XMC_random.c ****     crypto_stream_salsa20_xor(stream.key, stream.key, sizeof stream.key,
+ 163:randombytes_salsa20XMC_random.c ****                               (unsigned char *) &stream.nonce, stream.key);
+ 164:randombytes_salsa20XMC_random.c **** }
+ 165:randombytes_salsa20XMC_random.c **** 
+ 166:randombytes_salsa20XMC_random.c **** static uint32_t
+ 167:randombytes_salsa20XMC_random.c **** randombytes_salsa20XMC_random_getword(void)
+ 168:randombytes_salsa20XMC_random.c **** {
+ 169:randombytes_salsa20XMC_random.c ****     uint32_t val;
+ 170:randombytes_salsa20XMC_random.c ****     int      ret;
+ 171:randombytes_salsa20XMC_random.c **** 
+ 172:randombytes_salsa20XMC_random.c ****     COMPILER_ASSERT(sizeof stream.rnd32 >= (sizeof stream.key) + (sizeof val));
+ 173:randombytes_salsa20XMC_random.c ****     COMPILER_ASSERT(((sizeof stream.rnd32) - (sizeof stream.key))
+ 174:randombytes_salsa20XMC_random.c ****                     % sizeof val == (size_t) 0U);
+ 175:randombytes_salsa20XMC_random.c ****     if (stream.rnd32_outleft <= (size_t) 0U) {
+ 176:randombytes_salsa20XMC_random.c ****         randombytes_salsa20XMC_random_stir_if_needed();
+ 177:randombytes_salsa20XMC_random.c ****         COMPILER_ASSERT(sizeof stream.nonce == crypto_stream_salsa20_NONCEBYTES);
+ 178:randombytes_salsa20XMC_random.c ****         ret = crypto_stream_salsa20((unsigned char *) stream.rnd32,
+ 179:randombytes_salsa20XMC_random.c ****                                     (unsigned long long) sizeof stream.rnd32,
+ 180:randombytes_salsa20XMC_random.c ****                                     (unsigned char *) &stream.nonce,
+ 181:randombytes_salsa20XMC_random.c ****                                     stream.key);
+ 182:randombytes_salsa20XMC_random.c ****         assert(ret == 0);
+ 183:randombytes_salsa20XMC_random.c ****         stream.rnd32_outleft = (sizeof stream.rnd32) - (sizeof stream.key);
+ 184:randombytes_salsa20XMC_random.c ****         randombytes_salsa20XMC_random_rekey(&stream.rnd32[stream.rnd32_outleft]);
+ 185:randombytes_salsa20XMC_random.c ****         stream.nonce++;
+ 186:randombytes_salsa20XMC_random.c ****     }
+ 187:randombytes_salsa20XMC_random.c ****     stream.rnd32_outleft -= sizeof val;
+ 188:randombytes_salsa20XMC_random.c ****     memcpy(&val, &stream.rnd32[stream.rnd32_outleft], sizeof val);
+ 189:randombytes_salsa20XMC_random.c ****     memset(&stream.rnd32[stream.rnd32_outleft], 0, sizeof val);
+ 190:randombytes_salsa20XMC_random.c **** 
+ 191:randombytes_salsa20XMC_random.c ****     return val;
+ 192:randombytes_salsa20XMC_random.c **** }
+ 193:randombytes_salsa20XMC_random.c **** 
+ 194:randombytes_salsa20XMC_random.c **** static uint32_t
+ 195:randombytes_salsa20XMC_random.c **** randombytes_salsa20XMC_random(void)
+ 196:randombytes_salsa20XMC_random.c **** {
+ 197:randombytes_salsa20XMC_random.c ****     return randombytes_salsa20XMC_random_getword();
+ 198:randombytes_salsa20XMC_random.c **** }
+ 199:randombytes_salsa20XMC_random.c **** 
+ 200:randombytes_salsa20XMC_random.c **** static const char *
+ 201:randombytes_salsa20XMC_random.c **** randombytes_salsa20XMC_implementation_name(void)
+ 202:randombytes_salsa20XMC_random.c **** {
+  79              		.loc 1 202 1 is_stmt 1 view -0
+  80              		.cfi_startproc
+  81              		@ args = 0, pretend = 0, frame = 0
+  82              		@ frame_needed = 0, uses_anonymous_args = 0
+  83              		@ link register save eliminated.
+ 203:randombytes_salsa20XMC_random.c ****     return "salsa20XMC";
+  84              		.loc 1 203 5 view .LVU13
+ 204:randombytes_salsa20XMC_random.c **** }
+  85              		.loc 1 204 1 is_stmt 0 view .LVU14
+  86 0000 0048     		ldr	r0, .L7
+  87 0002 7047     		bx	lr
+  88              	.L8:
+  89              		.align	2
+  90              	.L7:
+  91 0004 00000000 		.word	.LC0
+  92              		.cfi_endproc
+  93              	.LFE7:
+  95              		.section	.rodata.str1.4
+  96 000b 00       		.align	2
+  97              	.LC2:
+  98 000c 73747265 		.ascii	"stream.nonce != (uint64_t) 0U\000"
+  98      616D2E6E 
+  98      6F6E6365 
+  98      20213D20 
+  98      2875696E 
+  99 002a 0000     		.align	2
+ 100              	.LC3:
+ 101 002c 72616E64 		.ascii	"randombytes_salsa20XMC_random.c\000"
+ 101      6F6D6279 
+ 101      7465735F 
+ 101      73616C73 
+ 101      61323058 
+ 102              		.align	2
+ 103              	.LC1:
+ 104 004c 54686973 		.ascii	"ThisIsJustAThirtyTwoBytesSeed...\000"
+ 104      49734A75 
+ 104      73744154 
+ 104      68697274 
+ 104      7954776F 
+ 105              		.section	.text.randombytes_salsa20XMC_random_stir,"ax",%progbits
+ 106              		.align	1
+ 107              		.syntax unified
+ 108              		.thumb
+ 109              		.thumb_func
+ 111              	randombytes_salsa20XMC_random_stir:
+ 112              	.LFB2:
+  97:randombytes_salsa20XMC_random.c ****     /* constant to personalize the hash function */
+ 113              		.loc 1 97 1 is_stmt 1 view -0
+ 114              		.cfi_startproc
+ 115              		@ args = 0, pretend = 0, frame = 200
+ 116              		@ frame_needed = 0, uses_anonymous_args = 0
+ 117 0000 10B5     		push	{r4, lr}
+ 118              	.LCFI0:
+ 119              		.cfi_def_cfa_offset 8
+ 120              		.cfi_offset 4, -8
+ 121              		.cfi_offset 14, -4
+ 122 0002 B6B0     		sub	sp, sp, #216
+ 123              	.LCFI1:
+ 124              		.cfi_def_cfa_offset 224
+  97:randombytes_salsa20XMC_random.c ****     /* constant to personalize the hash function */
+ 125              		.loc 1 97 1 is_stmt 0 view .LVU16
+ 126 0004 2D4B     		ldr	r3, .L19
+ 127 0006 1B68     		ldr	r3, [r3]
+ 128 0008 3593     		str	r3, [sp, #212]
+ 129 000a 4FF00003 		mov	r3, #0
+  99:randombytes_salsa20XMC_random.c ****         0x54, 0x68, 0x69, 0x73, 0x49, 0x73, 0x4a, 0x75,
+ 130              		.loc 1 99 5 is_stmt 1 view .LVU17
+  99:randombytes_salsa20XMC_random.c ****         0x54, 0x68, 0x69, 0x73, 0x49, 0x73, 0x4a, 0x75,
+ 131              		.loc 1 99 25 is_stmt 0 view .LVU18
+ 132 000e 0DF1140C 		add	ip, sp, #20
+ 133 0012 2B4C     		ldr	r4, .L19+4
+ 134 0014 0FCC     		ldmia	r4!, {r0, r1, r2, r3}
+ 135 0016 ACE80F00 		stmia	ip!, {r0, r1, r2, r3}
+ 136 001a 94E80F00 		ldm	r4, {r0, r1, r2, r3}
+ 137 001e 8CE80F00 		stm	ip, {r0, r1, r2, r3}
+ 105:randombytes_salsa20XMC_random.c ****     unsigned char *k0 = m0 + crypto_stream_salsa20_KEYBYTES;
+ 138              		.loc 1 105 5 is_stmt 1 view .LVU19
+ 106:randombytes_salsa20XMC_random.c ****     size_t         sizeof_k0 = sizeof m0 - crypto_stream_salsa20_KEYBYTES;
+ 139              		.loc 1 106 5 view .LVU20
+ 140              	.LVL5:
+ 107:randombytes_salsa20XMC_random.c **** 
+ 141              		.loc 1 107 5 view .LVU21
+ 109:randombytes_salsa20XMC_random.c ****     stream.rnd32_outleft = (size_t) 0U;
+ 142              		.loc 1 109 5 view .LVU22
+ 143 0022 284C     		ldr	r4, .L19+8
+ 144 0024 4FF48062 		mov	r2, #1024
+ 145 0028 0021     		movs	r1, #0
+ 146 002a 04F13000 		add	r0, r4, #48
+ 147 002e FFF7FEFF 		bl	memset
+ 148              	.LVL6:
+ 110:randombytes_salsa20XMC_random.c ****     if (stream.initialized == 0) {
+ 149              		.loc 1 110 5 view .LVU23
+ 110:randombytes_salsa20XMC_random.c ****     if (stream.initialized == 0) {
+ 150              		.loc 1 110 26 is_stmt 0 view .LVU24
+ 151 0032 0023     		movs	r3, #0
+ 152 0034 2360     		str	r3, [r4]
+ 111:randombytes_salsa20XMC_random.c ****         randombytes_salsa20XMC_random_init();
+ 153              		.loc 1 111 5 is_stmt 1 view .LVU25
+ 111:randombytes_salsa20XMC_random.c ****         randombytes_salsa20XMC_random_init();
+ 154              		.loc 1 111 8 is_stmt 0 view .LVU26
+ 155 0036 A368     		ldr	r3, [r4, #8]
+ 156 0038 EBB1     		cbz	r3, .L15
+ 157              	.L10:
+ 115:randombytes_salsa20XMC_random.c ****                            hsigma, sizeof hsigma) != 0) {
+ 158              		.loc 1 115 5 is_stmt 1 view .LVU27
+ 115:randombytes_salsa20XMC_random.c ****                            hsigma, sizeof hsigma) != 0) {
+ 159              		.loc 1 115 9 is_stmt 0 view .LVU28
+ 160 003a 2021     		movs	r1, #32
+ 161 003c 0391     		str	r1, [sp, #12]
+ 162 003e 05AB     		add	r3, sp, #20
+ 163 0040 0293     		str	r3, [sp, #8]
+ 164 0042 8022     		movs	r2, #128
+ 165 0044 0023     		movs	r3, #0
+ 166 0046 CDE90023 		strd	r2, [sp]
+ 167 004a 15AA     		add	r2, sp, #84
+ 168              	.LVL7:
+ 115:randombytes_salsa20XMC_random.c ****                            hsigma, sizeof hsigma) != 0) {
+ 169              		.loc 1 115 9 view .LVU29
+ 170 004c 1E48     		ldr	r0, .L19+12
+ 171 004e FFF7FEFF 		bl	crypto_generichash
+ 172              	.LVL8:
+ 115:randombytes_salsa20XMC_random.c ****                            hsigma, sizeof hsigma) != 0) {
+ 173              		.loc 1 115 8 discriminator 1 view .LVU30
+ 174 0052 78BB     		cbnz	r0, .L16
+ 119:randombytes_salsa20XMC_random.c ****     randombytes_salsa20XMC_random_rekey(m0);
+ 175              		.loc 1 119 5 is_stmt 1 view .LVU31
+ 120:randombytes_salsa20XMC_random.c ****     sodium_memzero(m0, sizeof m0);
+ 176              		.loc 1 120 5 view .LVU32
+ 177 0054 0DAC     		add	r4, sp, #52
+ 178 0056 2046     		mov	r0, r4
+ 179 0058 FFF7FEFF 		bl	randombytes_salsa20XMC_random_rekey
+ 180              	.LVL9:
+ 121:randombytes_salsa20XMC_random.c **** #ifdef HAVE_GETPID
+ 181              		.loc 1 121 5 view .LVU33
+ 182 005c A021     		movs	r1, #160
+ 183 005e 2046     		mov	r0, r4
+ 184 0060 FFF7FEFF 		bl	sodium_memzero
+ 185              	.LVL10:
+ 125:randombytes_salsa20XMC_random.c **** 
+ 186              		.loc 1 125 1 is_stmt 0 view .LVU34
+ 187 0064 154B     		ldr	r3, .L19
+ 188 0066 1A68     		ldr	r2, [r3]
+ 189 0068 359B     		ldr	r3, [sp, #212]
+ 190 006a 5A40     		eors	r2, r3, r2
+ 191 006c 4FF00003 		mov	r3, #0
+ 192 0070 22D1     		bne	.L17
+ 193 0072 36B0     		add	sp, sp, #216
+ 194              	.LCFI2:
+ 195              		.cfi_remember_state
+ 196              		.cfi_def_cfa_offset 8
+ 197              		@ sp needed
+ 198 0074 10BD     		pop	{r4, pc}
+ 199              	.LVL11:
+ 200              	.L15:
+ 201              	.LCFI3:
+ 202              		.cfi_restore_state
+ 112:randombytes_salsa20XMC_random.c ****         stream.initialized = 1;
+ 203              		.loc 1 112 9 is_stmt 1 view .LVU35
+ 204              	.LBB4:
+ 205              	.LBI4:
+  71:randombytes_salsa20XMC_random.c **** {
+ 206              		.loc 1 71 1 view .LVU36
+ 207              	.LBB5:
+  75:randombytes_salsa20XMC_random.c ****     crypto_generichash(hash, sizeof hash, RANDOMBYTES_SALSA20XMC_PSRAM_START,\
+ 208              		.loc 1 75 5 view .LVU37
+  76:randombytes_salsa20XMC_random.c ****                        RANDOMBYTES_SALSA20XMC_PSRAM_SIZE, NULL, 0);
+ 209              		.loc 1 76 5 view .LVU38
+ 210 0076 0393     		str	r3, [sp, #12]
+ 211 0078 0293     		str	r3, [sp, #8]
+ 212 007a 4FF48032 		mov	r2, #65536
+ 213 007e 0023     		movs	r3, #0
+ 214 0080 CDE90023 		strd	r2, [sp]
+ 215 0084 4FF08052 		mov	r2, #268435456
+ 216 0088 2021     		movs	r1, #32
+ 217 008a 0DA8     		add	r0, sp, #52
+ 218 008c FFF7FEFF 		bl	crypto_generichash
+ 219              	.LVL12:
+  78:randombytes_salsa20XMC_random.c ****                                  sizeof(stream.nonce) : sizeof(hash));
+ 220              		.loc 1 78 5 view .LVU39
+ 221 0090 0D9B     		ldr	r3, [sp, #52]
+ 222 0092 0E9A     		ldr	r2, [sp, #56]
+ 223 0094 C4F83034 		str	r3, [r4, #1072]
+ 224 0098 C4F83424 		str	r2, [r4, #1076]
+  81:randombytes_salsa20XMC_random.c **** }
+ 225              		.loc 1 81 5 view .LVU40
+ 226 009c 1343     		orrs	r3, r3, r2
+ 227 009e 03D0     		beq	.L18
+ 228              	.LBE5:
+ 229              	.LBE4:
+ 113:randombytes_salsa20XMC_random.c ****     }
+ 230              		.loc 1 113 9 view .LVU41
+ 113:randombytes_salsa20XMC_random.c ****     }
+ 231              		.loc 1 113 28 is_stmt 0 view .LVU42
+ 232 00a0 084B     		ldr	r3, .L19+8
+ 233 00a2 0122     		movs	r2, #1
+ 234 00a4 9A60     		str	r2, [r3, #8]
+ 235 00a6 C8E7     		b	.L10
+ 236              	.L18:
+ 237              	.LBB7:
+ 238              	.LBB6:
+  81:randombytes_salsa20XMC_random.c **** }
+ 239              		.loc 1 81 5 discriminator 1 view .LVU43
+ 240 00a8 084B     		ldr	r3, .L19+16
+ 241 00aa 094A     		ldr	r2, .L19+20
+ 242 00ac 5121     		movs	r1, #81
+ 243 00ae 0948     		ldr	r0, .L19+24
+ 244 00b0 FFF7FEFF 		bl	__assert_func
+ 245              	.LVL13:
+ 246              	.L16:
+ 247              	.LBE6:
+ 248              	.LBE7:
+ 117:randombytes_salsa20XMC_random.c ****     }
+ 249              		.loc 1 117 9 is_stmt 1 view .LVU44
+ 250 00b4 FFF7FEFF 		bl	abort
+ 251              	.LVL14:
+ 252              	.L17:
+ 125:randombytes_salsa20XMC_random.c **** 
+ 253              		.loc 1 125 1 is_stmt 0 view .LVU45
+ 254 00b8 FFF7FEFF 		bl	__stack_chk_fail
+ 255              	.LVL15:
+ 256              	.L20:
+ 257              		.align	2
+ 258              	.L19:
+ 259 00bc 00000000 		.word	__stack_chk_guard
+ 260 00c0 4C000000 		.word	.LC1
+ 261 00c4 00000000 		.word	.LANCHOR0
+ 262 00c8 10000000 		.word	.LANCHOR0+16
+ 263 00cc 0C000000 		.word	.LC2
+ 264 00d0 00000000 		.word	.LANCHOR1
+ 265 00d4 2C000000 		.word	.LC3
+ 266              		.cfi_endproc
+ 267              	.LFE2:
+ 269              		.section	.rodata.str1.4
+ 270 006d 000000   		.align	2
+ 271              	.LC5:
+ 272 0070 72657420 		.ascii	"ret == 0\000"
+ 272      3D3D2030 
+ 272      00
+ 273              		.section	.text.randombytes_salsa20XMC_random_buf,"ax",%progbits
+ 274              		.align	1
+ 275              		.syntax unified
+ 276              		.thumb
+ 277              		.thumb_func
+ 279              	randombytes_salsa20XMC_random_buf:
+ 280              	.LVL16:
+ 281              	.LFB4:
+ 145:randombytes_salsa20XMC_random.c ****     size_t i;
+ 282              		.loc 1 145 1 is_stmt 1 view -0
+ 283              		.cfi_startproc
+ 284              		@ args = 0, pretend = 0, frame = 8
+ 285              		@ frame_needed = 0, uses_anonymous_args = 0
+ 145:randombytes_salsa20XMC_random.c ****     size_t i;
+ 286              		.loc 1 145 1 is_stmt 0 view .LVU47
+ 287 0000 10B5     		push	{r4, lr}
+ 288              	.LCFI4:
+ 289              		.cfi_def_cfa_offset 8
+ 290              		.cfi_offset 4, -8
+ 291              		.cfi_offset 14, -4
+ 292 0002 84B0     		sub	sp, sp, #16
+ 293              	.LCFI5:
+ 294              		.cfi_def_cfa_offset 24
+ 295 0004 0446     		mov	r4, r0
+ 296 0006 0391     		str	r1, [sp, #12]
+ 146:randombytes_salsa20XMC_random.c ****     int    ret;
+ 297              		.loc 1 146 5 is_stmt 1 view .LVU48
+ 147:randombytes_salsa20XMC_random.c **** 
+ 298              		.loc 1 147 5 view .LVU49
+ 149:randombytes_salsa20XMC_random.c ****     COMPILER_ASSERT(sizeof stream.nonce == crypto_stream_salsa20_NONCEBYTES);
+ 299              		.loc 1 149 5 view .LVU50
+ 300              	.LBB10:
+ 301              	.LBI10:
+ 128:randombytes_salsa20XMC_random.c **** {
+ 302              		.loc 1 128 1 view .LVU51
+ 303              	.LBB11:
+ 137:randombytes_salsa20XMC_random.c ****         randombytes_salsa20XMC_random_stir();
+ 304              		.loc 1 137 5 view .LVU52
+ 137:randombytes_salsa20XMC_random.c ****         randombytes_salsa20XMC_random_stir();
+ 305              		.loc 1 137 15 is_stmt 0 view .LVU53
+ 306 0008 1E4B     		ldr	r3, .L29
+ 137:randombytes_salsa20XMC_random.c ****         randombytes_salsa20XMC_random_stir();
+ 307              		.loc 1 137 8 view .LVU54
+ 308 000a 9B68     		ldr	r3, [r3, #8]
+ 309 000c 83B3     		cbz	r3, .L27
+ 310              	.LVL17:
+ 311              	.L22:
+ 137:randombytes_salsa20XMC_random.c ****         randombytes_salsa20XMC_random_stir();
+ 312              		.loc 1 137 8 view .LVU55
+ 313              	.LBE11:
+ 314              	.LBE10:
+ 150:randombytes_salsa20XMC_random.c **** #ifdef ULONG_LONG_MAX
+ 315              		.loc 1 150 5 is_stmt 1 view .LVU56
+ 153:randombytes_salsa20XMC_random.c **** #endif
+ 316              		.loc 1 153 5 view .LVU57
+ 155:randombytes_salsa20XMC_random.c ****                                 (unsigned char *) &stream.nonce, stream.key);
+ 317              		.loc 1 155 5 view .LVU58
+ 155:randombytes_salsa20XMC_random.c ****                                 (unsigned char *) &stream.nonce, stream.key);
+ 318              		.loc 1 155 11 is_stmt 0 view .LVU59
+ 319 000e 1D4B     		ldr	r3, .L29
+ 320 0010 03F11002 		add	r2, r3, #16
+ 321 0014 0192     		str	r2, [sp, #4]
+ 322 0016 03F58663 		add	r3, r3, #1072
+ 323 001a 0093     		str	r3, [sp]
+ 324 001c 039A     		ldr	r2, [sp, #12]
+ 325 001e 0023     		movs	r3, #0
+ 326 0020 2046     		mov	r0, r4
+ 327 0022 FFF7FEFF 		bl	crypto_stream_salsa20
+ 328              	.LVL18:
+ 157:randombytes_salsa20XMC_random.c ****     for (i = 0U; i < sizeof size; i++) {
+ 329              		.loc 1 157 5 is_stmt 1 view .LVU60
+ 330 0026 30BB     		cbnz	r0, .L28
+ 331 0028 1749     		ldr	r1, .L29+4
+ 332 002a 03AA     		add	r2, sp, #12
+ 333 002c 0DF1100C 		add	ip, sp, #16
+ 334              	.LVL19:
+ 335              	.L24:
+ 159:randombytes_salsa20XMC_random.c ****     }
+ 336              		.loc 1 159 9 view .LVU61
+ 159:randombytes_salsa20XMC_random.c ****     }
+ 337              		.loc 1 159 72 is_stmt 0 view .LVU62
+ 338 0030 12F8013B 		ldrb	r3, [r2], #1	@ zero_extendqisi2
+ 159:randombytes_salsa20XMC_random.c ****     }
+ 339              		.loc 1 159 23 view .LVU63
+ 340 0034 11F8010F 		ldrb	r0, [r1, #1]!	@ zero_extendqisi2
+ 341              	.LVL20:
+ 159:randombytes_salsa20XMC_random.c ****     }
+ 342              		.loc 1 159 23 view .LVU64
+ 343 0038 4340     		eors	r3, r3, r0
+ 344 003a 0B70     		strb	r3, [r1]
+ 158:randombytes_salsa20XMC_random.c ****         stream.key[i] ^= ((const unsigned char *) (const void *) &size)[i];
+ 345              		.loc 1 158 36 is_stmt 1 discriminator 3 view .LVU65
+ 346              	.LVL21:
+ 158:randombytes_salsa20XMC_random.c ****         stream.key[i] ^= ((const unsigned char *) (const void *) &size)[i];
+ 347              		.loc 1 158 20 discriminator 1 view .LVU66
+ 348 003c 6245     		cmp	r2, ip
+ 349 003e F7D1     		bne	.L24
+ 161:randombytes_salsa20XMC_random.c ****     crypto_stream_salsa20_xor(stream.key, stream.key, sizeof stream.key,
+ 350              		.loc 1 161 5 view .LVU67
+ 161:randombytes_salsa20XMC_random.c ****     crypto_stream_salsa20_xor(stream.key, stream.key, sizeof stream.key,
+ 351              		.loc 1 161 17 is_stmt 0 view .LVU68
+ 352 0040 1048     		ldr	r0, .L29
+ 353 0042 00F58662 		add	r2, r0, #1072
+ 354 0046 D0F83034 		ldr	r3, [r0, #1072]
+ 355 004a D0F83414 		ldr	r1, [r0, #1076]
+ 356              	.LVL22:
+ 161:randombytes_salsa20XMC_random.c ****     crypto_stream_salsa20_xor(stream.key, stream.key, sizeof stream.key,
+ 357              		.loc 1 161 17 view .LVU69
+ 358 004e 0133     		adds	r3, r3, #1
+ 359 0050 41F10001 		adc	r1, r1, #0
+ 360 0054 C0F83034 		str	r3, [r0, #1072]
+ 361 0058 C0F83414 		str	r1, [r0, #1076]
+ 162:randombytes_salsa20XMC_random.c ****                               (unsigned char *) &stream.nonce, stream.key);
+ 362              		.loc 1 162 5 is_stmt 1 view .LVU70
+ 363 005c 1030     		adds	r0, r0, #16
+ 364 005e 0190     		str	r0, [sp, #4]
+ 365 0060 0092     		str	r2, [sp]
+ 366 0062 2022     		movs	r2, #32
+ 367 0064 0023     		movs	r3, #0
+ 368 0066 0146     		mov	r1, r0
+ 369 0068 FFF7FEFF 		bl	crypto_stream_salsa20_xor
+ 370              	.LVL23:
+ 164:randombytes_salsa20XMC_random.c **** 
+ 371              		.loc 1 164 1 is_stmt 0 view .LVU71
+ 372 006c 04B0     		add	sp, sp, #16
+ 373              	.LCFI6:
+ 374              		.cfi_remember_state
+ 375              		.cfi_def_cfa_offset 8
+ 376              		@ sp needed
+ 377 006e 10BD     		pop	{r4, pc}
+ 378              	.LVL24:
+ 379              	.L27:
+ 380              	.LCFI7:
+ 381              		.cfi_restore_state
+ 382              	.LBB13:
+ 383              	.LBB12:
+ 138:randombytes_salsa20XMC_random.c ****     }
+ 384              		.loc 1 138 9 is_stmt 1 view .LVU72
+ 385 0070 FFF7FEFF 		bl	randombytes_salsa20XMC_random_stir
+ 386              	.LVL25:
+ 138:randombytes_salsa20XMC_random.c ****     }
+ 387              		.loc 1 138 9 is_stmt 0 view .LVU73
+ 388 0074 CBE7     		b	.L22
+ 389              	.LVL26:
+ 390              	.L28:
+ 138:randombytes_salsa20XMC_random.c ****     }
+ 391              		.loc 1 138 9 view .LVU74
+ 392              	.LBE12:
+ 393              	.LBE13:
+ 157:randombytes_salsa20XMC_random.c ****     for (i = 0U; i < sizeof size; i++) {
+ 394              		.loc 1 157 5 discriminator 1 view .LVU75
+ 395 0076 054B     		ldr	r3, .L29+8
+ 396 0078 054A     		ldr	r2, .L29+12
+ 397 007a 9D21     		movs	r1, #157
+ 398 007c 0548     		ldr	r0, .L29+16
+ 399              	.LVL27:
+ 157:randombytes_salsa20XMC_random.c ****     for (i = 0U; i < sizeof size; i++) {
+ 400              		.loc 1 157 5 discriminator 1 view .LVU76
+ 401 007e FFF7FEFF 		bl	__assert_func
+ 402              	.LVL28:
+ 403              	.L30:
+ 404 0082 00BF     		.align	2
+ 405              	.L29:
+ 406 0084 00000000 		.word	.LANCHOR0
+ 407 0088 0F000000 		.word	.LANCHOR0+15
+ 408 008c 70000000 		.word	.LC5
+ 409 0090 24000000 		.word	.LANCHOR1+36
+ 410 0094 2C000000 		.word	.LC3
+ 411              		.cfi_endproc
+ 412              	.LFE4:
+ 414              		.section	.text.randombytes_salsa20XMC_random,"ax",%progbits
+ 415              		.align	1
+ 416              		.syntax unified
+ 417              		.thumb
+ 418              		.thumb_func
+ 420              	randombytes_salsa20XMC_random:
+ 421              	.LFB6:
+ 196:randombytes_salsa20XMC_random.c ****     return randombytes_salsa20XMC_random_getword();
+ 422              		.loc 1 196 1 is_stmt 1 view -0
+ 423              		.cfi_startproc
+ 424              		@ args = 0, pretend = 0, frame = 0
+ 425              		@ frame_needed = 0, uses_anonymous_args = 0
+ 426 0000 10B5     		push	{r4, lr}
+ 427              	.LCFI8:
+ 428              		.cfi_def_cfa_offset 8
+ 429              		.cfi_offset 4, -8
+ 430              		.cfi_offset 14, -4
+ 431 0002 82B0     		sub	sp, sp, #8
+ 432              	.LCFI9:
+ 433              		.cfi_def_cfa_offset 16
+ 197:randombytes_salsa20XMC_random.c **** }
+ 434              		.loc 1 197 5 view .LVU78
+ 435              	.LBB18:
+ 436              	.LBI18:
+ 167:randombytes_salsa20XMC_random.c **** {
+ 437              		.loc 1 167 1 view .LVU79
+ 438              	.LBB19:
+ 169:randombytes_salsa20XMC_random.c ****     int      ret;
+ 439              		.loc 1 169 5 view .LVU80
+ 170:randombytes_salsa20XMC_random.c **** 
+ 440              		.loc 1 170 5 view .LVU81
+ 172:randombytes_salsa20XMC_random.c ****     COMPILER_ASSERT(((sizeof stream.rnd32) - (sizeof stream.key))
+ 441              		.loc 1 172 5 view .LVU82
+ 173:randombytes_salsa20XMC_random.c ****                     % sizeof val == (size_t) 0U);
+ 442              		.loc 1 173 5 view .LVU83
+ 175:randombytes_salsa20XMC_random.c ****         randombytes_salsa20XMC_random_stir_if_needed();
+ 443              		.loc 1 175 5 view .LVU84
+ 175:randombytes_salsa20XMC_random.c ****         randombytes_salsa20XMC_random_stir_if_needed();
+ 444              		.loc 1 175 15 is_stmt 0 view .LVU85
+ 445 0004 1C4B     		ldr	r3, .L38
+ 175:randombytes_salsa20XMC_random.c ****         randombytes_salsa20XMC_random_stir_if_needed();
+ 446              		.loc 1 175 8 view .LVU86
+ 447 0006 1B68     		ldr	r3, [r3]
+ 448 0008 1BBB     		cbnz	r3, .L32
+ 176:randombytes_salsa20XMC_random.c ****         COMPILER_ASSERT(sizeof stream.nonce == crypto_stream_salsa20_NONCEBYTES);
+ 449              		.loc 1 176 9 is_stmt 1 view .LVU87
+ 450              	.LBB20:
+ 451              	.LBI20:
+ 128:randombytes_salsa20XMC_random.c **** {
+ 452              		.loc 1 128 1 view .LVU88
+ 453              	.LBB21:
+ 137:randombytes_salsa20XMC_random.c ****         randombytes_salsa20XMC_random_stir();
+ 454              		.loc 1 137 5 view .LVU89
+ 137:randombytes_salsa20XMC_random.c ****         randombytes_salsa20XMC_random_stir();
+ 455              		.loc 1 137 15 is_stmt 0 view .LVU90
+ 456 000a 1B4B     		ldr	r3, .L38
+ 137:randombytes_salsa20XMC_random.c ****         randombytes_salsa20XMC_random_stir();
+ 457              		.loc 1 137 8 view .LVU91
+ 458 000c 9B68     		ldr	r3, [r3, #8]
+ 459 000e 53B3     		cbz	r3, .L36
+ 460              	.L33:
+ 461              	.LBE21:
+ 462              	.LBE20:
+ 177:randombytes_salsa20XMC_random.c ****         ret = crypto_stream_salsa20((unsigned char *) stream.rnd32,
+ 463              		.loc 1 177 9 is_stmt 1 view .LVU92
+ 178:randombytes_salsa20XMC_random.c ****                                     (unsigned long long) sizeof stream.rnd32,
+ 464              		.loc 1 178 9 view .LVU93
+ 178:randombytes_salsa20XMC_random.c ****                                     (unsigned long long) sizeof stream.rnd32,
+ 465              		.loc 1 178 15 is_stmt 0 view .LVU94
+ 466 0010 1948     		ldr	r0, .L38
+ 467 0012 00F11003 		add	r3, r0, #16
+ 468 0016 0193     		str	r3, [sp, #4]
+ 469 0018 00F58663 		add	r3, r0, #1072
+ 470 001c 0093     		str	r3, [sp]
+ 471 001e 4FF48062 		mov	r2, #1024
+ 472 0022 0023     		movs	r3, #0
+ 473 0024 3030     		adds	r0, r0, #48
+ 474 0026 FFF7FEFF 		bl	crypto_stream_salsa20
+ 475              	.LVL29:
+ 182:randombytes_salsa20XMC_random.c ****         stream.rnd32_outleft = (sizeof stream.rnd32) - (sizeof stream.key);
+ 476              		.loc 1 182 9 is_stmt 1 view .LVU95
+ 477 002a F8B9     		cbnz	r0, .L37
+ 183:randombytes_salsa20XMC_random.c ****         randombytes_salsa20XMC_random_rekey(&stream.rnd32[stream.rnd32_outleft]);
+ 478              		.loc 1 183 9 view .LVU96
+ 183:randombytes_salsa20XMC_random.c ****         randombytes_salsa20XMC_random_rekey(&stream.rnd32[stream.rnd32_outleft]);
+ 479              		.loc 1 183 30 is_stmt 0 view .LVU97
+ 480 002c 124C     		ldr	r4, .L38
+ 481 002e 4FF47873 		mov	r3, #992
+ 482 0032 2360     		str	r3, [r4]
+ 184:randombytes_salsa20XMC_random.c ****         stream.nonce++;
+ 483              		.loc 1 184 9 is_stmt 1 view .LVU98
+ 484 0034 04F58260 		add	r0, r4, #1040
+ 485              	.LVL30:
+ 184:randombytes_salsa20XMC_random.c ****         stream.nonce++;
+ 486              		.loc 1 184 9 is_stmt 0 view .LVU99
+ 487 0038 FFF7FEFF 		bl	randombytes_salsa20XMC_random_rekey
+ 488              	.LVL31:
+ 185:randombytes_salsa20XMC_random.c ****     }
+ 489              		.loc 1 185 9 is_stmt 1 view .LVU100
+ 185:randombytes_salsa20XMC_random.c ****     }
+ 490              		.loc 1 185 21 is_stmt 0 view .LVU101
+ 491 003c D4F83034 		ldr	r3, [r4, #1072]
+ 492 0040 D4F83424 		ldr	r2, [r4, #1076]
+ 493 0044 0133     		adds	r3, r3, #1
+ 494 0046 42F10002 		adc	r2, r2, #0
+ 495 004a C4F83034 		str	r3, [r4, #1072]
+ 496 004e C4F83424 		str	r2, [r4, #1076]
+ 497              	.LVL32:
+ 498              	.L32:
+ 187:randombytes_salsa20XMC_random.c ****     memcpy(&val, &stream.rnd32[stream.rnd32_outleft], sizeof val);
+ 499              		.loc 1 187 5 is_stmt 1 view .LVU102
+ 187:randombytes_salsa20XMC_random.c ****     memcpy(&val, &stream.rnd32[stream.rnd32_outleft], sizeof val);
+ 500              		.loc 1 187 11 is_stmt 0 view .LVU103
+ 501 0052 094A     		ldr	r2, .L38
+ 502 0054 1368     		ldr	r3, [r2]
+ 187:randombytes_salsa20XMC_random.c ****     memcpy(&val, &stream.rnd32[stream.rnd32_outleft], sizeof val);
+ 503              		.loc 1 187 26 view .LVU104
+ 504 0056 191F     		subs	r1, r3, #4
+ 505 0058 1160     		str	r1, [r2]
+ 188:randombytes_salsa20XMC_random.c ****     memset(&stream.rnd32[stream.rnd32_outleft], 0, sizeof val);
+ 506              		.loc 1 188 5 is_stmt 1 view .LVU105
+ 188:randombytes_salsa20XMC_random.c ****     memset(&stream.rnd32[stream.rnd32_outleft], 0, sizeof val);
+ 507              		.loc 1 188 18 is_stmt 0 view .LVU106
+ 508 005a 2C33     		adds	r3, r3, #44
+ 188:randombytes_salsa20XMC_random.c ****     memset(&stream.rnd32[stream.rnd32_outleft], 0, sizeof val);
+ 509              		.loc 1 188 5 view .LVU107
+ 510 005c D058     		ldr	r0, [r2, r3]	@ unaligned
+ 511              	.LVL33:
+ 189:randombytes_salsa20XMC_random.c **** 
+ 512              		.loc 1 189 5 is_stmt 1 view .LVU108
+ 513 005e 0021     		movs	r1, #0
+ 514 0060 D150     		str	r1, [r2, r3]	@ unaligned
+ 191:randombytes_salsa20XMC_random.c **** }
+ 515              		.loc 1 191 5 view .LVU109
+ 516              	.LBE19:
+ 517              	.LBE18:
+ 198:randombytes_salsa20XMC_random.c **** 
+ 518              		.loc 1 198 1 is_stmt 0 view .LVU110
+ 519 0062 02B0     		add	sp, sp, #8
+ 520              	.LCFI10:
+ 521              		.cfi_remember_state
+ 522              		.cfi_def_cfa_offset 8
+ 523              		@ sp needed
+ 524 0064 10BD     		pop	{r4, pc}
+ 525              	.LVL34:
+ 526              	.L36:
+ 527              	.LCFI11:
+ 528              		.cfi_restore_state
+ 529              	.LBB25:
+ 530              	.LBB24:
+ 531              	.LBB23:
+ 532              	.LBB22:
+ 138:randombytes_salsa20XMC_random.c ****     }
+ 533              		.loc 1 138 9 is_stmt 1 view .LVU111
+ 534 0066 FFF7FEFF 		bl	randombytes_salsa20XMC_random_stir
+ 535              	.LVL35:
+ 536 006a D1E7     		b	.L33
+ 537              	.LVL36:
+ 538              	.L37:
+ 138:randombytes_salsa20XMC_random.c ****     }
+ 539              		.loc 1 138 9 is_stmt 0 view .LVU112
+ 540              	.LBE22:
+ 541              	.LBE23:
+ 182:randombytes_salsa20XMC_random.c ****         stream.rnd32_outleft = (sizeof stream.rnd32) - (sizeof stream.key);
+ 542              		.loc 1 182 9 discriminator 1 view .LVU113
+ 543 006c 034B     		ldr	r3, .L38+4
+ 544 006e 044A     		ldr	r2, .L38+8
+ 545 0070 B621     		movs	r1, #182
+ 546 0072 0448     		ldr	r0, .L38+12
+ 547              	.LVL37:
+ 182:randombytes_salsa20XMC_random.c ****         stream.rnd32_outleft = (sizeof stream.rnd32) - (sizeof stream.key);
+ 548              		.loc 1 182 9 discriminator 1 view .LVU114
+ 549 0074 FFF7FEFF 		bl	__assert_func
+ 550              	.LVL38:
+ 551              	.L39:
+ 552              		.align	2
+ 553              	.L38:
+ 554 0078 00000000 		.word	.LANCHOR0
+ 555 007c 70000000 		.word	.LC5
+ 556 0080 48000000 		.word	.LANCHOR1+72
+ 557 0084 2C000000 		.word	.LC3
+ 558              	.LBE24:
+ 559              	.LBE25:
+ 560              		.cfi_endproc
+ 561              	.LFE6:
+ 563              		.global	randombytes_salsa20XMC_implementation
+ 564              		.section	.rodata
+ 565              		.align	2
+ 566              		.set	.LANCHOR1,. + 0
+ 569              	__func__.1:
+ 570 0000 72616E64 		.ascii	"randombytes_salsa20XMC_random_init\000"
+ 570      6F6D6279 
+ 570      7465735F 
+ 570      73616C73 
+ 570      61323058 
+ 571 0023 00       		.space	1
+ 574              	__func__.2:
+ 575 0024 72616E64 		.ascii	"randombytes_salsa20XMC_random_buf\000"
+ 575      6F6D6279 
+ 575      7465735F 
+ 575      73616C73 
+ 575      61323058 
+ 576 0046 0000     		.space	2
+ 579              	__func__.0:
+ 580 0048 72616E64 		.ascii	"randombytes_salsa20XMC_random_getword\000"
+ 580      6F6D6279 
+ 580      7465735F 
+ 580      73616C73 
+ 580      61323058 
+ 581              		.data
+ 582              		.align	3
+ 583              		.set	.LANCHOR0,. + 0
+ 586              	stream:
+ 587 0000 00000000 		.word	0
+ 588 0004 FFFFFFFF 		.word	-1
+ 589 0008 00000000 		.word	0
+ 590 000c 00000000 		.word	0
+ 591 0010 00000000 		.space	1064
+ 591      00000000 
+ 591      00000000 
+ 591      00000000 
+ 591      00000000 
+ 594              	randombytes_salsa20XMC_implementation:
+ 595 0438 00000000 		.word	randombytes_salsa20XMC_implementation_name
+ 596 043c 00000000 		.word	randombytes_salsa20XMC_random
+ 597 0440 00000000 		.word	randombytes_salsa20XMC_random_stir
+ 598 0444 00000000 		.word	0
+ 599 0448 00000000 		.word	randombytes_salsa20XMC_random_buf
+ 600 044c 00000000 		.word	0
+ 601              		.text
+ 602              	.Letext0:
+ 603              		.file 2 "/usr/lib/gcc/arm-none-eabi/14.2.0/include/stddef.h"
+ 604              		.file 3 "/usr/arm-none-eabi/include/machine/_default_types.h"
+ 605              		.file 4 "/usr/arm-none-eabi/include/sys/_stdint.h"
+ 606              		.file 5 "/home/milovalle/Documents/TUM/ESS_LAB/sodium_1-0-15_ARMcompiled/sodium/sodium-1.0.15/incl
+ 607              		.file 6 "/home/milovalle/Documents/TUM/ESS_LAB/sodium_1-0-15_ARMcompiled/sodium/sodium-1.0.15/incl
+ 608              		.file 7 "/usr/arm-none-eabi/include/string.h"
+ 609              		.file 8 "/home/milovalle/Documents/TUM/ESS_LAB/sodium_1-0-15_ARMcompiled/sodium/sodium-1.0.15/incl
+ 610              		.file 9 "/usr/arm-none-eabi/include/assert.h"
+ 611              		.file 10 "randombytes_salsa20XMC_random.h"
+ 612              		.file 11 "/home/milovalle/Documents/TUM/ESS_LAB/sodium_1-0-15_ARMcompiled/sodium/sodium-1.0.15/inc
+ 613              		.file 12 "/usr/arm-none-eabi/include/stdlib.h"
+ 614              		.file 13 "<built-in>"
+DEFINED SYMBOLS
+                            *ABS*:00000000 randombytes_salsa20XMC_random.c
+     /tmp/cc2CMmAH.s:20     .text.randombytes_salsa20XMC_random_rekey:00000000 $t
+     /tmp/cc2CMmAH.s:25     .text.randombytes_salsa20XMC_random_rekey:00000000 randombytes_salsa20XMC_random_rekey
+     /tmp/cc2CMmAH.s:63     .text.randombytes_salsa20XMC_random_rekey:00000020 $d
+     /tmp/cc2CMmAH.s:68     .rodata.str1.4:00000000 $d
+     /tmp/cc2CMmAH.s:72     .text.randombytes_salsa20XMC_implementation_name:00000000 $t
+     /tmp/cc2CMmAH.s:77     .text.randombytes_salsa20XMC_implementation_name:00000000 randombytes_salsa20XMC_implementation_name
+     /tmp/cc2CMmAH.s:91     .text.randombytes_salsa20XMC_implementation_name:00000004 $d
+     /tmp/cc2CMmAH.s:106    .text.randombytes_salsa20XMC_random_stir:00000000 $t
+     /tmp/cc2CMmAH.s:111    .text.randombytes_salsa20XMC_random_stir:00000000 randombytes_salsa20XMC_random_stir
+     /tmp/cc2CMmAH.s:259    .text.randombytes_salsa20XMC_random_stir:000000bc $d
+     /tmp/cc2CMmAH.s:274    .text.randombytes_salsa20XMC_random_buf:00000000 $t
+     /tmp/cc2CMmAH.s:279    .text.randombytes_salsa20XMC_random_buf:00000000 randombytes_salsa20XMC_random_buf
+     /tmp/cc2CMmAH.s:406    .text.randombytes_salsa20XMC_random_buf:00000084 $d
+     /tmp/cc2CMmAH.s:415    .text.randombytes_salsa20XMC_random:00000000 $t
+     /tmp/cc2CMmAH.s:420    .text.randombytes_salsa20XMC_random:00000000 randombytes_salsa20XMC_random
+     /tmp/cc2CMmAH.s:554    .text.randombytes_salsa20XMC_random:00000078 $d
+     /tmp/cc2CMmAH.s:594    .data:00000438 randombytes_salsa20XMC_implementation
+     /tmp/cc2CMmAH.s:565    .rodata:00000000 $d
+     /tmp/cc2CMmAH.s:569    .rodata:00000000 __func__.1
+     /tmp/cc2CMmAH.s:574    .rodata:00000024 __func__.2
+     /tmp/cc2CMmAH.s:579    .rodata:00000048 __func__.0
+     /tmp/cc2CMmAH.s:582    .data:00000000 $d
+     /tmp/cc2CMmAH.s:586    .data:00000000 stream
+                           .group:00000000 wm4.0.72866714a5966c404084f8c69e3df25d
+                           .group:00000000 wm4.ieeefp.h.77.61a77db5804869b1dadd307a77cf78c9
+                           .group:00000000 wm4._newlib_version.h.4.0eb654b64686e2bd29646258853f6c22
+                           .group:00000000 wm4.newlib.h.27.a82728f74da661df333d09507bfef510
+                           .group:00000000 wm4.features.h.22.03467e2205ec9ffbc20524d97cdbdf6a
+                           .group:00000000 wm4.config.h.224.10ee1ad185d877c6e334e6581faab44d
+                           .group:00000000 wm4._ansi.h.31.de524f58584151836e90d8620a16f8e8
+                           .group:00000000 wm4.stdlib.h.13.4ed386f5c1a80d71e72172885d946ef2
+                           .group:00000000 wm4.stddef.h.185.882514a1a6169ceba9142f401cbe27c6
+                           .group:00000000 wm4.stddef.h.39.ce75d04d8242e588a8427ce8922e2e35
+                           .group:00000000 wm4._default_types.h.6.959254cf5f09734ea7516c89e8bb21bd
+                           .group:00000000 wm4.cdefs.h.49.bafb023044e47a1dcdd854e4d6521f7d
+                           .group:00000000 wm4._types.h.20.dd0d04dca3800a0d2a6129b87f3adbb2
+                           .group:00000000 wm4.stddef.h.158.6f8e08a347b1cff664332fa350bfceb3
+                           .group:00000000 wm4._types.h.127.3bdfe3ff8ea2d0985b03d9cbe93480e3
+                           .group:00000000 wm4.reent.h.18.25503cdc8b7e55dd0d6ea7b3e5af7a03
+                           .group:00000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
+                           .group:00000000 wm4.reent.h.78.6b87466b04591b1f1cb88c14fdf2ba9e
+                           .group:00000000 wm4.alloca.h.8.dfc0c703c47ec3e69746825b17d9e66d
+                           .group:00000000 wm4.stdlib.h.56.f4862cfbf4363a1db01842d5bdf72c18
+                           .group:00000000 wm4.types.h.40.8b6acba56cefbb11746718204edc8f5e
+                           .group:00000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:00000000 wm4._endian.h.31.65a10590763c3dde1ac4a7f66d7d4891
+                           .group:00000000 wm4.endian.h.9.49f3a4695c1b61e8a0808de3c4a106cb
+                           .group:00000000 wm4._timeval.h.32.bec3221fa7a9bb0bdde696c9c57e47d2
+                           .group:00000000 wm4.timespec.h.41.d855182eb0e690443ab8651bcedca6e1
+                           .group:00000000 wm4.select.h.19.8c04bee5682eafa577cf6325dd7ee64c
+                           .group:00000000 wm4.types.h.51.e2a6e4379b4797ffcc4841f8498fd61b
+                           .group:00000000 wm4.sched.h.22.c60982713a5c428609783c78f9c78d95
+                           .group:00000000 wm4._pthreadtypes.h.36.fcee9961c35163dde6267ef772ad1972
+                           .group:00000000 wm4.assert.h.11.7fe9eb241be6b0fee772a1e693b81ae3
+                           .group:00000000 wm4.errno.h.2.ba016d646105af6cad23be83630b6a3f
+                           .group:00000000 wm4.errno.h.9.ae5ea2b0ff9ea6e39e585807e35200d3
+                           .group:00000000 wm4._default_fcntl.h.6.78f2f3dd18beb5aeecadec2181b47d3f
+                           .group:00000000 wm4.time.h.8.db4619001f026d0b4874c029fef0e91f
+                           .group:00000000 wm4.stddef.h.158.eec8bf00b5213f43d095cb984c5f22e3
+                           .group:00000000 wm4.time.h.2.4581ce0ffb6627cfc02162c94bf846c9
+                           .group:00000000 wm4.time.h.25.0e6a0fdbc9955f5707ed54246ed2e089
+                           .group:00000000 wm4.time.h.142.ba943c1a29afc7430d41c0a92fd48e0b
+                           .group:00000000 wm4.stat.h.54.5a9b823658423102e7a8de4ed089eedc
+                           .group:00000000 wm4.fcntl.h.9.9336f33d7f5028f694c75e6e224e0cf7
+                           .group:00000000 wm4.syslimits.h.34.de5cbd310098bc5895998b6bde577ed2
+                           .group:00000000 wm4.limits.h.9.70fb0ada6f71b16202a66baaa6d8ea70
+                           .group:00000000 wm4.limits.h.60.56a1ae353e2028a24298ec6463b8b593
+                           .group:00000000 wm4._intsup.h.10.48bafbb683905c4daa4565a85aeeb264
+                           .group:00000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
+                           .group:00000000 wm4.string.h.8.c4b8571ce60dff2817f43fec8b86aecd
+                           .group:00000000 wm4.unistd.h.2.39165d5b7784d1815ef4b0c4be6df560
+                           .group:00000000 wm4.unistd.h.166.64f46862ce0a3925984c663d49123e22
+                           .group:00000000 wm4.export.h.3.069642e50a739d7e8bd572e0f5b91055
+                           .group:00000000 wm4.crypto_core_salsa20.h.11.7ce30578633b77708df2486e23cf2d41
+                           .group:00000000 wm4.crypto_generichash_blake2b.h.38.4b6d675038c455959c90c43a75693d35
+                           .group:00000000 wm4.crypto_generichash.h.16.771391b6badc9219de7753c54a91592a
+                           .group:00000000 wm4.crypto_stream_salsa20.h.23.fc01df25aec77276d8dd631cf7c6b2db
+                           .group:00000000 wm4.randombytes.h.28.d92c4e5a57bf52557a9782c27b663a62
+                           .group:00000000 wm4.randombytes_salsa20XMC_random.h.30.c255d9afffd6579bce6c1fffc9331283
+                           .group:00000000 wm4.utils.h.17.31ca9da2b3c3d17cb1ce98c0f528b530
+
+UNDEFINED SYMBOLS
+memset
+crypto_generichash
+sodium_memzero
+__assert_func
+abort
+__stack_chk_fail
+__stack_chk_guard
+crypto_stream_salsa20
+crypto_stream_salsa20_xor

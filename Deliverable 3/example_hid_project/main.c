@@ -5,178 +5,6 @@
 /* Macros: */
 #define LED1 P1_1
 #define LED2 P1_0
-#define MAX_MSG_BUFFER 500 // Define the physical limit of your array
-
-int i = 0;
-uint8_t msg[90] = {
-    GERMAN_KEYBOARD_SC_A,
-    GERMAN_KEYBOARD_SC_B,
-    GERMAN_KEYBOARD_SC_C,
-    GERMAN_KEYBOARD_SC_D,
-    GERMAN_KEYBOARD_SC_E,
-    GERMAN_KEYBOARD_SC_F,
-    GERMAN_KEYBOARD_SC_G,
-    GERMAN_KEYBOARD_SC_H,
-    GERMAN_KEYBOARD_SC_I,
-    GERMAN_KEYBOARD_SC_J,
-    GERMAN_KEYBOARD_SC_K,
-    GERMAN_KEYBOARD_SC_L,
-    GERMAN_KEYBOARD_SC_M,
-    GERMAN_KEYBOARD_SC_N,
-    GERMAN_KEYBOARD_SC_O,
-    GERMAN_KEYBOARD_SC_P,
-    GERMAN_KEYBOARD_SC_Q,
-    GERMAN_KEYBOARD_SC_R,
-    GERMAN_KEYBOARD_SC_S,
-    GERMAN_KEYBOARD_SC_T,
-    GERMAN_KEYBOARD_SC_U,
-    GERMAN_KEYBOARD_SC_V,
-    GERMAN_KEYBOARD_SC_W,
-    GERMAN_KEYBOARD_SC_X,
-    GERMAN_KEYBOARD_SC_Y,
-    GERMAN_KEYBOARD_SC_Z,
-    GERMAN_KEYBOARD_SC_A,
-    GERMAN_KEYBOARD_SC_B,
-    GERMAN_KEYBOARD_SC_C,
-    GERMAN_KEYBOARD_SC_D,
-    GERMAN_KEYBOARD_SC_E,
-    GERMAN_KEYBOARD_SC_F,
-    GERMAN_KEYBOARD_SC_G,
-    GERMAN_KEYBOARD_SC_H,
-    GERMAN_KEYBOARD_SC_I,
-    GERMAN_KEYBOARD_SC_J,
-    GERMAN_KEYBOARD_SC_K,
-    GERMAN_KEYBOARD_SC_L,
-    GERMAN_KEYBOARD_SC_M,
-    GERMAN_KEYBOARD_SC_N,
-    GERMAN_KEYBOARD_SC_O,
-    GERMAN_KEYBOARD_SC_P,
-    GERMAN_KEYBOARD_SC_Q,
-    GERMAN_KEYBOARD_SC_R,
-    GERMAN_KEYBOARD_SC_S,
-    GERMAN_KEYBOARD_SC_T,
-    GERMAN_KEYBOARD_SC_U,
-    GERMAN_KEYBOARD_SC_V,
-    GERMAN_KEYBOARD_SC_W,
-    GERMAN_KEYBOARD_SC_X,
-    GERMAN_KEYBOARD_SC_Y,
-    GERMAN_KEYBOARD_SC_Z,
-    GERMAN_KEYBOARD_SC_1_AND_EXCLAMATION,
-    GERMAN_KEYBOARD_SC_2_AND_QUOTES,
-    GERMAN_KEYBOARD_SC_3_AND_PARAGRAPH,
-    GERMAN_KEYBOARD_SC_4_AND_DOLLAR,
-    GERMAN_KEYBOARD_SC_5_AND_PERCENTAGE,
-    GERMAN_KEYBOARD_SC_6_AND_AMPERSAND,
-    GERMAN_KEYBOARD_SC_7_AND_SLASH_AND_OPENING_BRACE,
-    GERMAN_KEYBOARD_SC_8_AND_OPENING_PARENTHESIS_AND_OPENING_BRACKET,
-    GERMAN_KEYBOARD_SC_9_AND_CLOSING_PARENTHESIS_AND_CLOSING_BRACKET,
-    GERMAN_KEYBOARD_SC_0_AND_EQUAL_AND_CLOSING_BRACE,
-    GERMAN_KEYBOARD_SC_1_AND_EXCLAMATION, // !
-    GERMAN_KEYBOARD_SC_8_AND_OPENING_PARENTHESIS_AND_OPENING_BRACKET, // (
-    GERMAN_KEYBOARD_SC_9_AND_CLOSING_PARENTHESIS_AND_CLOSING_BRACKET, // )
-    GERMAN_KEYBOARD_SC_MINUS_AND_UNDERSCORE, // -
-    GERMAN_KEYBOARD_SC_MINUS_AND_UNDERSCORE, // _
-    GERMAN_KEYBOARD_SC_PLUS_AND_ASTERISK_AND_TILDE, // +
-    GERMAN_KEYBOARD_SC_0_AND_EQUAL_AND_CLOSING_BRACE, // =
-    GERMAN_KEYBOARD_SC_PLUS_AND_ASTERISK_AND_TILDE, // ~
-    GERMAN_KEYBOARD_SC_COMMA_AND_SEMICOLON, // ;
-    GERMAN_KEYBOARD_SC_DOT_AND_COLON, // :
-    GERMAN_KEYBOARD_SC_COMMA_AND_SEMICOLON, // ,
-    GERMAN_KEYBOARD_SC_DOT_AND_COLON, // .
-    GERMAN_KEYBOARD_SC_LESS_THAN_AND_GREATER_THAN_AND_PIPE, // <
-    GERMAN_KEYBOARD_SC_LESS_THAN_AND_GREATER_THAN_AND_PIPE, // >
-    GERMAN_KEYBOARD_SC_8_AND_OPENING_PARENTHESIS_AND_OPENING_BRACKET, // [
-    GERMAN_KEYBOARD_SC_9_AND_CLOSING_PARENTHESIS_AND_CLOSING_BRACKET, // ]
-    GERMAN_KEYBOARD_SC_7_AND_SLASH_AND_OPENING_BRACE, // {
-    GERMAN_KEYBOARD_SC_0_AND_EQUAL_AND_CLOSING_BRACE, // }
-    GERMAN_KEYBOARD_SC_7_AND_SLASH_AND_OPENING_BRACE, // /
-    GERMAN_KEYBOARD_SC_SHARP_S_AND_QUESTION_AND_BACKSLASH, // ?
-    GERMAN_KEYBOARD_SC_6_AND_AMPERSAND, // &
-    GERMAN_KEYBOARD_SC_4_AND_DOLLAR, // $
-    GERMAN_KEYBOARD_SC_SPACE,
-    GERMAN_KEYBOARD_SC_ENTER
-};
-
-
-uint8_t string2send[30] = {GERMAN_KEYBOARD_SC_L, GERMAN_KEYBOARD_SC_ENTER};
-int maxtime = 0;
-uint8_t solution_array[100] = {0};
-// Global variables
-uint8_t* global_string_to_send = NULL;
-uint8_t  global_string_len = 168;
-volatile uint8_t global_index = 0; // Reset this to 0 to start typing
-
-
-volatile uint32_t led_toggle_distance = 0; // The public distance value
-static uint32_t last_led_tick = 0;         // Helper to remember the previous time
-volatile uint32_t public_distance = 0; // Accessible everywhere
-
-volatile uint32_t msTicks = 0;
-
-void SysTick_Handler(void) {
-    msTicks++;
-}
-
-// Helper to get current time
-uint32_t GetTick(void) {
-    return msTicks;
-}
-
-int string2sendlen = 2;
-void insert(uint8_t arr[], uint8_t	*n, int pos, uint8_t val) {
-  
-    // Shift elements to the right
-    for (int i = *n; i > pos; i--)
-        arr[i] = arr[i - 1];
-
-    // Insert val at the specified position
-    arr[pos] = val;
-
-    // Increase the current size
-    (*n)++;
-}
-
-void MeasureLedToggleDistance(void) {
-    static uint32_t lastTick = 0;
-    uint32_t currentTick = GetTick();
-
-    if (lastTick != 0) {
-        // Update the public variable
-        public_distance = currentTick - lastTick; 
-        if (public_distance > maxtime) {
-            maxtime = public_distance;
-            solution_array[0]= msg[global_index]; // Store the character that caused the new max time
-        }
-    lastTick = currentTick; 
-    }
-}
-
-
-int string_index = 0;
-int current_pos = 0;
-int shiftindex = 0;
-bool waiting_for_response = false;
-void fsm(void) {
-    if (global_index >= global_string_len) {
-        
-        for (int i = string2sendlen; i > 0; i--) {
-            // Shift existing elements of string2send array to the right
-            string2send[i] = string2send[i - 1];
-        }
-        
-        string2send[string_index] = solution_array[0]; // Insert new character at the start
-        string2sendlen++; // Increase the length of string2send
-        global_index = 0; // Reset index to start over
-        current_pos++;
-    }
-
-
-    string2send[current_pos] = msg[global_index]; // Update the character to send based on the current index
-    global_index++;
-    string_index = 0;
-}
-
-
 
 
 /* Clock configuration */
@@ -221,8 +49,7 @@ int main(void) {
 	XMC_GPIO_SetMode(LED1,XMC_GPIO_MODE_OUTPUT_PUSH_PULL);
 	XMC_GPIO_SetMode(LED2,XMC_GPIO_MODE_OUTPUT_PUSH_PULL);
 	USB_Init();
-	SystemCoreClockSetup();    
-    SysTick_Config(SystemCoreClock / 1000);
+
 	// Wait until host has enumerated HID device
 	for(int i = 0; i < 10e6; ++i)
 		; 
@@ -243,23 +70,38 @@ bool CALLBACK_HID_Device_CreateHIDReport(
 	*ReportSize = sizeof(USB_KeyboardReport_Data_t);
 	static uint8_t characterSent = 0, 
 				   indexToSend = 0;
-								int i = 0;
-	
-                            
-    if (string_index < 2) {
+
+	// string to be sent
+	static uint8_t stringToSend[12] = {
+		GERMAN_KEYBOARD_SC_H, 
+		GERMAN_KEYBOARD_SC_E, 
+		GERMAN_KEYBOARD_SC_L, 
+		GERMAN_KEYBOARD_SC_L, 
+		GERMAN_KEYBOARD_SC_O, 
+		GERMAN_KEYBOARD_SC_SPACE, 
+		GERMAN_KEYBOARD_SC_W, 
+		GERMAN_KEYBOARD_SC_O, 
+		GERMAN_KEYBOARD_SC_R, 
+		GERMAN_KEYBOARD_SC_L, 
+		GERMAN_KEYBOARD_SC_D, 
+		GERMAN_KEYBOARD_SC_ENTER
+	};
+
+	if(indexToSend < 12) {
 		if(characterSent) {
 			report->Modifier = 0; 
 			report->Reserved = 0; 
 			report->KeyCode[0] = 0; 
 			characterSent = 0;
-			string_index++; 
+			++indexToSend; 
 		} else {
 			report->Modifier = 0; 
 			report->Reserved = 0; 
-			report->KeyCode[0] = string2send[string_index];
+			report->KeyCode[0] = stringToSend[indexToSend]; 
 			characterSent = 1;
 		}
 	}
+
 	return true;
 }
 
@@ -272,15 +114,11 @@ void CALLBACK_HID_Device_ProcessHIDReport(
 						const uint16_t ReportSize ) {
 	uint8_t *report = (uint8_t*)ReportData;
 
-	if(*report & HID_KEYBOARD_LED_NUMLOCK) {
+	if(*report & HID_KEYBOARD_LED_NUMLOCK) 
 		XMC_GPIO_SetOutputHigh(LED1);
-        MeasureLedToggleDistance();
-        fsm();  
-    }
 	else 
 		XMC_GPIO_SetOutputLow(LED1);
-	
-	
+
 	if(*report & HID_KEYBOARD_LED_CAPSLOCK) 
 		XMC_GPIO_SetOutputHigh(LED2);
 	else 
@@ -299,4 +137,3 @@ void SystemCoreClockSetup(void) {
 
 	SystemCoreClockUpdate();
 }
-                            
